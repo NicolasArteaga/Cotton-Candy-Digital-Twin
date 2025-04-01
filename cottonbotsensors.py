@@ -2,7 +2,7 @@ import time
 import board
 import busio
 from adafruit_tca9548a import TCA9548A
-from adafruit_hdc302x import HDC3021
+from adafruit_hdc302x
 from smbus2 import SMBus
 import paho.mqtt.client as mqtt
 
@@ -31,8 +31,8 @@ i2c = busio.I2C(board.SCL, board.SDA)
 tca = TCA9548A(i2c)
 
 # Attach HDC3021 sensors to channel 0 and 1
-hdc1 = HDC3021(tca[0])
-hdc2 = HDC3021(tca[1])
+hdc1 = HDC302x(tca[0])
+hdc2 = HDC302x(tca[1])
 
 # Attach MLX90614 sensors to channel 2 and 3
 bus = SMBus(1)
