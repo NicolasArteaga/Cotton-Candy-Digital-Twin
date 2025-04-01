@@ -30,7 +30,7 @@ class MLX90614:
 i2c = busio.I2C(board.SCL, board.SDA)
 tca = TCA9548A(i2c)
 
-# Attach HDC3021 sensors to channel 0 and 1
+# Attach HDC302x sensors to channel 0 and 1
 hdc1 = HDC302x(tca[0])
 hdc2 = HDC302x(tca[1])
 
@@ -39,10 +39,10 @@ bus = SMBus(1)
 mlx1 = MLX90614(tca[2])
 mlx2 = MLX90614(tca[3])
 
-# MQTT setup
-MQTT_BROKER = "localhost"
+# MQTT setup with BPM Lab
+MQTT_BROKER = "lab.bpm.in.tum.de"
 MQTT_PORT = 1883
-MQTT_TOPIC_PREFIX = "sensors"
+MQTT_TOPIC_PREFIX = "cottonbot_sensors"
 
 client = mqtt.Client()
 client.connect(MQTT_BROKER, MQTT_PORT, 60)
