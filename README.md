@@ -83,3 +83,15 @@ Process -->|HTTP POST /quality| Prediction_Service
 end
 ```
 
+
+## 🔧 Setup Instructions
+
+```bash
+git clone https://github.com/NicolasArteaga/Cotton-Candy-Digital-Twin.git
+cd Cotton-Candy-Digital-Twin
+
+sudo apt update
+sudo apt install python3-pip python3-dev -y
+
+pip3 install -r requirements.txt
+```
