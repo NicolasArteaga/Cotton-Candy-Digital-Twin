@@ -87,6 +87,8 @@ end
 ## 🔧 Setup Instructions
 
 ```bash
+sudo apt update
+
 git clone https://github.com/NicolasArteaga/Cotton-Candy-Digital-Twin.git
 cd Cotton-Candy-Digital-Twin
 
