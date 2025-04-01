@@ -87,13 +87,12 @@ end
 ## 🔧 Setup Instructions
 
 ```bash
-sudo apt update
-
 git clone https://github.com/NicolasArteaga/Cotton-Candy-Digital-Twin.git
 cd Cotton-Candy-Digital-Twin
 
 sudo apt update
-sudo apt install python3-pip python3-dev -y
+sudo apt install python3-pip python3-dev libgpiod2 libgpiod-dev python3-libgpiod -y
 
-pip3 install -r requirements.txt
+sudo pip3 install -r requirements.txt
+
 ```
