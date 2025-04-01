@@ -2,7 +2,7 @@ import time
 import board
 import busio
 from adafruit_tca9548a import TCA9548A
-from adafruit_hdc302x
+import adafruit_hdc302x
 from smbus2 import SMBus
 import paho.mqtt.client as mqtt
 
