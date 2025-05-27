@@ -26,13 +26,29 @@ mlx1 = adafruit_mlx90614.MLX90614(channel_3)
 
 # Read loop
 while True:
-    print(f"1. HDC302x0 Humidity: {hdc0.relative_humidity:.2f} %")
-    print(f"1. HDC302x0 Temp: {hdc0.temperature:.2f} °C")
-    print(f"2. MLX90614 Ambient Temp: {mlx.ambient_temperature:.2f} °C")
-    print(f"2. MLX90614 Object Temp: {mlx.object_temperature:.2f} °C")
-    print(f"3. MLX90614 Ambient Temp: {mlx1.ambient_temperature:.2f} °C")
-    print(f"3. MLX90614 Object Temp: {mlx1.object_temperature:.2f} °C")
-    print(f"4. HDC302x1 Humidity: {hdc1.relative_humidity:.2f} %")
-    print(f"4. HDC302x1 Temp: {hdc1.temperature:.2f} °C")
+    try:
+        print(f"1. HDC302x0 Humidity: {hdc0.relative_humidity:.2f} %")
+        print(f"1. HDC302x0 Temp: {hdc0.temperature:.2f} °C")
+    except Exception as e:
+        print(f"Error reading HDC302x0: {e}")
+
+    try:
+        print(f"2. MLX90614 Ambient Temp: {mlx.ambient_temperature:.2f} °C")
+        print(f"2. MLX90614 Object Temp: {mlx.object_temperature:.2f} °C")
+    except Exception as e:
+        print(f"Error reading MLX90614 (channel 2): {e}")
+
+    try:
+        print(f"3. MLX90614 Ambient Temp: {mlx1.ambient_temperature:.2f} °C")
+        print(f"3. MLX90614 Object Temp: {mlx1.object_temperature:.2f} °C")
+    except Exception as e:
+        print(f"Error reading MLX90614 (channel 3): {e}")
+
+    try:
+        print(f"4. HDC302x1 Humidity: {hdc1.relative_humidity:.2f} %")
+        print(f"4. HDC302x1 Temp: {hdc1.temperature:.2f} °C")
+    except Exception as e:
+        print(f"Error reading HDC302x1: {e}")
+
     print("---------------------")
     time.sleep(1)
