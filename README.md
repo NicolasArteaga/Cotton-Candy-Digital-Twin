@@ -91,7 +91,7 @@ git clone https://github.com/NicolasArteaga/Cotton-Candy-Digital-Twin.git
 cd Cotton-Candy-Digital-Twin
 
 sudo apt update
-sudo apt install python3-pip python3-dev libgpiod2 libgpiod-dev python3-libgpiod -y
+sudo apt install -y python3-dev python3-pip python3-venv i2c-tools libi2c-dev
 
 sudo pip3 install -r requirements.txt
 
