@@ -37,28 +37,47 @@ def print_median_ir_temps():
 # Read loop
 while True:
     try:
-        print(f"1. Env Humidity: {hdc0.relative_humidity:.2f} %")
-        print(f"1. Env Temp: {hdc0.temperature:.2f} °C")
+        hdc0_humidity = hdc0.relative_humidity
+        hdc0_temp = hdc0.temperature
     except Exception as e:
+        hdc0_humidity = None
+        hdc0_temp = None
         print(f"Error reading Environment Humidity: {e}")
 
     try:
-        print(f"2. IR Ambient Temp: {mlx.ambient_temperature:.2f} °C")
-        print(f"2. IR Object Temp: {mlx.object_temperature:.2f} °C")
+        mlx_ambient = mlx.ambient_temperature
+        mlx_object = mlx.object_temperature
     except Exception as e:
+        mlx_ambient = None
+        mlx_object = None
         print(f"Error reading Infrared 1 (channel 2): {e}")
 
     try:
-        print(f"3. IR Ambient Temp: {mlx1.ambient_temperature:.2f} °C")
-        print(f"3. IR Object Temp: {mlx1.object_temperature:.2f} °C")
+        mlx1_ambient = mlx1.ambient_temperature
+        mlx1_object = mlx1.object_temperature
     except Exception as e:
+        mlx1_ambient = None
+        mlx1_object = None
         print(f"Error reading Infrared 2 (channel 3): {e}")
 
     try:
-        print(f"4. HDC302x1 Humidity: {hdc1.relative_humidity:.2f} %")
-        print(f"4. HDC302x1 Temp: {hdc1.temperature:.2f} °C")
+        hdc1_humidity = hdc1.relative_humidity
+        hdc1_temp = hdc1.temperature
     except Exception as e:
+        hdc1_humidity = None
+        hdc1_temp = None
         print(f"Error reading HDC302x1: {e}")
+
+    print(
+        f"1. Env Humidity: {hdc0_humidity:.2f} % | "
+        f"1. Env Temp: {hdc0_temp:.2f} °C | "
+        f"2. IR Ambient Temp: {mlx_ambient:.2f} °C | "
+        f"2. IR Object Temp: {mlx_object:.2f} °C | "
+        f"3. IR Ambient Temp: {mlx1_ambient:.2f} °C | "
+        f"3. IR Object Temp: {mlx1_object:.2f} °C | "
+        f"4. HDC302x1 Humidity: {hdc1_humidity:.2f} % | "
+        f"4. HDC302x1 Temp: {hdc1_temp:.2f} °C"
+    )
 
     print("---------------------")
     try:
