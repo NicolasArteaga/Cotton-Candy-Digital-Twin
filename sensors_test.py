@@ -5,6 +5,9 @@ import adafruit_hdc302x
 import adafruit_tca9548a
 import adafruit_mlx90614
 import statistics
+import time
+import csv
+import os
 
 # Setup I2C bus
 i2c = busio.I2C(board.SCL, board.SDA)
@@ -30,9 +33,17 @@ def print_median_ir_temps():
     object_temps = [mlx.object_temperature, mlx1.object_temperature]
     median_ambient = statistics.median(ambient_temps)
     median_object = statistics.median(object_temps)
-    print(f"Median IR Ambient Temp: {median_ambient:.2f} °C")
-    print(f"Median IR Object Temp: {median_object:.2f} °C")
+#    print(f"Median IR Ambient Temp: {median_ambient:.2f} °C")
+#    print(f"Median IR Object Temp: {median_object:.2f} °C")
 
+
+# Create the CSV file if it doesn't exist, and add the header
+if not os.path.exists("seconds_log.csv"):
+    with open("seconds_log.csv", mode='w', newline='') as file:
+        writer = csv.writer(file)
+        writer.writerow(["ElapsedSeconds"])
+
+start_time = time.time()
 
 # Read loop
 while True:
@@ -67,22 +78,31 @@ while True:
         hdc1_humidity = None
         hdc1_temp = None
         print(f"Error reading HDC302x1: {e}")
+    
+    seconds = int(time.time() - start_time)
 
-    print(
-        f"1. Env Humidity: {hdc0_humidity:.2f} % | "
-        f"1. Env Temp: {hdc0_temp:.2f} °C | "
-        f"2. IR Ambient Temp: {mlx_ambient:.2f} °C | "
-        f"2. IR Object Temp: {mlx_object:.2f} °C | "
-        f"3. IR Ambient Temp: {mlx1_ambient:.2f} °C | "
-        f"3. IR Object Temp: {mlx1_object:.2f} °C | "
-        f"4. HDC302x1 Humidity: {hdc1_humidity:.2f} % | "
-        f"4. HDC302x1 Temp: {hdc1_temp:.2f} °C"
+    # Format the line exactly as the print output
+    log_line = (
+        f"{seconds}s, "
+        f"EnvH:{hdc0_humidity:.2f}%, "
+        f"InH:{hdc1_humidity:.2f}%, "
+        f"EnvT:{hdc0_temp:.2f}°C, "
+        f"InT:{hdc1_temp:.2f}°C, "
+        f"IrA1:{mlx_ambient:.2f}°C, "
+        f"IrA2:{mlx1_ambient:.2f}°C, "
+        f"IrO1:{mlx_object:.2f}°C, "
+        f"IrO2:{mlx1_object:.2f}°C"
     )
+    print(log_line)  # print to terminal
 
-    print("---------------------")
-    try:
-        print_median_ir_temps()
-    except Exception as e:
-        print(f"Error getting the median: {e}")
-    print("---------------------")
+    # Append to CSV file
+    with open("seconds_log.csv", mode='a', newline='') as file:
+        writer = csv.writer(file)
+        # Split by ',' to get separate columns in the CSV
+        writer.writerow(log_line.split(','))
+    #try:
+    #    print_median_ir_temps()
+    #except Exception as e:
+    #    print(f"Error getting the median: {e}")
+#    print("---------------------")
     time.sleep(1)
