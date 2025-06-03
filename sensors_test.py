@@ -23,7 +23,6 @@ channel_2 = multiplexer[2]  # For the IR
 channel_3 = multiplexer[3]  # For the IR 2
 
 # Initialize sensors
-#mlx = adafruit_mlx90614.MLX90614(i2c)
 hdc0 = adafruit_hdc302x.HDC302x(channel_0)
 hdc1 = adafruit_hdc302x.HDC302x(channel_1)
 mlx = adafruit_mlx90614.MLX90614(channel_2)
