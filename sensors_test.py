@@ -8,6 +8,7 @@ import statistics
 import time
 import csv
 import os
+import requests
 
 # Setup I2C bus
 i2c = busio.I2C(board.SCL, board.SDA)
@@ -105,4 +106,17 @@ while True:
     #except Exception as e:
     #    print(f"Error getting the median: {e}")
 #    print("---------------------")
-    time.sleep(1)
+
+
+    http_url = "http://192.168.1.100:7201/sensor-data"
+    data = {
+        "hdc1_temp": hdc0_temp
+    }
+
+    try:
+        response = requests.post(http_url, json=data)
+        print("HTTP status:", response.status_code)
+    except Exception as e:
+        print("Error sending data via HTTP:", e)
+
+    time.sleep(2)
