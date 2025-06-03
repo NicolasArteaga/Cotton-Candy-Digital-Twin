@@ -22,6 +22,8 @@ app = FastAPI()
 @app.get("/")
 def get_humidity():
     humidity = hdc0.relative_humidity
+    time = date.today()
     print("Current Humidity:", humidity)
-    print("Current Time:", date.today())
-    return {"humidity": humidity}
+    print("Current Time:", time)
+    return {"humidity": humidity, 
+            "Time": time}
