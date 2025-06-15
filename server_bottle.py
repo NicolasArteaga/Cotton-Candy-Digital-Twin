@@ -127,7 +127,7 @@ def read_all_sensors():
 # Create Bottle app
 app = Bottle()
 
-@app.route('/read')
+@app.route('/')
 def read_and_store():
     reading = read_all_sensors()
     append_log(reading)
