@@ -89,7 +89,7 @@ def read_all_sensors():
     entry = {}
 
     entry['timestamp'] = time.strftime("%Y-%m-%d %H:%M:%S.%f")  # Timestamp with milliseconds
-    #last githook test
+    #lo tenemos
 
     try:
         entry['EnvH'] = round(hdc0.relative_humidity, 2)
