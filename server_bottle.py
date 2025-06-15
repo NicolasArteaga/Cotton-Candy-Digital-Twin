@@ -14,16 +14,60 @@ i2c = busio.I2C(board.SCL, board.SDA)
 multiplexer = adafruit_tca9548a.TCA9548A(i2c)
 
 # Access channels
-channel_0 = multiplexer[0]  # Env Sensor
-channel_1 = multiplexer[1]  # Inside Sensor
+channel_0 = multiplexer[0]  # Env Hum Sensor
+channel_1 = multiplexer[1]  # Inside Hum Sensor
 channel_2 = multiplexer[2]  # IR Sensor 1
 channel_3 = multiplexer[3]  # IR Sensor 2
 
 # Initialize sensors
 hdc0 = adafruit_hdc302x.HDC302x(channel_0)
 hdc1 = adafruit_hdc302x.HDC302x(channel_1)
-mlx = adafruit_mlx90614.MLX90614(channel_2)
-mlx1 = adafruit_mlx90614.MLX90614(channel_3)
+# ...existing code...
+
+#mlx = adafruit_mlx90614.MLX90614(channel_2)
+#mlx1 = adafruit_mlx90614.MLX90614(channel_3)
+
+# ...existing code...
+
+def read_all_sensors():
+    entry = {}
+
+    try:
+        entry['EnvH'] = round(hdc0.relative_humidity, 2)
+        entry['EnvT'] = round(hdc0.temperature, 2)
+    except Exception as e:
+        print(f"Error reading hdc0: {e}")
+        entry['EnvH'] = None
+        entry['EnvT'] = None
+
+    try:
+        entry['InH'] = round(hdc1.relative_humidity, 2)
+        entry['InT'] = round(hdc1.temperature, 2)
+    except Exception as e:
+        print(f"Error reading hdc1: {e}")
+        entry['InH'] = None
+        entry['InT'] = None
+
+    # Commented out IR sensor readings (channel 2 and 3)
+    #try:
+    #    entry['IrA1'] = round(mlx.ambient_temperature, 2)
+    #    entry['IrO1'] = round(mlx.object_temperature, 2)
+    #except Exception as e:
+    #    print(f"Error reading mlx: {e}")
+    #    entry['IrA1'] = None
+    #    entry['IrO1'] = None
+
+    #try:
+    #    entry['IrA2'] = round(mlx1.ambient_temperature, 2)
+    #    entry['IrO2'] = round(mlx1.object_temperature, 2)
+    #except Exception as e:
+    #    print(f"Error reading mlx1: {e}")
+    #    entry['IrA2'] = None
+    #    entry['IrO2'] = None
+
+    entry['timestamp'] = time.strftime("%Y-%m-%d %H:%M:%S")
+
+    return entry
 
 # File to store data
 log_file = "sensor_log.json"
