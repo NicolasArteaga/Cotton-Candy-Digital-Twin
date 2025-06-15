@@ -13,7 +13,7 @@ i2c = busio.I2C(board.SCL, board.SDA)
 multiplexer = adafruit_tca9548a.TCA9548A(i2c)
 
 # Access sensor through multiplexer
-channel_0 = multiplexer[0]
+channel_0 = multiplexer[2]
 hdc0 = adafruit_hdc302x.HDC302x(channel_0)
 
 # Initialize FastAPI
