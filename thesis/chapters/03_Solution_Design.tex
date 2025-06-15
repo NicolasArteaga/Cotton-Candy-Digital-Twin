@@ -1,6 +1,99 @@
 \chapter{Solution Design}
 \label{sec:solution}
 
+    •	What is the physical structure of cotton candy?
+    What aspects define “quality” of cotton candy?     •	What are the key factors that affect quality?
+    •	How does it change with production parameters?
+    What we already learned doing cc is -> The notes from the notion
+
+\section{    •	What is the physical structure of cotton candy?}
+Cotton candy is primarily composed of spun sucrose, which can exist in two main forms:WHat we saw in the paper\dots
+
+\section{What aspects?}
+
+YES: Volume density -> How much sugar is in a given volume -> Weighing sample and measuring volume (water displacement) => Doing this wiht a trichter that has the exact volume written. How does it change wiht more or less humidity?
+
+NO: Visual appearance -> Fiber structure, color, consistency -> Visual inspection, photography + image analysis (even with your phone and Python/OpenCV) => we are not gonna do this because we learned that it is not really possible to distinguish the fibers with the naked eye. Its a full master thesis on its own
+
+NO: Texture \& mouthfeel -> Stickiness, softness, “melt-in-mouth” -> Manual touch test, break force => Stickiness is interesting to measure but probably difficult more on it later 
+NO: Hygroscopic behavior -> Stickiness as it absorbs moisture -> Weighing sample over time at room humidity => This is very interesting, takes time to measure but hey -> NO BC WE WILL CREATE THEM IN DIFF ENVIRONMENTS AND CANNOT CREATE A CONTROL CAPSULE
+
+YES: Crispness vs softness -> Related to crystallinity -> Compression test (kitchen scale or small force sensor) => It would mean measureing how much compression force is needed to break the fibers, very difficult, we build a model that we could test between CC and after measuring volume we weighted it, we tested this and that and concluded\dots
+
+ B. Compression Test
+	•	Use a small kitchen scale or force sensor.
+	•	Press gently until collapse starts.
+	•	Record maximum weight/force applied.
+	•	Amorphous cotton candy tends to be softer; more crystalline samples resist compression.
+% ➡ Proxy for structure & texture.
+
+NO: Structural stability -> How long it holds shape over time -> Timed visual check at room conditions => Takes long to test, 
+
+NO: Taste (subjective) -> Flavor preception is too subjective so we will not do this, but it is important to note that it is a factor in quality perception.
+
+\section{    •	How does it change with production parameters?}
+How can we change the environment and control so that production parameters are changed 
+    •	Humidity: Higher humidity leads to more stickiness and faster recrystallization. -> How to simulate Humidity?
+    The gas environment during spinning directly changes how much of the sucrose becomes crystalline vs amorphous.
+	•	More oxygen \& moisture → more crystallization.
+	•	Less oxygen \& low moisture (like nitrogen or dry air) → more amorphous content.
+    -> We cannot change the environment, but we can change the humidity of the process with:
+        - Airflow / fans -> Stronger air movement near spinner -> Helps dry fibers during flight/creation, reduces moisture pickup.
+    -> YESSSS LETS DO THIS
+
+    % IMPORTANt
+    Affect on more humidity durign spinning -> Fibers may break sooner, become shorter, thicker. fibers stick together more.
+    and after spinning -> Fibers collapse and shrink, Loss of volume (shrinkage), stickiness increases. what about compression?
+    Immediately after spinning (fresh)
+- Fibers in humid air are thicker, stickier → denser structure → higher compression resistance initially (less fluffy, more “compact”). - Less air trapped between fibers → more force needed to compress.
+Shortly after spinning (as moisture is absorbed)
+- As fibers absorb moisture, they soften → compression force quickly drops. - Structure collapses under small loads.
+% IMPORTANt
+
+Compression is kind of complicated to test since: 
+Actually, at high humidity:
+	•	At first → more compact = higher compression resistance.
+	•	But as time passes → absorbs moisture → weaker structure = lower compression resistance.
+
+In contrast, at low humidity:
+	•	The fibers stay dry, fluffy, and light.
+	•	Lower compression resistance but much better structural stability over time.
+
+    Humidity Level
+        Result that we think we could achieve:
+        Low RH \(<30\%\)
+        Light, fluffy, large volume, fine fibers.
+        High RH \(>60\%\)
+        Denser, smaller volume, coarser fibers, faster shrinkage.
+
+
+    •	Temperature: Higher temperatures can lead to more amorphous structure, but too high can cause burning. We have no control over this, as we are gonna see in the Solution Design, we are using a machine that always stays at the same ratio of temperature when at work. 
+    -> What we can control and change is the Cooking time, so the temperature that the head had when inserting the suagr and the time that we let the cotton candy get created, and let the arm roll. -> What this hopefully gives us is the change in structure that we can test with the compression test and a bigger volume.
+
+    •	Spinning speed: Faster spinning may lead to finer fibers, affecting texture. Spinning speed (Higher RPM) Creates finer fibers, helps counteract thickening effect of humidity. -> We cannot control this. The given machine always spins in the same speed.
+
+    -  One big variable that I had at the start was the Sugar amount. Thinking naively, I thought that more sugar would lead to more volume, but this is not the case. The amount of sugar in the process is always the same, and we are not changing it. We are always using the same amount of sugar for each production, which is 10 grams. -> Adding more won’t help volume, might increase stickiness. And we are not measuring this change in stickiness as we saw before.
+
+    - Sugar formulation -> Use anti-hygroscopic additives (e.g., small \% of maltodextrin or stabilizers) -> Slows moisture absorption. Often used in industrial production. We are not chanign the sugar formulation. We are always using the same sugar from the supermarket for making it easier to reproduce the results.
+
+\section{What we learned empirically doing CC}
+    - write times, forms, radius why that radius etc etc etc
+
+    => We can create a formula of how we think it behaves, that we can compare afterwards in the Data Recollection Evaluation.
+
+\section{Prescriptive Digital Twin Flow}
+
+- We have an Environment that we cannot control, but we can measure it.
+- We have a process that we can control, but what exactly? THe time of cook? (Yes) The amunt of sugar? (Yes, but doesnt impact), The heating up before spinning? (Yes, but only energy savings impact) The \dots
+- We have a product that we can measure and evaluate the quality, but how? (First measure the Volume and then the compression stress, etc) 
+
+With 200 points of this data we can create a Model that can forecast the quality mark of the product looking at the ENV and the Process Rules. With Desicion Trees since this and that\dots
+
+With the Forecasting we can change the Process rules to imporve the quality of the product. How? With Decision Trees? Trasvering back? How should it be done? I dont know yet.
+
+
+
+
 \begin{figure}[h]
     \centering
     \caption{My Figure Caption}
