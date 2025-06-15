@@ -88,6 +88,8 @@ def append_log(entry):
 def read_all_sensors():
     entry = {}
 
+    entry['timestamp'] = time.strftime("%Y-%m-%d %H:%M:%S.%f")[:-3]  # Timestamp with milliseconds
+
     try:
         entry['EnvH'] = round(hdc0.relative_humidity, 2)
         entry['EnvT'] = round(hdc0.temperature, 2)
@@ -119,8 +121,6 @@ def read_all_sensors():
         print(f"Error reading mlx1: {e}")
         entry['IrA2'] = None
         entry['IrO2'] = None
-
-    entry['timestamp'] = time.strftime("%Y-%m-%d %H:%M:%S")
 
     return entry
 
