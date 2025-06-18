@@ -22,12 +22,8 @@ channel_3 = multiplexer[3]  # IR Sensor 2
 # Initialize sensors
 hdc0 = adafruit_hdc302x.HDC302x(channel_0)
 hdc1 = adafruit_hdc302x.HDC302x(channel_1)
-# ...existing code...
-
-#mlx = adafruit_mlx90614.MLX90614(channel_2)
+mlx = adafruit_mlx90614.MLX90614(channel_2)
 #mlx1 = adafruit_mlx90614.MLX90614(channel_3)
-
-# ...existing code...
 
 def read_all_sensors():
     entry = {}
