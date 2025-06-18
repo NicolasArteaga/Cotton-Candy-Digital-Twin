@@ -6,6 +6,7 @@ import adafruit_tca9548a
 import adafruit_mlx90614
 import statistics
 import time
+from datetime import datetime
 import json
 import os
 
@@ -64,7 +65,7 @@ def read_all_sensors():
        entry['IrA2'] = None
        entry['IrO2'] = None
 
-    entry['timestamp'] = time.strftime("%Y-%m-%d %H:%M:%S.%f") 
+    entry['timestamp'] = datetime.now().strftime("%Y-%m-%d %H:%M:%S.%f") 
 
     return entry
 
@@ -87,7 +88,7 @@ def append_log(entry):
 def read_all_sensors():
     entry = {}
 
-    entry['timestamp'] = time.strftime("%Y-%m-%d %H:%M:%S.%f")  # Timestamp with milliseconds
+    entry['timestamp'] = datetime.now().strftime("%Y-%m-%d %H:%M:%S.%f")  # Timestamp with milliseconds
     #lo tenemos
 
     try:
