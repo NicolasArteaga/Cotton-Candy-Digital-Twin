@@ -90,7 +90,7 @@ def read_all_sensors():
 
     now = datetime.now()
     ms_two = f"{int(now.microsecond / 1000):03d}"[:2]
-    entry['timestamp'] = now.strftime("%Y-%m-%d %H:%M:%S{ms_two}")  # Timestamp with milliseconds
+    entry['timestamp'] = now.strftime("%Y-%m-%d %H:%M:%S.{ms_two}")  # Timestamp with milliseconds
 
     try:
         entry['EnvH'] = round(hdc0.relative_humidity, 2)
