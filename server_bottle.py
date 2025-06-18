@@ -23,8 +23,8 @@ channel_3 = multiplexer[3]  # IR Sensor 2
 try: 
     hdc0 = adafruit_hdc302x.HDC302x(channel_0)
     hdc1 = adafruit_hdc302x.HDC302x(channel_1)
-    mlx = adafruit_mlx90614.MLX90614(channel_2)
     mlx1 = adafruit_mlx90614.MLX90614(channel_3)
+    mlx = adafruit_mlx90614.MLX90614(channel_2)
 except Exception as e:
     print(f"Error initializing sensors, probably one cable disconnected itself: {e}")
 
