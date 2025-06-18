@@ -88,7 +88,7 @@ def append_log(entry):
 def read_all_sensors():
     entry = {}
 
-    entry['timestamp'] = datetime.now().strftime("%Y-%m-%d %H:%M:%S.%f"[:2])  # Timestamp with milliseconds
+    entry['timestamp'] = datetime.now().strftime("%Y-%m-%d %H:%M:%S.%f"[:10])  # Timestamp with milliseconds
     #lo tenemos
 
     try:
