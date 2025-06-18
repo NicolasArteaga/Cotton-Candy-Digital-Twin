@@ -88,8 +88,9 @@ def append_log(entry):
 def read_all_sensors():
     entry = {}
 
-    entry['timestamp'] = datetime.now().strftime("%Y-%m-%d %H:%M:%S.%f"[:-1])  # Timestamp with milliseconds
-    #lo tenemos
+    now = datetime.now()
+    ms_two = f"{int(now.microsecond / 1000):03d}"[:2]
+    entry['timestamp'] = now.strftime("%Y-%m-%d %H:%M:%S{ms_two}")  # Timestamp with milliseconds
 
     try:
         entry['EnvH'] = round(hdc0.relative_humidity, 2)
