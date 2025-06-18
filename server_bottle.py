@@ -49,13 +49,13 @@ def read_all_sensors():
         entry['InT'] = None
 
     # Commented out IR sensor readings (channel 2 and 3)
-    #try:
-    #    entry['IrA1'] = round(mlx.ambient_temperature, 2)
-    #    entry['IrO1'] = round(mlx.object_temperature, 2)
-    #except Exception as e:
-    #    print(f"Error reading mlx: {e}")
-    #    entry['IrA1'] = None
-    #    entry['IrO1'] = None
+    try:
+       entry['IrA1'] = round(mlx.ambient_temperature, 2)
+       entry['IrO1'] = round(mlx.object_temperature, 2)
+    except Exception as e:
+       print(f"Error reading mlx: {e}")
+       entry['IrA1'] = None
+       entry['IrO1'] = None
 
     #try:
     #    entry['IrA2'] = round(mlx1.ambient_temperature, 2)
@@ -65,7 +65,7 @@ def read_all_sensors():
     #    entry['IrA2'] = None
     #    entry['IrO2'] = None
 
-    entry['timestamp'] = time.strftime("%Y-%m-%d %H:%M:%S")
+    entry['timestamp'] = time.strftime("%Y-%m-%d %H:%M:%S.%f") 
 
     return entry
 
