@@ -18,13 +18,11 @@ multiplexer = adafruit_tca9548a.TCA9548A(i2c)
 channel_0 = multiplexer[0]  # Env Hum Sensor
 channel_1 = multiplexer[1]  # Inside Hum Sensor
 channel_2 = multiplexer[2]  # IR Sensor 1
-channel_3 = multiplexer[3]  # IR Sensor 2
 
 # Initialize sensors
 try: 
     hdc0 = adafruit_hdc302x.HDC302x(channel_0)
     hdc1 = adafruit_hdc302x.HDC302x(channel_1)
-    mlx1 = adafruit_mlx90614.MLX90614(channel_3)
     mlx = adafruit_mlx90614.MLX90614(channel_2)
 except Exception as e:
     print(f"Error initializing sensors, probably one cable disconnected itself: {e}")
@@ -48,22 +46,15 @@ def read_all_sensors():
         entry['InH'] = None
         entry['InT'] = None
 
-    # Commented out IR sensor readings (channel 2 and 3)
+    # Commented out IR sensor reading
+    # IrA is ambient temperature, IrO is object temperature
     try:
-       entry['IrA1'] = round(mlx.ambient_temperature, 2)
-       entry['IrO1'] = round(mlx.object_temperature, 2)
+       entry['IrA'] = round(mlx.ambient_temperature, 2)
+       entry['IrO'] = round(mlx.object_temperature, 2)
     except Exception as e:
        print(f"Error reading mlx: {e}")
-       entry['IrA1'] = None
-       entry['IrO1'] = None
-
-    try:
-       entry['IrA2'] = round(mlx1.ambient_temperature, 2)
-       entry['IrO2'] = round(mlx1.object_temperature, 2)
-    except Exception as e:
-       print(f"Error reading mlx1: {e}")
-       entry['IrA2'] = None
-       entry['IrO2'] = None
+       entry['IrA'] = None
+       entry['IrO'] = None
 
     now = datetime.now()
     ms_two_digits = f"{int(now.microsecond / 1000):03d}"[:2]
@@ -111,20 +102,12 @@ def read_all_sensors():
         entry['InT'] = None
 
     try:
-        entry['IrA1'] = round(mlx.ambient_temperature, 2)
-        entry['IrO1'] = round(mlx.object_temperature, 2)
+        entry['IrA'] = round(mlx.ambient_temperature, 2)
+        entry['IrO'] = round(mlx.object_temperature, 2)
     except Exception as e:
         print(f"Error reading mlx: {e}")
-        entry['IrA1'] = None
-        entry['IrO1'] = None
-
-    try:
-        entry['IrA2'] = round(mlx1.ambient_temperature, 2)
-        entry['IrO2'] = round(mlx1.object_temperature, 2)
-    except Exception as e:
-        print(f"Error reading mlx1: {e}")
-        entry['IrA2'] = None
-        entry['IrO2'] = None
+        entry['IrA'] = None
+        entry['IrO'] = None
 
     return entry
 
