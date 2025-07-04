@@ -1,11 +1,9 @@
-from bottle import Bottle, run, response, request
+from bottle import Bottle, run
 import board
 import busio
 import adafruit_hdc302x
 import adafruit_tca9548a
 import adafruit_mlx90614
-import statistics
-import time
 from datetime import datetime
 import json
 import os
@@ -26,41 +24,6 @@ try:
     mlx = adafruit_mlx90614.MLX90614(channel_2)
 except Exception as e:
     print(f"Error initializing sensors, probably one cable disconnected itself: {e}")
-
-def read_all_sensors():
-    entry = {}
-
-    try:
-        entry['EnvH'] = round(hdc0.relative_humidity, 2)
-        entry['EnvT'] = round(hdc0.temperature, 2)
-    except Exception as e:
-        print(f"Error reading hdc0: {e}")
-        entry['EnvH'] = None
-        entry['EnvT'] = None
-
-    try:
-        entry['InH'] = round(hdc1.relative_humidity, 2)
-        entry['InT'] = round(hdc1.temperature, 2)
-    except Exception as e:
-        print(f"Error reading hdc1: {e}")
-        entry['InH'] = None
-        entry['InT'] = None
-
-    # Commented out IR sensor reading
-    # IrA is ambient temperature, IrO is object temperature
-    try:
-       entry['IrA'] = round(mlx.ambient_temperature, 2)
-       entry['IrO'] = round(mlx.object_temperature, 2)
-    except Exception as e:
-       print(f"Error reading mlx: {e}")
-       entry['IrA'] = None
-       entry['IrO'] = None
-
-    now = datetime.now()
-    ms_two_digits = f"{int(now.microsecond / 1000):03d}"[:2]
-    entry['timestamp'] = now.strftime(f"%Y-%m-%d %H:%M:%S.{ms_two_digits}")
-
-    return entry
 
 # File to store data
 log_file = "sensor_log.json"
@@ -86,24 +49,25 @@ def read_all_sensors():
     entry['timestamp'] = now.strftime(f"%Y-%m-%d %H:%M:%S.{ms_two_digits}")  # Timestamp with milliseconds
 
     try:
-        entry['EnvH'] = round(hdc0.relative_humidity, 2)
-        entry['EnvT'] = round(hdc0.temperature, 2)
+        entry['EnvH'] = f"{hdc0.relative_humidity:.2f}"
+        entry['EnvT'] = f"{hdc0.temperature:.2f}"
     except Exception as e:
         print(f"Error reading hdc0: {e}")
         entry['EnvH'] = None
         entry['EnvT'] = None
 
     try:
-        entry['InH'] = round(hdc1.relative_humidity, 2)
-        entry['InT'] = round(hdc1.temperature, 2)
+        entry['InH'] = f"{hdc1.relative_humidity:.2f}"
+        entry['InT'] = f"{hdc1.temperature:.2f}"
     except Exception as e:
         print(f"Error reading hdc1: {e}")
         entry['InH'] = None
         entry['InT'] = None
 
+    # IrA is ambient temperature, IrO is object temperature
     try:
-        entry['IrA'] = round(mlx.ambient_temperature, 2)
-        entry['IrO'] = round(mlx.object_temperature, 2)
+        entry['IrA'] = f"{mlx.ambient_temperature:.2f}"
+        entry['IrO'] = f"{mlx.object_temperature:.2f}"
     except Exception as e:
         print(f"Error reading mlx: {e}")
         entry['IrA'] = None
