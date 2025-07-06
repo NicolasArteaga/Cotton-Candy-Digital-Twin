@@ -6,8 +6,10 @@ import time
 
 # Example data
 data = pd.DataFrame({
-    'Humidity_in': [45, 55, 48, 60, 49, 51],
-    'Temp_out': [32, 31, 28, 29, 33, 27],
+    'cook_time': [105, 110, 100, 108, 106, 102],
+    'cooldown_time': [60, 80, 45, 75, 65, 55],
+    'wait_time': [5, 4, 6, 3, 5, 7],
+    'iteration': [1, 5, 10, 15, 3, 12],
     'Quality': ['Good', 'Bad', 'Bad', 'Bad', 'Good', 'Bad']
 })
 
@@ -15,7 +17,7 @@ data = pd.DataFrame({
 data['Quality'] = data['Quality'].map({'Good': 1, 'Bad': 0})
 
 # Features and labels
-X = data[['Humidity_in', 'Temp_out']]
+X = data[['cook_time', 'cooldown_time', 'wait_time', 'iteration']]
 y = data['Quality']
 
 print("Training started...")
@@ -31,7 +33,7 @@ print(f"Training finished in {end - start:.4f} seconds")
 # Plot the tree
 plt.figure(figsize=(8,5))
 tree.plot_tree(model, 
-               feature_names=['Humidity_in', 'Temp_out'], 
+               feature_names=['cook_time', 'cooldown_time', 'wait_time', 'iteration'], 
                class_names=['Bad', 'Good'], 
                filled=True)
 plt.title("Cotton Candy Quality Decision Tree")

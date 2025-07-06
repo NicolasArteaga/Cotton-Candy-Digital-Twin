@@ -8,7 +8,7 @@ url = "https://lab.bpm.in.tum.de/sugarpi/"
 filename = datetime.now().strftime("%Y%m%d_%H%M%S") + "_sugarpi_data.csv"
 
 # Define the expected keys
-fields = ["timestamp", "EnvH", "EnvT", "InH", "InT", "IrA", "IrOTEST"]
+fields = ["timestamp", "EnvH", "EnvT", "InH", "InT", "IrA", "IrO"]
 
 # Initialize CSV
 if not os.path.exists(filename):
