@@ -67,7 +67,7 @@ def read_all_sensors():
     # IrA is ambient temperature, IrO is object temperature
     try:
         entry['IrA'] = f"{mlx.ambient_temperature:.2f}"
-        entry['IrOTEEEEEEST'] = f"{mlx.object_temperature:.2f}"
+        entry['IrO'] = f"{mlx.object_temperature:.2f}"
     except Exception as e:
         print(f"Error reading mlx: {e}")
         entry['IrA'] = None
