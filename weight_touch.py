@@ -14,8 +14,9 @@ def weigh_touch():
             ser.reset_input_buffer()
             print(f"{count}: {recv}")
             count += 1
+            return count
     except KeyboardInterrupt:
         ser.close()
         print("Serial port closed.")
 
-run(app, host='0.0.0.0', port=7202)
+run(app, host='0.0.0.0', port=7202, debug=True)
