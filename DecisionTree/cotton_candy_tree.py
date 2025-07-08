@@ -17,7 +17,7 @@ data = pd.DataFrame({
 data['Quality'] = data['Quality'].map({'Good': 1, 'Bad': 0})
 
 # Features and labels
-X = data[['cook_time', 'cooldown_time', 'wait_time', 'iteration']]
+X = data[['cook_time', 'cooldown_time', 'wait_time', 'iteration', ]]
 y = data['Quality']
 
 print("Training started...")
