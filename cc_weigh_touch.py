@@ -1,5 +1,5 @@
 from bottle import Bottle, run
-import serial
+#import serial
 
 # ser = serial.Serial('/dev/ttyUSB0', baudrate=9600, bytesize=8, parity='N', stopbits=1, timeout=None)
 
@@ -7,7 +7,7 @@ app = Bottle()
 
 @app.route('/')
 def index():
-    return "Hello world!"
+    return "False"
 
 # def weigh_touch():
 #     count = 0
