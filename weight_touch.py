@@ -6,6 +6,9 @@ ser = serial.Serial('/dev/ttyUSB0', baudrate=9600, bytesize=8, parity='N', stopb
 app = Bottle()
 
 @app.route('/')
+def index():
+    return "Welcome to the Weigh Touch Server!"
+
 def weigh_touch():
     count = 0
     try:
