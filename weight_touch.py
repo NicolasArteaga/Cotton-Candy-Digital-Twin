@@ -22,4 +22,5 @@ def weigh_touch():
         ser.close()
         print("Serial port closed.")
 
-run(app, host='0.0.0.0', port=7202, debug=True)
+if __name__ == '__main__':
+    run(app, host='0.0.0.0', port=7202, debug=True)
