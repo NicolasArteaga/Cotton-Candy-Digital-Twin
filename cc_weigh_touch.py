@@ -5,9 +5,10 @@ app = Bottle()
 
 # Returns True if the weight is greater than or equal to 1.0 gram
 # Signaling that the scale has been touched
+# 
 def weigh_touch():
     try:
-        ser = serial.Serial('/dev/ttyUSB0', baudrate=9600, bytesize=8, parity='N', stopbits=1, timeout=2)
+        ser = serial.Serial('/dev/ttyUSB0', baudrate=9600, bytesize=8, parity='N', stopbits=1, timeout=0.1)
         recv = ser.readline().decode('utf-8', errors='ignore').strip()
         ser.reset_input_buffer()
         try:
