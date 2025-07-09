@@ -13,7 +13,6 @@ def weigh_touch():
         ser.reset_input_buffer()
         try:
             weight = float(recv)
-            weight = float(1.2)
             return weight >= 1.0
         except ValueError:
             return False
