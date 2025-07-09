@@ -1,26 +1,28 @@
 from bottle import Bottle, run
-#import serial
+import serial
 
-# ser = serial.Serial('/dev/ttyUSB0', baudrate=9600, bytesize=8, parity='N', stopbits=1, timeout=None)
+ser = serial.Serial('/dev/ttyUSB0', baudrate=9600, bytesize=8, parity='N', stopbits=1, timeout=None)
 
 app = Bottle()
 
+# Returns True if the weight is greater than or equal to 1.0 gram
+# Signaling that the scale has been touched
+def weigh_touch():
+    try:
+        recv = ser.readline().decode('utf-8', errors='ignore').strip()
+        ser.reset_input_buffer()
+        try:
+            weight = float(recv)
+            return weight >= 1.0
+        except ValueError:
+            return False
+    except Exception:
+        return False
+
+
 @app.route('/')
 def index():
-    return "False"
-
-# def weigh_touch():
-#     count = 0
-#     try:
-#         while True:
-#             recv = ser.readline().decode('utf-8', errors='ignore').strip()
-#             ser.reset_input_buffer()
-#             print(f"{count}: {recv}")
-#             count += 1
-#             return count
-#     except KeyboardInterrupt:
-#         ser.close()
-#         print("Serial port closed.")
+    return str(weigh_touch())
 
 if __name__ == '__main__':
     run(app, host='0.0.0.0', port=7204, debug=True)
