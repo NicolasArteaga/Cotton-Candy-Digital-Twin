@@ -7,7 +7,7 @@ app = Bottle()
 
 @app.route('/')
 def index():
-    return "Welcome to the Weigh Touch Server!"
+    return "False"
 
 def weigh_touch():
     count = 0
