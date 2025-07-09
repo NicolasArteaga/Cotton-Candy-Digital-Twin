@@ -23,4 +23,4 @@ def index():
 #         print("Serial port closed.")
 
 if __name__ == '__main__':
-    run(app, host='0.0.0.0', port=7202, debug=True)
+    run(app, host='0.0.0.0', port=7204, debug=True)
