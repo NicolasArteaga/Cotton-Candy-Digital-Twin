@@ -13,6 +13,8 @@ def timestamp():
     return f"{now.strftime('%Y-%m-%d %H:%M:%S')}.{now.microsecond // 10000:02d}"
 
 def measure_weight():
+    total_timeout = 5  # seconds
+    start_timeout = time()
     cup = ser.readline().decode('utf-8', errors='ignore').strip()
     cup_value = parse_weight(cup)
 
@@ -25,6 +27,9 @@ def measure_weight():
 
     #For 2 seconds store the biggest value that the scale shows and return it
     while time() - start_time < 2:
+        # Check if the total timeout has been exceeded
+        if time() - start_timeout > total_timeout:
+            return False
         line = ser.readline().decode('utf-8', errors='ignore').strip()
         try:
             cc_value = parse_weight(line)
@@ -41,6 +46,9 @@ app = Bottle()
 @app.route('/')
 def index():
     delta = measure_weight()
+    if delta is False:
+        return "Measurement timed out or failed. Please check the scale."
+        return "Error: Negative weight detected. Please check the scale."
     return f"{delta:.2f}"
 
 
