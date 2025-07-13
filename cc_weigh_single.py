@@ -45,8 +45,7 @@ app = Bottle()
 
 @app.route('/')
 def index():
-    #delta = measure_weight()
-    delta = False
+    delta = measure_weight()
     if delta is False:
         return "Measurement timed out or failed. Please check the scale."
         return "Error: Negative weight detected. Please check the scale."
