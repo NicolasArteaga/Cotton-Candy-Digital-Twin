@@ -13,13 +13,13 @@ def timestamp():
     return f"{now.strftime('%Y-%m-%d %H:%M:%S')}.{now.microsecond // 10000:02d}"
 
 def measure_weight():
-    total_timeout = 5  # seconds
+    total_timeout = 20  # seconds
     start_timeout = time()
     cup = ser.readline().decode('utf-8', errors='ignore').strip()
     cup_value = parse_weight(cup)
 
     #Wait 10 seconds so that the robot arm can place the cotton candy on the scale
-    sleep(10)
+    sleep(5)
     
     ser.reset_input_buffer()
     start_time = time()
@@ -45,7 +45,8 @@ app = Bottle()
 
 @app.route('/')
 def index():
-    delta = measure_weight()
+    #delta = measure_weight()
+    delta = False
     if delta is False:
         return "Measurement timed out or failed. Please check the scale."
         return "Error: Negative weight detected. Please check the scale."
