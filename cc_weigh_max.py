@@ -3,9 +3,11 @@ from time import time
 import serial
 import json
 
+#Do you want to have the two decimal places in each output?
+
 app = Bottle()
 
-ser = serial.Serial('/dev/ttyUSB0', baudrate=9600, bytesize=8, parity='N', stopbits=1, timeout=1)
+ser = serial.Serial('/dev/ttyUSB0', baudrate=9600, bytesize=8, parity='N', stopbits=1, timeout=None)
 
 @app.route('/')
 def index():
@@ -19,7 +21,6 @@ def index():
             if raw:
                 try:
                     val = float(raw.replace("g", "").replace("+", "").strip())
-                    val = round(val, 2)  # Round to 2 decimal places
                     weights.append(val)
                     if (max_val is None) or (val > max_val):
                         max_val = val
