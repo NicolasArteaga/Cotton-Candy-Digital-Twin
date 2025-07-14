@@ -24,7 +24,7 @@ def index():
                 except ValueError:
                     continue
         if max_val is not None:
-            return str(max_val)
+            return f"{max_val:.2f}"
         else:
             return "0.00"  # No valid weight detected
     except Exception as e:
