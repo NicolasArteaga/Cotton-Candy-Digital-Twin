@@ -14,7 +14,7 @@ def index():
         start_time = time()
         max_val = None
         # For 2 seconds, store the biggest value that the scale shows and return it
-        while time() - start_time < 2:
+        while time() - start_time < 1:
             raw = ser.readline().decode('utf-8', errors='ignore').strip()
             if raw:
                 try:
