@@ -1,4 +1,4 @@
-from bottle import Bottle, run
+from bottle import Bottle, run, response
 from time import time
 import serial
 
@@ -22,6 +22,7 @@ def index():
                 except ValueError:
                     continue
         if max_val is not None:
+            response.content_type = 'application/json'
             return f"{max_val >= 1}"
         else:
             return False  # No valid weight detected
