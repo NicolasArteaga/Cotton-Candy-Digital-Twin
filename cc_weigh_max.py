@@ -14,7 +14,7 @@ def index():
         start_time = time()
         max_val = None
         weights = []
-        while time() - start_time < 5:
+        while time() - start_time < 3:
             raw = ser.readline().decode('utf-8', errors='ignore').strip()
             if raw:
                 try:
@@ -25,7 +25,7 @@ def index():
                 except ValueError:
                     continue
         result = {
-            "max": round(max_val, 2) if max_val is not None else None,
+            "weigh_max": round(max_val, 2) if max_val is not None else None,
             "weights": [round(w, 2) for w in weights]
         }
         return json.dumps(result)
