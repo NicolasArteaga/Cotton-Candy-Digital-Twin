@@ -1,4 +1,4 @@
-from bottle import Bottle, run
+from bottle import Bottle, run, response
 from time import time
 import serial
 import json
@@ -30,6 +30,8 @@ def index():
             'weight_max': round(max_val, 2) if max_val is not None else None,
             'weights': [round(w, 2) for w in weights]
         }
+        #app.response.set_header('Content-Type', 'Application/JSON')
+        response.content_type = 'application/json'
         return json.dumps(result)
     except Exception as e:
         return json.dumps({"error": f"Measurement failed. Please check the scale. Error: {e}"})
