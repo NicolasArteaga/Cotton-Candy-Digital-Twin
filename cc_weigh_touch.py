@@ -23,7 +23,7 @@ def index():
         if max_val is not None:
             return f"{max_val:.2f >= 1}"
         else:
-            return "0.00"  # No valid weight detected
+            return "False"  # No valid weight detected
     except Exception as e:
         return f"Measurement failed. Please check the scale. Error: {e}"
 
