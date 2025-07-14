@@ -7,7 +7,7 @@ import json
 
 app = Bottle()
 
-ser = serial.Serial('/dev/ttyUSB0', baudrate=9600, bytesize=8, parity='N', stopbits=1, timeout=None)
+ser = serial.Serial('/dev/ttyUSB0', baudrate=9600, bytesize=8, parity='N', stopbits=1, timeout=1)
 
 @app.route('/')
 def index():
