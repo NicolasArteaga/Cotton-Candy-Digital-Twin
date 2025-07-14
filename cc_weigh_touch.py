@@ -12,7 +12,7 @@ def index():
         ser.reset_input_buffer()
         start_time = time()
         max_val = None
-        while time() - start_time < 0.5:
+        while time() - start_time < 0.2:
             raw = ser.readline().decode('utf-8', errors='ignore').strip()
             if raw:
                 try:
