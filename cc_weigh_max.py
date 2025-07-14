@@ -28,7 +28,7 @@ def index():
             "weigh_max": f"{round(max_val, 2) if max_val is not None else None}",
             "weights": f"{[round(w, 2) for w in weights]}"
         }
-        return json.dumps(result)
+        return f"{json.dumps(result)}"
     except Exception as e:
         return json.dumps({"error": f"Measurement failed. Please check the scale. Error: {e}"})
 
