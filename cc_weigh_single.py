@@ -3,7 +3,7 @@ from datetime import datetime
 from time import sleep, time
 import serial
 
-ser = serial.Serial('/dev/ttyUSB0', baudrate=9600, bytesize=8, parity='N', stopbits=1, timeout=1)  # Set timeout to 1 second
+ser = serial.Serial('/dev/ttyUSB0', baudrate=9600, bytesize=8, parity='N', stopbits=1, timeout=None)  # Set timeout to 1 second
 
 app = Bottle()
 
