@@ -3,7 +3,7 @@ from datetime import datetime
 from time import sleep, time
 import serial
 
-ser = serial.Serial('/dev/ttyUSB0', baudrate=9600, bytesize=8, parity='N', stopbits=1, timeout=None)    
+ser = serial.Serial('/dev/ttyUSB0', baudrate=9600, bytesize=8, parity='N', stopbits=1, timeout=1)  # Set timeout to 1 second
 
 app = Bottle()
 
@@ -12,14 +12,23 @@ def index():
     try:
         ser.reset_input_buffer()
         start_time = time()
-        #For 2 seconds store the biggest value that the scale shows and return it
-        while time() - start_time < 1:
+        max_val = None
+        # For 2 seconds, store the biggest value that the scale shows and return it
+        while time() - start_time < 2:
             raw = ser.readline().decode('utf-8', errors='ignore').strip()
-            ser.reset_input_buffer()
-            return float(raw.replace("g", "").replace("+", "").strip())
-    except Exception:
-        return "Measurement failed. Please check the scale."        
-    
+            if raw:
+                try:
+                    val = float(raw.replace("g", "").replace("+", "").strip())
+                    if (max_val is None) or (val > max_val):
+                        max_val = val
+                except ValueError:
+                    continue
+        if max_val is not None:
+            return str(max_val)
+        else:
+            return "No measurement received."
+    except Exception as e:
+        return f"Measurement failed. Please check the scale. Error: {e}"
 
 if __name__ == '__main__':
     run(app, host='0.0.0.0', port=7202, debug=True)
