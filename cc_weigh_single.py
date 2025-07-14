@@ -11,9 +11,12 @@ app = Bottle()
 def index():
     try:
         ser.reset_input_buffer()
-        raw = ser.readline().decode('utf-8', errors='ignore').strip()
-        ser.reset_input_buffer()
-        return float(raw.replace("g", "").replace("+", "").strip())
+        start_time = time()
+        #For 2 seconds store the biggest value that the scale shows and return it
+        while time() - start_time < 1:
+            raw = ser.readline().decode('utf-8', errors='ignore').strip()
+            ser.reset_input_buffer()
+            return float(raw.replace("g", "").replace("+", "").strip())
     except Exception:
         return "Measurement failed. Please check the scale."        
     
