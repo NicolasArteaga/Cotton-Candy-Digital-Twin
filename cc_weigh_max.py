@@ -25,8 +25,8 @@ def index():
                 except ValueError:
                     continue
         result = {
-            "weigh_max": round(max_val, 2) if max_val is not None else None,
-            "weights": [round(w, 2) for w in weights]
+            weigh_max: round(max_val, 2) if max_val is not None else None,
+            weights: [round(w, 2) for w in weights]
         }
         return json.dumps(result)
     except Exception as e:
