@@ -19,8 +19,8 @@ def index():
             if raw:
                 try:
                     val = float(raw.replace("g", "").replace("+", "").strip())
-                    val2 = f"{val:.2f}"
-                    weights.append(val2)
+                    val = round(val, 2)  # Round to 2 decimal places
+                    weights.append(val)
                     if (max_val is None) or (val > max_val):
                         max_val = val
                 except ValueError:
