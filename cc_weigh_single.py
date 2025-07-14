@@ -1,6 +1,5 @@
 from bottle import Bottle, run
-from datetime import datetime
-from time import sleep, time
+from time import time
 import serial
 
 ser = serial.Serial('/dev/ttyUSB0', baudrate=9600, bytesize=8, parity='N', stopbits=1, timeout=None)  # Set timeout to 1 second
