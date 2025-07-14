@@ -1,26 +1,36 @@
 from bottle import Bottle, run
-#import serial
-
-# ser = serial.Serial('/dev/ttyUSB0', baudrate=9600, bytesize=8, parity='N', stopbits=1, timeout=None)
+from time import time
+import serial
+import json
 
 app = Bottle()
 
+ser = serial.Serial('/dev/ttyUSB0', baudrate=9600, bytesize=8, parity='N', stopbits=1, timeout=1)
+
 @app.route('/')
 def index():
-    return "TODO"
-
-# def weigh_touch():
-#     count = 0
-#     try:
-#         while True:
-#             recv = ser.readline().decode('utf-8', errors='ignore').strip()
-#             ser.reset_input_buffer()
-#             print(f"{count}: {recv}")
-#             count += 1
-#             return count
-#     except KeyboardInterrupt:
-#         ser.close()
-#         print("Serial port closed.")
+    try:
+        ser.reset_input_buffer()
+        start_time = time()
+        max_val = None
+        weights = []
+        while time() - start_time < 5:
+            raw = ser.readline().decode('utf-8', errors='ignore').strip()
+            if raw:
+                try:
+                    val = float(raw.replace("g", "").replace("+", "").strip())
+                    weights.append(val)
+                    if (max_val is None) or (val > max_val):
+                        max_val = val
+                except ValueError:
+                    continue
+        result = {
+            "max": round(max_val, 2) if max_val is not None else None,
+            "weights": [round(w, 2) for w in weights]
+        }
+        return json.dumps(result)
+    except Exception as e:
+        return json.dumps({"error": f"Measurement failed. Please check the scale. Error: {e}"})
 
 if __name__ == '__main__':
     run(app, host='0.0.0.0', port=7203, debug=True)
