@@ -24,7 +24,7 @@ def index():
                     continue
         if max_val is not None:
             response.content_type = 'application/json'
-            return f"{max_val:.2f}"
+            return {'weight' : f"{max_val:.2f}"}
         else:
             response.content_type = 'application/json'
             return "0.00"  # No valid weight detected
