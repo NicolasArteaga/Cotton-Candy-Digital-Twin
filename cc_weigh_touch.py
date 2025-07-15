@@ -26,7 +26,8 @@ def index():
         else:
             return False  # No valid weight detected
     except Exception as e:
-        return f"Measurement failed. Please check the scale. Error: {e}"
+        return "False"
+        #f"Measurement failed. Please check the scale. Error: {e}"
 
 if __name__ == '__main__':
     run(app, host='0.0.0.0', port=7204, debug=True)
