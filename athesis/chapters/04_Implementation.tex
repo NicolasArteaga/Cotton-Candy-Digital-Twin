@@ -26,6 +26,77 @@ We want to find the optimal value of iterations we want to run before cleaning t
 We will clean the machine and declog the sugar of the spinner with water.
 
 
+\section{Energy Consumption Measurement}
+\label{sec:energy-measurement}
+
+Energy consumption is measured and stored for each production cycle to enable optimization of process parameters for energy efficiency. This measurement, combined with quality metrics, allows the digital twin system to find optimal parameter settings that minimize energy consumption while maintaining product quality.
+
+\subsection{Data Acquisition and Calculation}
+
+Power consumption is measured using a smart plug at 2-second intervals throughout the production process. Total energy consumption is calculated using trapezoidal integration of discrete power measurements:
+
+\[
+E = \sum_{i=1}^{n} \frac{P_{i-1} + P_i}{2} \cdot \Delta t_i
+\]
+
+where $P_i$ is the power measurement at time $t_i$ and $\Delta t_i$ is the time interval between measurements. The result is converted from Watt-seconds to Watt-hours for practical interpretation of the 5-minute production cycles.
+
+This methodology captures energy consumption across all production phases (startup, heating, spinning, cooldown) and provides the optimization target for energy-efficient cotton candy production.
+
+% \subsection{Power Data Acquisition}
+% 
+% Power consumption data is collected using a smart plug (Tasmota-compatible device) that measures electrical parameters at 2-second intervals throughout the production process. The plug captures instantaneous power values in Watts, which are logged with precise timestamps in the process execution system (XES) format. Given the short duration of cotton candy production (maximum 5 minutes), this sampling frequency provides sufficient temporal resolution for accurate energy integration.
+% 
+% \subsection{Energy Calculation Methodology}
+% 
+% Total energy consumption for each production cycle is calculated using trapezoidal numerical integration of the discrete power measurements over time. This approach accounts for the varying power draw during different phases of the cotton candy making process (heating, spinning, cooling).
+% 
+% The energy calculation follows the fundamental relationship:
+% \[
+% E = \int_{t_0}^{t_f} P(t) \, dt
+% \]
+% 
+% where $E$ is the total energy consumed, $P(t)$ is the instantaneous power at time $t$, $t_0$ is the process start time, and $t_f$ is the process end time.
+% 
+% For discrete measurements taken at intervals $\Delta t = 2$ seconds, the trapezoidal rule approximates this integral as:
+% 
+% \[
+% E \approx \sum_{i=1}^{n} \frac{P_{i-1} + P_i}{2} \cdot \Delta t_i
+% \]
+% 
+% where:
+% \begin{itemize}
+%     \item $P_i$ is the power measurement at time $t_i$
+%     \item $\Delta t_i = t_i - t_{i-1}$ is the time interval between consecutive measurements
+%     \item $n$ is the total number of measurement intervals
+% \end{itemize}
+% 
+% The result is expressed in Watt-seconds (Joules), which is then converted to Watt-hours by dividing by 3600:
+% 
+% \[
+% E_{Wh} = \frac{E_{Ws}}{3600}
+% \]
+% 
+% For the typical 5-minute cotton candy production process, Watt-hours provide a more intuitive unit than kilowatt-hours, which would result in very small decimal values.
+% 
+% \subsection{Process Phase Integration}
+% 
+% The energy calculation spans the complete production cycle, from process initiation to final cooldown. Key phases include:
+% 
+% \begin{enumerate}
+%     \item \textbf{Startup phase}: Initial power draw as the spinner begins heating
+%     \item \textbf{Heating phase}: High power consumption to reach operating temperature
+%     \item \textbf{Production phase}: Active spinning and sugar melting with varying power draw
+%     \item \textbf{Cooldown phase}: Reduced power consumption during cooling period
+% \end{enumerate}
+% 
+% By integrating power consumption across all phases, the methodology captures the total energy cost of each cotton candy unit, enabling optimization of process parameters for energy efficiency while maintaining product quality.
+% 
+% \subsection{Data Quality Considerations}
+% 
+% The trapezoidal integration method assumes linear interpolation between discrete measurement points. While this introduces some approximation error, the 2-second sampling interval is sufficiently fine-grained relative to the thermal and mechanical time constants of the cotton candy machine to provide accurate energy estimates. Additionally, the method handles variable time intervals between measurements, accommodating any minor variations in data logging frequency.
+
+
 \section{Product Quality Measurement}
 % Stichpunkte:
 % - During each run, collect product-related measurements
@@ -114,3 +185,49 @@ This index serves as a proxy for the density of the cotton candy, with higher va
 \subsection{Limitations in Volume Measurement}
 
 The estimation of cotton candy volume relied on manual measurements of width and height, followed by geometric approximation. While this method provides a reasonable basis for comparative analysis, it is subject to several limitations: (a) the inherently irregular and fragile structure of cotton candy, (b) potential observer bias during manual measurement, and (c) the assumption of a regular geometric shape. As such, the absolute values of estimated volume should be interpreted with caution. However, because the same procedure was applied uniformly across all experimental runs, the relative differences and trends derived from this method remain valid for assessing the effects of the digital twin optimization.
+
+\section{Feature Engineering for Decision Tree Optimization}
+\label{sec:feature-engineering}
+
+To enable effective machine learning optimization, the raw process data was transformed into a structured feature vector suitable for decision tree modeling. This preprocessing involved careful selection and organization of variables to maximize predictive power while minimizing redundancy and computational complexity.
+
+\subsection{Feature Vector Structure}
+
+The final feature vector consists of 28 carefully selected features organized in a logical hierarchy:
+
+\begin{enumerate}
+    \item \textbf{Process Parameters (6 features):} Core decision variables including iteration since maintenance, wait time, cook time, cooldown time, and derived timing metrics (duration until handover and total duration)
+    \item \textbf{Environmental Baseline (2 features):} External humidity and temperature captured at process initiation to establish ambient conditions
+    \item \textbf{Internal Environmental Dynamics (20 features):} Four internal sensors measured across five critical process phases:
+    \begin{itemize}
+        \item Internal humidity (InH) and temperature (InT) sensors
+        \item Infrared ambient temperature (IrA) at the sensor location
+        %\item Infrared object temperature (IrO) of the rotating cotton candy machine head, which correlates with the actual internal head temperature (e.g., IrO = 81.55 corresponds to actual internal temperature ≈ 178°C, like we saw before)
+    \end{itemize}
+\end{enumerate}
+
+\subsection{Redundancy Elimination Strategy}
+
+
+Analysis of environmental sensor data revealed significant redundancy in external measurements, where external humidity and temperature remained virtually constant throughout the production process (±0.4\% and ±0.1°C variation respectively). To optimize the feature set:
+
+\begin{itemize}
+    \item \textbf{External sensors} were reduced from 10 measurements (2 sensors × 5 phases) to 2 baseline measurements, capturing ambient conditions without repetitive data
+    \item \textbf{Internal sensors} were retained across all 5 phases, as they exhibited substantial variation (internal humidity: -27\% change, internal temperature: +15°C change, infrared ambient temperature and machine head object temperature: up to +58 units variation)
+\end{itemize}
+
+This optimization reduced the environmental feature space from 30 to 22 features while preserving all meaningful environmental dynamics, resulting in a 22\% reduction in feature dimensionality without information loss.
+
+\subsection{Process Phase Identification}
+
+Five critical process phases were identified for environmental monitoring:
+
+\begin{enumerate}
+    \item \textbf{Before turn-on:} Baseline internal conditions prior to machine activation
+    \item \textbf{After flow start:} Environmental state during active cotton candy production
+    \item \textbf{After flow end:} Conditions immediately following production completion
+    \item \textbf{After weigh start:} Environmental state at cooling phase initiation
+    \item \textbf{End:} Final environmental conditions post-cooling
+\end{enumerate}
+
+This temporal sampling strategy captures the complete thermal and humidity evolution during cotton candy production, enabling the decision tree to learn correlations between environmental conditions and process outcomes.
