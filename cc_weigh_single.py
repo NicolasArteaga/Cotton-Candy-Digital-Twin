@@ -12,22 +12,27 @@ def index():
         ser.reset_input_buffer()
         start_time = time()
         max_val = None
-        # For 2 seconds, store the biggest value that the scale shows and return it
+        # For 0.5 seconds, store the biggest value that the scale shows and return it
         while time() - start_time < 0.5:
             raw = ser.readline().decode('utf-8', errors='ignore').strip()
             if raw:
                 try:
-                    val = float(raw.replace("g", "").replace("+", "").strip())
+                    val = float(raw.replace("g", "").replace("+", "").replace("-", "").strip())
+                    # Treat any originally negative values as 0
+                    if "-" in raw:
+                        val = 0.0
+                    # Handle negative values - take the maximum (least negative or most positive)
                     if (max_val is None) or (val > max_val):
                         max_val = val
                 except ValueError:
                     continue
         if max_val is not None:
             response.content_type = 'application/json'
+            # Return the maximum value found, even if it's negative
             return {'weight' : f"{max_val:.2f}"}
         else:
             response.content_type = 'application/json'
-            return "0.00"  # No valid weight detected
+            return {'weight': "0.00"}  # No valid weight detected
     except Exception as e:
         return f"Measurement failed. Please check the scale. Error: {e}"
 

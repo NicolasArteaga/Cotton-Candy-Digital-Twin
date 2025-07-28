@@ -442,7 +442,7 @@ class CottonCandyLogParser:
         return closest_env
     
     def create_feature_vector(self) -> Dict:
-        """Create a clean feature vector for decision tree modeling"""
+        """Create a comprehensive feature vector with all 28 features for decision tree modeling"""
         phases = self.identify_process_phases()
         
         # Get environmental conditions at 5 key phases
@@ -452,7 +452,7 @@ class CottonCandyLogParser:
         env_after_weigh = self.get_environmental_state_at_phase(phases['weigh_start'])
         env_end = self.get_environmental_state_at_phase(phases['process_end'])
         
-        # Extract process parameters - hardcoded to look in third event (index 2)
+        # Extract process parameters - look in all events, not just third
         process_params = {
             'wait_time': None,
             'cook_time': None,
@@ -460,11 +460,9 @@ class CottonCandyLogParser:
             'iteration_since_maintenance': None
         }
         
-        # Process parameters are always in the third event (index 2)
-        if len(self.events) > 2:
-            third_event = self.events[2]
-            if 'data' in third_event and isinstance(third_event['data'], list):
-                for item in third_event['data']:
+        for event in self.events:
+            if 'data' in event and isinstance(event['data'], list):
+                for item in event['data']:
                     if isinstance(item, dict) and 'name' in item and 'value' in item:
                         name = item['name']
                         if name in process_params:
@@ -472,12 +470,14 @@ class CottonCandyLogParser:
                             # Convert to appropriate type
                             if isinstance(value, (int, float)):
                                 process_params[name] = value
+                            elif isinstance(value, str) and value.replace('.', '').isdigit():
+                                process_params[name] = float(value)
                             elif isinstance(value, str) and value.isdigit():
                                 process_params[name] = int(value)
                             else:
                                 process_params[name] = value
         
-        print(f"Process parameters from third event: {process_params}")
+        print(f"Process parameters extracted: {process_params}")
         
         # Calculate timing metrics (features)
         timing_metrics = {}
@@ -485,6 +485,8 @@ class CottonCandyLogParser:
             timing_metrics['duration_total'] = (phases['process_end'] - phases['process_start']).total_seconds()
         if phases['process_start'] and phases['handover']:
             timing_metrics['duration_till_handover'] = (phases['handover'] - phases['process_start']).total_seconds()
+        if phases['flow_start'] and phases['flow_end']:
+            timing_metrics['duration_cc_flow'] = (phases['flow_end'] - phases['flow_start']).total_seconds()
         
         # Calculate targets (what we want to optimize)
         targets = {}
@@ -493,45 +495,42 @@ class CottonCandyLogParser:
         # Quality metrics (MAXIMIZE these - higher is better)
         targets.update(self.calculate_quality_metrics())
         
-        # Build clean feature vector (X - input variables) in specific order
+        # Build comprehensive feature vector (X - input variables) with all 28 features
         feature_vector = {}
         
-        # 1. First: iteration_since_maintenance
-        if 'iteration_since_maintenance' in process_params:
-            feature_vector['iteration_since_maintenance'] = process_params['iteration_since_maintenance']
+        # 1. Core process parameters (4 features)
+        feature_vector['iteration_since_maintenance'] = process_params.get('iteration_since_maintenance', 0)
+        feature_vector['wait_time'] = process_params.get('wait_time', 0)
+        feature_vector['cook_time'] = process_params.get('cook_time', 0)
+        feature_vector['cooldown_time'] = process_params.get('cooldown_time', 0)
         
-        # 2. Then: core process parameters
-        for param in ['wait_time', 'cook_time', 'cooldown_time']:
-            if param in process_params:
-                feature_vector[param] = process_params[param]
+        # 2. Timing metrics (3 features)
+        feature_vector['duration_till_handover'] = timing_metrics.get('duration_till_handover', 0)
+        feature_vector['duration_total'] = timing_metrics.get('duration_total', 0)
+        feature_vector['duration_cc_flow'] = timing_metrics.get('duration_cc_flow', 0)
         
-        # 3. Then: duration_till_handover
-        if 'duration_till_handover' in timing_metrics:
-            feature_vector['duration_till_handover'] = timing_metrics['duration_till_handover']
+        # 3. Environmental baseline conditions (2 features - external environment)
+        feature_vector['baseline_env_EnvH'] = env_before_turn_on.get('env_EnvH', 0)
+        feature_vector['baseline_env_EnvT'] = env_before_turn_on.get('env_EnvT', 0)
         
-        # 4. Then: duration_total
-        if 'duration_total' in timing_metrics:
-            feature_vector['duration_total'] = timing_metrics['duration_total']
-        
-        # 5. Finally: environmental features - external baseline + internal dynamics
-        # External conditions (baseline from before_turn_on phase only)
-        for sensor_name, value in env_before_turn_on.items():
-            if sensor_name not in ['timestamp_diff'] and sensor_name.startswith('env_Env'):
-                # Only store external sensors (EnvH, EnvT) from the first phase
-                feature_vector[f'baseline_{sensor_name}'] = value
-        
-        # Internal sensors across all 5 phases (dynamic measurements)
-        for phase_name, env_data in [
+        # 4. Internal environmental sensors across 5 phases (4 sensors × 5 phases = 20 features)
+        phases_data = [
             ('before_turn_on', env_before_turn_on),
             ('after_flow_start', env_after_flow_start),
             ('after_flow_end', env_after_flow_end),
-            ('after_weigh', env_after_weigh),
-            ('end', env_end)
-        ]:
-            for sensor_name, value in env_data.items():
-                if sensor_name not in ['timestamp_diff'] and not sensor_name.startswith('env_Env'):
-                    # Store internal sensors (InH, InT, IrA, IrO) for all phases
-                    feature_vector[f'{phase_name}_{sensor_name}'] = value
+            ('before_cooldown', env_after_weigh),
+            ('after_cooldown', env_end)
+        ]
+        
+        internal_sensors = ['env_InH', 'env_InT', 'env_IrO', 'env_IrA']
+        
+        for phase_name, env_data in phases_data:
+            for sensor in internal_sensors:
+                feature_key = f'{phase_name}_{sensor}'
+                feature_vector[feature_key] = env_data.get(sensor, 0)
+        
+        print(f"Created feature vector with {len(feature_vector)} features")
+        print(f"Feature names: {list(feature_vector.keys())}")
         
         return feature_vector, targets
     
