@@ -1,0 +1,964 @@
+---
+log:
+  namespaces:
+    stream: https://cpee.org/datastream/
+    ssn: http://www.w3.org/ns/ssn/
+    sosa: http://www.w3.org/ns/sosa/
+  xes:
+    creator: cpee.org
+    features: nested-attributes
+  extension:
+    time: http://www.xes-standard.org/time.xesext
+    concept: http://www.xes-standard.org/concept.xesext
+    id: http://www.xes-standard.org/identity.xesext
+    lifecycle: http://www.xes-standard.org/lifecycle.xesext
+    cpee: http://cpee.org/cpee.xesext
+    stream: https://cpee.org/datastream/datastream.xesext
+  global:
+    trace:
+      concept:name: __NOTSPECIFIED__
+      cpee:name: __NOTSPECIFIED__
+    event:
+      concept:instance: -1
+      concept:name: __NOTSPECIFIED__
+      concept:endpoint: __NOTSPECIFIED__
+      id:id: __NOTSPECIFIED__
+      cpee:uuid: __NOTSPECIFIED__
+      lifecycle:transition: complete
+      cpee:lifecycle:transition: activity/calling
+      time:timestamp: ''
+  trace:
+    concept:name: 63150
+    cpee:name: move_touch
+    cpee:instance: 94e73f2a-8dc6-4a32-8653-f4880f257ce2
+---
+event:
+  concept:instance: 63150
+  id:id: external
+  cpee:activity: external
+  cpee:instance: 94e73f2a-8dc6-4a32-8653-f4880f257ce2
+  lifecycle:transition: unknown
+  cpee:lifecycle:transition: state/change
+  cpee:state: ready
+  time:timestamp: '2025-08-11T19:41:20.907477+02:00'
+---
+event:
+  concept:instance: 63150
+  id:id: external
+  cpee:activity: external
+  cpee:instance: 94e73f2a-8dc6-4a32-8653-f4880f257ce2
+  lifecycle:transition: unknown
+  cpee:lifecycle:transition: endpoints/change
+  data:
+  - name: timeout
+    value: https://cpee.org/services/timeout.php
+  - name: subprocess
+    value: https://cpee.org/flow/start/url/
+  - name: move_pos1
+    value: https://lab.bpm.in.tum.de/ur5/lawine/programs/Nicolas_Arteaga/quality/pos1.urp/wait
+  - name: move_pos2
+    value: https://lab.bpm.in.tum.de/ur5/lawine/programs/Nicolas_Arteaga/quality/pos2.urp/wait
+  - name: move_pos3
+    value: https://lab.bpm.in.tum.de/ur5/lawine/programs/Nicolas_Arteaga/quality/pos3.urp/wait
+  time:timestamp: '2025-08-11T19:41:20.910732+02:00'
+---
+event:
+  concept:instance: 63150
+  id:id: external
+  cpee:activity: external
+  cpee:instance: 94e73f2a-8dc6-4a32-8653-f4880f257ce2
+  lifecycle:transition: unknown
+  cpee:lifecycle:transition: dataelements/change
+  data:
+  - name: size
+    value: {}
+  - name: sizes
+    value:
+      pos1: 2
+      pos2: 1
+      pos3: 5
+  time:timestamp: '2025-08-11T19:41:20.909310+02:00'
+---
+event:
+  concept:instance: 63150
+  id:id: external
+  cpee:activity: external
+  cpee:instance: 94e73f2a-8dc6-4a32-8653-f4880f257ce2
+  lifecycle:transition: unknown
+  cpee:lifecycle:transition: attributes/change
+  data:
+  - name: guarded
+    value: none
+  - name: modeltype
+    value: CPEE
+  - name: theme
+    value: extended
+  - name: guarded_id
+    value: ''
+  - name: info
+    value: move_touch
+  - name: creator
+    value: Christine Ashcreek
+  - name: author
+    value: Christine Ashcreek
+  - name: model_uuid
+    value: 4c9959f3-3ae3-46a6-a444-b2f2b5e199c0
+  - name: model_version
+    value: ''
+  - name: design_dir
+    value: Theses.dir/Nicolas Arteaga.dir
+  - name: design_stage
+    value: development
+  time:timestamp: '2025-08-11T19:41:20.912551+02:00'
+---
+event:
+  concept:instance: 63150
+  id:id: external
+  cpee:activity: external
+  cpee:instance: 94e73f2a-8dc6-4a32-8653-f4880f257ce2
+  lifecycle:transition: unknown
+  cpee:lifecycle:transition: description/change
+  cpee:description: |
+    <?xml version="1.0"?>
+    <description xmlns="http://cpee.org/ns/description/1.0">
+      <manipulate id="a3" label="Initialize the sizes of the CC">data.sizes = {}</manipulate>
+      <call id="a1" endpoint="move_pos1">
+        <parameters>
+          <label>Move to Position 1</label>
+          <method>:put</method>
+          <arguments/>
+        </parameters>
+        <annotations>
+          <_generic/>
+          <_timing>
+            <_timing_weight/>
+            <_timing_avg/>
+            <explanations/>
+          </_timing>
+          <_shifting>
+            <_shifting_type>Duration</_shifting_type>
+          </_shifting>
+          <_context_data_analysis>
+            <probes/>
+            <ips/>
+          </_context_data_analysis>
+          <report>
+            <url/>
+          </report>
+          <_notes>
+            <_notes_general/>
+          </_notes>
+        </annotations>
+        <documentation>
+          <input/>
+          <output/>
+          <implementation>
+            <description/>
+          </implementation>
+        </documentation>
+      </call>
+      <call id="a2" endpoint="subprocess">
+        <parameters>
+          <label>Move down until touch</label>
+          <method>:post</method>
+          <arguments>
+            <behavior>wait_running</behavior>
+            <url>https://cpee.org/hub/server/Theses.dir/Nicolas%20Arteaga.dir/move_touch_down.xml</url>
+            <init/>
+            <endpoints/>
+            <attributes/>
+            <customization/>
+          </arguments>
+        </parameters>
+        <code>
+          <prepare/>
+          <finalize output="result">data.sizes['pos1'] = result['count']</finalize>
+          <update output="result"/>
+          <rescue output="result"/>
+        </code>
+        <annotations>
+          <_generic/>
+          <_timing>
+            <_timing_weight/>
+            <_timing_avg/>
+            <explanations/>
+          </_timing>
+          <_shifting>
+            <_shifting_type>Duration</_shifting_type>
+          </_shifting>
+          <_context_data_analysis>
+            <probes/>
+            <ips/>
+          </_context_data_analysis>
+          <report>
+            <url/>
+          </report>
+          <_notes>
+            <_notes_general/>
+          </_notes>
+        </annotations>
+        <documentation>
+          <input/>
+          <output/>
+          <implementation>
+            <description/>
+          </implementation>
+          <code>
+            <description/>
+          </code>
+        </documentation>
+      </call>
+      <call id="a4" endpoint="move_pos2">
+        <parameters>
+          <label>Move to Position 2</label>
+          <method>:put</method>
+          <arguments/>
+        </parameters>
+        <code>
+          <prepare/>
+          <finalize output="result"/>
+          <update output="result"/>
+          <rescue output="result"/>
+        </code>
+        <annotations>
+          <_generic/>
+          <_timing>
+            <_timing_weight/>
+            <_timing_avg/>
+            <explanations/>
+          </_timing>
+          <_shifting>
+            <_shifting_type>Duration</_shifting_type>
+          </_shifting>
+          <_context_data_analysis>
+            <probes/>
+            <ips/>
+          </_context_data_analysis>
+          <report>
+            <url/>
+          </report>
+          <_notes>
+            <_notes_general/>
+          </_notes>
+        </annotations>
+        <documentation>
+          <input/>
+          <output/>
+          <implementation>
+            <description/>
+          </implementation>
+          <code>
+            <description/>
+          </code>
+        </documentation>
+      </call>
+      <call id="a5" endpoint="subprocess">
+        <parameters>
+          <label>Move down until touch</label>
+          <method>:post</method>
+          <arguments>
+            <behavior>wait_running</behavior>
+            <url>https://cpee.org/hub/server/Theses.dir/Nicolas%20Arteaga.dir/move_touch_down.xml</url>
+            <init/>
+            <endpoints/>
+            <attributes/>
+            <customization/>
+          </arguments>
+        </parameters>
+        <code>
+          <prepare/>
+          <finalize output="result">data.sizes['pos2'] = result['count']</finalize>
+          <update output="result"/>
+          <rescue output="result"/>
+        </code>
+        <annotations>
+          <_generic/>
+          <_timing>
+            <_timing_weight/>
+            <_timing_avg/>
+            <explanations/>
+          </_timing>
+          <_shifting>
+            <_shifting_type>Duration</_shifting_type>
+          </_shifting>
+          <_context_data_analysis>
+            <probes/>
+            <ips/>
+          </_context_data_analysis>
+          <report>
+            <url/>
+          </report>
+          <_notes>
+            <_notes_general/>
+          </_notes>
+        </annotations>
+        <documentation>
+          <input/>
+          <output/>
+          <implementation>
+            <description/>
+          </implementation>
+          <code>
+            <description/>
+          </code>
+        </documentation>
+      </call>
+      <call id="a7" endpoint="move_pos3">
+        <parameters>
+          <label>Move to Position 3</label>
+          <method>:put</method>
+          <arguments/>
+        </parameters>
+        <code>
+          <prepare/>
+          <finalize output="result"/>
+          <update output="result"/>
+          <rescue output="result"/>
+        </code>
+        <annotations>
+          <_generic/>
+          <_timing>
+            <_timing_weight/>
+            <_timing_avg/>
+            <explanations/>
+          </_timing>
+          <_shifting>
+            <_shifting_type>Duration</_shifting_type>
+          </_shifting>
+          <_context_data_analysis>
+            <probes/>
+            <ips/>
+          </_context_data_analysis>
+          <report>
+            <url/>
+          </report>
+          <_notes>
+            <_notes_general/>
+          </_notes>
+        </annotations>
+        <documentation>
+          <input/>
+          <output/>
+          <implementation>
+            <description/>
+          </implementation>
+          <code>
+            <description/>
+          </code>
+        </documentation>
+      </call>
+      <call id="a6" endpoint="subprocess">
+        <parameters>
+          <label>Move down until touch</label>
+          <method>:post</method>
+          <arguments>
+            <behavior>wait_running</behavior>
+            <url>https://cpee.org/hub/server/Theses.dir/Nicolas%20Arteaga.dir/move_touch_down.xml</url>
+            <init/>
+            <endpoints/>
+            <attributes/>
+            <customization/>
+          </arguments>
+        </parameters>
+        <code>
+          <prepare/>
+          <finalize output="result">data.sizes['pos3'] = result['count']</finalize>
+          <update output="result"/>
+          <rescue output="result"/>
+        </code>
+        <annotations>
+          <_generic/>
+          <_timing>
+            <_timing_weight/>
+            <_timing_avg/>
+            <explanations/>
+          </_timing>
+          <_shifting>
+            <_shifting_type>Duration</_shifting_type>
+          </_shifting>
+          <_context_data_analysis>
+            <probes/>
+            <ips/>
+          </_context_data_analysis>
+          <report>
+            <url/>
+          </report>
+          <_notes>
+            <_notes_general/>
+          </_notes>
+        </annotations>
+        <documentation>
+          <input/>
+          <output/>
+          <implementation>
+            <description/>
+          </implementation>
+          <code>
+            <description/>
+          </code>
+        </documentation>
+      </call>
+    </description>
+  cpee:change_uuid: ad37e9e26dc8142094770a049db411d0b552079a
+  time:timestamp: '2025-08-11T19:41:20.918782+02:00'
+---
+event:
+  concept:instance: 63150
+  concept:name: Initialize the sizes of the CC
+  id:id: a3
+  cpee:activity: a3
+  cpee:activity_uuid: b677bfebdd9e2cc2d9c7fb9cfa7f11eb
+  cpee:instance: 94e73f2a-8dc6-4a32-8653-f4880f257ce2
+  lifecycle:transition: unknown
+  cpee:lifecycle:transition: dataelements/change
+  data:
+  - name: sizes
+    value: {}
+  time:timestamp: '2025-08-11T19:41:21.956541+02:00'
+---
+event:
+  concept:instance: 63150
+  concept:name: Move to Position 1
+  concept:endpoint: https://lab.bpm.in.tum.de/ur5/lawine/programs/Nicolas_Arteaga/quality/pos1.urp/wait
+  id:id: a1
+  cpee:activity: a1
+  cpee:activity_uuid: bcab44fb9e006d5d4bd21234439065ea
+  cpee:instance: 94e73f2a-8dc6-4a32-8653-f4880f257ce2
+  lifecycle:transition: start
+  cpee:lifecycle:transition: activity/calling
+  data:
+  time:timestamp: '2025-08-11T19:41:22.025343+02:00'
+---
+event:
+  concept:instance: 63150
+  id:id: external
+  cpee:activity: external
+  cpee:instance: 94e73f2a-8dc6-4a32-8653-f4880f257ce2
+  lifecycle:transition: unknown
+  cpee:lifecycle:transition: state/change
+  cpee:state: running
+  time:timestamp: '2025-08-11T19:41:21.930492+02:00'
+---
+event:
+  concept:instance: 63150
+  concept:name: Initialize the sizes of the CC
+  id:id: a3
+  cpee:activity: a3
+  cpee:activity_uuid: b677bfebdd9e2cc2d9c7fb9cfa7f11eb
+  cpee:instance: 94e73f2a-8dc6-4a32-8653-f4880f257ce2
+  lifecycle:transition: complete
+  cpee:lifecycle:transition: activity/done
+  time:timestamp: '2025-08-11T19:41:21.960416+02:00'
+---
+event:
+  concept:instance: 63150
+  concept:name: Move to Position 1
+  concept:endpoint: https://lab.bpm.in.tum.de/ur5/lawine/programs/Nicolas_Arteaga/quality/pos1.urp/wait
+  id:id: a1
+  cpee:activity: a1
+  cpee:activity_uuid: bcab44fb9e006d5d4bd21234439065ea
+  cpee:instance: 94e73f2a-8dc6-4a32-8653-f4880f257ce2
+  lifecycle:transition: unknown
+  cpee:lifecycle:transition: activity/receiving
+  time:timestamp: '2025-08-11T19:41:31.195011+02:00'
+---
+event:
+  concept:instance: 63150
+  concept:name: Move to Position 1
+  concept:endpoint: https://lab.bpm.in.tum.de/ur5/lawine/programs/Nicolas_Arteaga/quality/pos1.urp/wait
+  id:id: a1
+  cpee:activity: a1
+  cpee:activity_uuid: bcab44fb9e006d5d4bd21234439065ea
+  cpee:instance: 94e73f2a-8dc6-4a32-8653-f4880f257ce2
+  lifecycle:transition: complete
+  cpee:lifecycle:transition: activity/done
+  time:timestamp: '2025-08-11T19:41:31.195809+02:00'
+---
+event:
+  concept:instance: 63150
+  concept:name: Move down until touch
+  concept:endpoint: https://cpee.org/flow/start/url/
+  id:id: a2
+  cpee:activity: a2
+  cpee:activity_uuid: 3ba474bd6d59a90fc6845080136abc72
+  cpee:instance: 94e73f2a-8dc6-4a32-8653-f4880f257ce2
+  lifecycle:transition: start
+  cpee:lifecycle:transition: activity/calling
+  data:
+  - name: behavior
+    value: wait_running
+  - name: url
+    value: https://cpee.org/hub/server/Theses.dir/Nicolas%20Arteaga.dir/move_touch_down.xml
+  - name: init
+    value:
+  - name: endpoints
+    value:
+  - name: attributes
+    value:
+  - name: customization
+    value:
+  time:timestamp: '2025-08-11T19:41:31.237299+02:00'
+---
+event:
+  concept:instance: 63150
+  concept:name: Move down until touch
+  concept:endpoint: https://cpee.org/flow/start/url/
+  id:id: a2
+  cpee:activity: a2
+  cpee:activity_uuid: 3ba474bd6d59a90fc6845080136abc72
+  cpee:instance: 94e73f2a-8dc6-4a32-8653-f4880f257ce2
+  lifecycle:transition: unknown
+  cpee:lifecycle:transition: activity/receiving
+  data:
+  - name: dataelements
+    mimetype: application/json
+    data: '{"CPEE-INSTANCE":"63151","CPEE-INSTANCE-URL":"https://cpee.org/flow/engine/63151","CPEE-INSTANCE-UUID":"7b9cd5d6-38eb-4fba-86dc-b708eb3ad120","CPEE-STATE":"ready"}'
+  time:timestamp: '2025-08-11T19:41:32.300200+02:00'
+---
+event:
+  concept:instance: 63150
+  concept:name: Move down until touch
+  concept:endpoint: https://cpee.org/flow/start/url/
+  id:id: a2
+  cpee:activity: a2
+  cpee:activity_uuid: 3ba474bd6d59a90fc6845080136abc72
+  cpee:instance: 94e73f2a-8dc6-4a32-8653-f4880f257ce2
+  lifecycle:transition: unknown
+  cpee:lifecycle:transition: task/instantiation
+  data:
+    CPEE-INSTANCE: '63151'
+    CPEE-INSTANCE-URL: https://cpee.org/flow/engine/63151
+    CPEE-INSTANCE-UUID: 7b9cd5d6-38eb-4fba-86dc-b708eb3ad120
+    CPEE-BEHAVIOR: wait_running
+  time:timestamp: '2025-08-11T19:41:32.306745+02:00'
+---
+event:
+  concept:instance: 63150
+  concept:name: Move down until touch
+  concept:endpoint: https://cpee.org/flow/start/url/
+  id:id: a2
+  cpee:activity: a2
+  cpee:activity_uuid: 3ba474bd6d59a90fc6845080136abc72
+  cpee:instance: 94e73f2a-8dc6-4a32-8653-f4880f257ce2
+  lifecycle:transition: unknown
+  cpee:lifecycle:transition: activity/receiving
+  data:
+  - name: instance
+    mimetype: application/json
+    data: '{"CPEE-INSTANCE":"63151","CPEE-INSTANCE-URL":"https://cpee.org/flow/engine/63151","CPEE-INSTANCE-UUID":"7b9cd5d6-38eb-4fba-86dc-b708eb3ad120","CPEE-BEHAVIOR":"wait_running"}'
+  time:timestamp: '2025-08-11T19:41:32.304531+02:00'
+---
+event:
+  concept:instance: 63150
+  concept:name: Move down until touch
+  concept:endpoint: https://cpee.org/flow/start/url/
+  id:id: a2
+  cpee:activity: a2
+  cpee:activity_uuid: 3ba474bd6d59a90fc6845080136abc72
+  cpee:instance: 94e73f2a-8dc6-4a32-8653-f4880f257ce2
+  lifecycle:transition: unknown
+  cpee:lifecycle:transition: activity/receiving
+  data:
+  - name: dataelements
+    mimetype: application/json
+    data: '{"CPEE-INSTANCE":"63151","CPEE-INSTANCE-URL":"https://cpee.org/flow/engine/63151","CPEE-INSTANCE-UUID":"7b9cd5d6-38eb-4fba-86dc-b708eb3ad120","CPEE-STATE":"running"}'
+  time:timestamp: '2025-08-11T19:41:34.492003+02:00'
+---
+event:
+  concept:instance: 63150
+  concept:name: Move down until touch
+  concept:endpoint: https://cpee.org/flow/start/url/
+  id:id: a2
+  cpee:activity: a2
+  cpee:activity_uuid: 3ba474bd6d59a90fc6845080136abc72
+  cpee:instance: 94e73f2a-8dc6-4a32-8653-f4880f257ce2
+  lifecycle:transition: unknown
+  cpee:lifecycle:transition: activity/receiving
+  data:
+  - name: dataelements
+    mimetype: application/json
+    data: '{"CPEE-INSTANCE":"63151","CPEE-INSTANCE-URL":"https://cpee.org/flow/engine/63151","CPEE-INSTANCE-UUID":"7b9cd5d6-38eb-4fba-86dc-b708eb3ad120","CPEE-STATE":"finished","count":8,"touch":true}'
+  time:timestamp: '2025-08-11T19:42:11.696976+02:00'
+---
+event:
+  concept:instance: 63150
+  concept:name: Move down until touch
+  concept:endpoint: https://cpee.org/flow/start/url/
+  id:id: a2
+  cpee:activity: a2
+  cpee:activity_uuid: 3ba474bd6d59a90fc6845080136abc72
+  cpee:instance: 94e73f2a-8dc6-4a32-8653-f4880f257ce2
+  lifecycle:transition: complete
+  cpee:lifecycle:transition: activity/done
+  time:timestamp: '2025-08-11T19:42:11.707872+02:00'
+---
+event:
+  concept:instance: 63150
+  concept:name: Move down until touch
+  concept:endpoint: https://cpee.org/flow/start/url/
+  id:id: a2
+  cpee:activity: a2
+  cpee:activity_uuid: 3ba474bd6d59a90fc6845080136abc72
+  cpee:instance: 94e73f2a-8dc6-4a32-8653-f4880f257ce2
+  lifecycle:transition: unknown
+  cpee:lifecycle:transition: dataelements/change
+  data:
+  - name: sizes
+    value:
+      pos1: 8
+  time:timestamp: '2025-08-11T19:42:11.707728+02:00'
+---
+event:
+  concept:instance: 63150
+  concept:name: Move to Position 2
+  concept:endpoint: https://lab.bpm.in.tum.de/ur5/lawine/programs/Nicolas_Arteaga/quality/pos2.urp/wait
+  id:id: a4
+  cpee:activity: a4
+  cpee:activity_uuid: 1876d872215064ae40a08a38a4495f3f
+  cpee:instance: 94e73f2a-8dc6-4a32-8653-f4880f257ce2
+  lifecycle:transition: start
+  cpee:lifecycle:transition: activity/calling
+  data:
+  time:timestamp: '2025-08-11T19:42:11.742008+02:00'
+---
+event:
+  concept:instance: 63150
+  concept:name: Move to Position 2
+  concept:endpoint: https://lab.bpm.in.tum.de/ur5/lawine/programs/Nicolas_Arteaga/quality/pos2.urp/wait
+  id:id: a4
+  cpee:activity: a4
+  cpee:activity_uuid: 1876d872215064ae40a08a38a4495f3f
+  cpee:instance: 94e73f2a-8dc6-4a32-8653-f4880f257ce2
+  lifecycle:transition: unknown
+  cpee:lifecycle:transition: activity/receiving
+  time:timestamp: '2025-08-11T19:42:18.506939+02:00'
+---
+event:
+  concept:instance: 63150
+  concept:name: Move down until touch
+  concept:endpoint: https://cpee.org/flow/start/url/
+  id:id: a5
+  cpee:activity: a5
+  cpee:activity_uuid: 9bb023c146f7f79fd06021fed6c68457
+  cpee:instance: 94e73f2a-8dc6-4a32-8653-f4880f257ce2
+  lifecycle:transition: start
+  cpee:lifecycle:transition: activity/calling
+  data:
+  - name: behavior
+    value: wait_running
+  - name: url
+    value: https://cpee.org/hub/server/Theses.dir/Nicolas%20Arteaga.dir/move_touch_down.xml
+  - name: init
+    value:
+  - name: endpoints
+    value:
+  - name: attributes
+    value:
+  - name: customization
+    value:
+  time:timestamp: '2025-08-11T19:42:18.554234+02:00'
+---
+event:
+  concept:instance: 63150
+  concept:name: Move to Position 2
+  concept:endpoint: https://lab.bpm.in.tum.de/ur5/lawine/programs/Nicolas_Arteaga/quality/pos2.urp/wait
+  id:id: a4
+  cpee:activity: a4
+  cpee:activity_uuid: 1876d872215064ae40a08a38a4495f3f
+  cpee:instance: 94e73f2a-8dc6-4a32-8653-f4880f257ce2
+  lifecycle:transition: complete
+  cpee:lifecycle:transition: activity/done
+  time:timestamp: '2025-08-11T19:42:18.512970+02:00'
+---
+event:
+  concept:instance: 63150
+  concept:name: Move down until touch
+  concept:endpoint: https://cpee.org/flow/start/url/
+  id:id: a5
+  cpee:activity: a5
+  cpee:activity_uuid: 9bb023c146f7f79fd06021fed6c68457
+  cpee:instance: 94e73f2a-8dc6-4a32-8653-f4880f257ce2
+  lifecycle:transition: unknown
+  cpee:lifecycle:transition: task/instantiation
+  data:
+    CPEE-INSTANCE: '63152'
+    CPEE-INSTANCE-URL: https://cpee.org/flow/engine/63152
+    CPEE-INSTANCE-UUID: 2656c6bf-0e35-449e-8234-6f10e0448e66
+    CPEE-BEHAVIOR: wait_running
+  time:timestamp: '2025-08-11T19:42:18.625550+02:00'
+---
+event:
+  concept:instance: 63150
+  concept:name: Move down until touch
+  concept:endpoint: https://cpee.org/flow/start/url/
+  id:id: a5
+  cpee:activity: a5
+  cpee:activity_uuid: 9bb023c146f7f79fd06021fed6c68457
+  cpee:instance: 94e73f2a-8dc6-4a32-8653-f4880f257ce2
+  lifecycle:transition: unknown
+  cpee:lifecycle:transition: activity/receiving
+  data:
+  - name: dataelements
+    mimetype: application/json
+    data: '{"CPEE-INSTANCE":"63152","CPEE-INSTANCE-URL":"https://cpee.org/flow/engine/63152","CPEE-INSTANCE-UUID":"2656c6bf-0e35-449e-8234-6f10e0448e66","CPEE-STATE":"ready"}'
+  time:timestamp: '2025-08-11T19:42:19.157535+02:00'
+---
+event:
+  concept:instance: 63150
+  concept:name: Move down until touch
+  concept:endpoint: https://cpee.org/flow/start/url/
+  id:id: a5
+  cpee:activity: a5
+  cpee:activity_uuid: 9bb023c146f7f79fd06021fed6c68457
+  cpee:instance: 94e73f2a-8dc6-4a32-8653-f4880f257ce2
+  lifecycle:transition: unknown
+  cpee:lifecycle:transition: activity/receiving
+  data:
+  - name: instance
+    mimetype: application/json
+    data: '{"CPEE-INSTANCE":"63152","CPEE-INSTANCE-URL":"https://cpee.org/flow/engine/63152","CPEE-INSTANCE-UUID":"2656c6bf-0e35-449e-8234-6f10e0448e66","CPEE-BEHAVIOR":"wait_running"}'
+  time:timestamp: '2025-08-11T19:42:18.625340+02:00'
+---
+event:
+  concept:instance: 63150
+  concept:name: Move down until touch
+  concept:endpoint: https://cpee.org/flow/start/url/
+  id:id: a5
+  cpee:activity: a5
+  cpee:activity_uuid: 9bb023c146f7f79fd06021fed6c68457
+  cpee:instance: 94e73f2a-8dc6-4a32-8653-f4880f257ce2
+  lifecycle:transition: unknown
+  cpee:lifecycle:transition: activity/receiving
+  data:
+  - name: dataelements
+    mimetype: application/json
+    data: '{"CPEE-INSTANCE":"63152","CPEE-INSTANCE-URL":"https://cpee.org/flow/engine/63152","CPEE-INSTANCE-UUID":"2656c6bf-0e35-449e-8234-6f10e0448e66","CPEE-STATE":"running"}'
+  time:timestamp: '2025-08-11T19:42:19.684680+02:00'
+---
+event:
+  concept:instance: 63150
+  concept:name: Move down until touch
+  concept:endpoint: https://cpee.org/flow/start/url/
+  id:id: a5
+  cpee:activity: a5
+  cpee:activity_uuid: 9bb023c146f7f79fd06021fed6c68457
+  cpee:instance: 94e73f2a-8dc6-4a32-8653-f4880f257ce2
+  lifecycle:transition: unknown
+  cpee:lifecycle:transition: dataelements/change
+  data:
+  - name: sizes
+    value:
+      pos1: 8
+      pos2: 2
+  time:timestamp: '2025-08-11T19:42:28.969360+02:00'
+---
+event:
+  concept:instance: 63150
+  concept:name: Move down until touch
+  concept:endpoint: https://cpee.org/flow/start/url/
+  id:id: a5
+  cpee:activity: a5
+  cpee:activity_uuid: 9bb023c146f7f79fd06021fed6c68457
+  cpee:instance: 94e73f2a-8dc6-4a32-8653-f4880f257ce2
+  lifecycle:transition: unknown
+  cpee:lifecycle:transition: activity/receiving
+  data:
+  - name: dataelements
+    mimetype: application/json
+    data: '{"CPEE-INSTANCE":"63152","CPEE-INSTANCE-URL":"https://cpee.org/flow/engine/63152","CPEE-INSTANCE-UUID":"2656c6bf-0e35-449e-8234-6f10e0448e66","CPEE-STATE":"finished","count":2,"touch":true}'
+  time:timestamp: '2025-08-11T19:42:28.956911+02:00'
+---
+event:
+  concept:instance: 63150
+  concept:name: Move down until touch
+  concept:endpoint: https://cpee.org/flow/start/url/
+  id:id: a5
+  cpee:activity: a5
+  cpee:activity_uuid: 9bb023c146f7f79fd06021fed6c68457
+  cpee:instance: 94e73f2a-8dc6-4a32-8653-f4880f257ce2
+  lifecycle:transition: complete
+  cpee:lifecycle:transition: activity/done
+  time:timestamp: '2025-08-11T19:42:28.969506+02:00'
+---
+event:
+  concept:instance: 63150
+  concept:name: Move to Position 3
+  concept:endpoint: https://lab.bpm.in.tum.de/ur5/lawine/programs/Nicolas_Arteaga/quality/pos3.urp/wait
+  id:id: a7
+  cpee:activity: a7
+  cpee:activity_uuid: ac44dfaceffe7b90f4a7947f88ec2be6
+  cpee:instance: 94e73f2a-8dc6-4a32-8653-f4880f257ce2
+  lifecycle:transition: start
+  cpee:lifecycle:transition: activity/calling
+  data:
+  time:timestamp: '2025-08-11T19:42:29.011660+02:00'
+---
+event:
+  concept:instance: 63150
+  concept:name: Move to Position 3
+  concept:endpoint: https://lab.bpm.in.tum.de/ur5/lawine/programs/Nicolas_Arteaga/quality/pos3.urp/wait
+  id:id: a7
+  cpee:activity: a7
+  cpee:activity_uuid: ac44dfaceffe7b90f4a7947f88ec2be6
+  cpee:instance: 94e73f2a-8dc6-4a32-8653-f4880f257ce2
+  lifecycle:transition: unknown
+  cpee:lifecycle:transition: activity/receiving
+  time:timestamp: '2025-08-11T19:42:35.875405+02:00'
+---
+event:
+  concept:instance: 63150
+  concept:name: Move to Position 3
+  concept:endpoint: https://lab.bpm.in.tum.de/ur5/lawine/programs/Nicolas_Arteaga/quality/pos3.urp/wait
+  id:id: a7
+  cpee:activity: a7
+  cpee:activity_uuid: ac44dfaceffe7b90f4a7947f88ec2be6
+  cpee:instance: 94e73f2a-8dc6-4a32-8653-f4880f257ce2
+  lifecycle:transition: complete
+  cpee:lifecycle:transition: activity/done
+  time:timestamp: '2025-08-11T19:42:35.877231+02:00'
+---
+event:
+  concept:instance: 63150
+  concept:name: Move down until touch
+  concept:endpoint: https://cpee.org/flow/start/url/
+  id:id: a6
+  cpee:activity: a6
+  cpee:activity_uuid: 27980bbd428f61049248f1eb69ad902a
+  cpee:instance: 94e73f2a-8dc6-4a32-8653-f4880f257ce2
+  lifecycle:transition: start
+  cpee:lifecycle:transition: activity/calling
+  data:
+  - name: behavior
+    value: wait_running
+  - name: url
+    value: https://cpee.org/hub/server/Theses.dir/Nicolas%20Arteaga.dir/move_touch_down.xml
+  - name: init
+    value:
+  - name: endpoints
+    value:
+  - name: attributes
+    value:
+  - name: customization
+    value:
+  time:timestamp: '2025-08-11T19:42:35.912906+02:00'
+---
+event:
+  concept:instance: 63150
+  concept:name: Move down until touch
+  concept:endpoint: https://cpee.org/flow/start/url/
+  id:id: a6
+  cpee:activity: a6
+  cpee:activity_uuid: 27980bbd428f61049248f1eb69ad902a
+  cpee:instance: 94e73f2a-8dc6-4a32-8653-f4880f257ce2
+  lifecycle:transition: unknown
+  cpee:lifecycle:transition: activity/receiving
+  data:
+  - name: instance
+    mimetype: application/json
+    data: '{"CPEE-INSTANCE":"63153","CPEE-INSTANCE-URL":"https://cpee.org/flow/engine/63153","CPEE-INSTANCE-UUID":"bc2a9786-0cbe-4e41-ab2f-b997ad28b309","CPEE-BEHAVIOR":"wait_running"}'
+  time:timestamp: '2025-08-11T19:42:39.094468+02:00'
+---
+event:
+  concept:instance: 63150
+  concept:name: Move down until touch
+  concept:endpoint: https://cpee.org/flow/start/url/
+  id:id: a6
+  cpee:activity: a6
+  cpee:activity_uuid: 27980bbd428f61049248f1eb69ad902a
+  cpee:instance: 94e73f2a-8dc6-4a32-8653-f4880f257ce2
+  lifecycle:transition: unknown
+  cpee:lifecycle:transition: task/instantiation
+  data:
+    CPEE-INSTANCE: '63153'
+    CPEE-INSTANCE-URL: https://cpee.org/flow/engine/63153
+    CPEE-INSTANCE-UUID: bc2a9786-0cbe-4e41-ab2f-b997ad28b309
+    CPEE-BEHAVIOR: wait_running
+  time:timestamp: '2025-08-11T19:42:39.094919+02:00'
+---
+event:
+  concept:instance: 63150
+  concept:name: Move down until touch
+  concept:endpoint: https://cpee.org/flow/start/url/
+  id:id: a6
+  cpee:activity: a6
+  cpee:activity_uuid: 27980bbd428f61049248f1eb69ad902a
+  cpee:instance: 94e73f2a-8dc6-4a32-8653-f4880f257ce2
+  lifecycle:transition: unknown
+  cpee:lifecycle:transition: activity/receiving
+  data:
+  - name: dataelements
+    mimetype: application/json
+    data: '{"CPEE-INSTANCE":"63153","CPEE-INSTANCE-URL":"https://cpee.org/flow/engine/63153","CPEE-INSTANCE-UUID":"bc2a9786-0cbe-4e41-ab2f-b997ad28b309","CPEE-STATE":"ready"}'
+  time:timestamp: '2025-08-11T19:42:39.151983+02:00'
+---
+event:
+  concept:instance: 63150
+  concept:name: Move down until touch
+  concept:endpoint: https://cpee.org/flow/start/url/
+  id:id: a6
+  cpee:activity: a6
+  cpee:activity_uuid: 27980bbd428f61049248f1eb69ad902a
+  cpee:instance: 94e73f2a-8dc6-4a32-8653-f4880f257ce2
+  lifecycle:transition: unknown
+  cpee:lifecycle:transition: activity/receiving
+  data:
+  - name: dataelements
+    mimetype: application/json
+    data: '{"CPEE-INSTANCE":"63153","CPEE-INSTANCE-URL":"https://cpee.org/flow/engine/63153","CPEE-INSTANCE-UUID":"bc2a9786-0cbe-4e41-ab2f-b997ad28b309","CPEE-STATE":"running"}'
+  time:timestamp: '2025-08-11T19:42:39.197095+02:00'
+---
+event:
+  concept:instance: 63150
+  concept:name: Move down until touch
+  concept:endpoint: https://cpee.org/flow/start/url/
+  id:id: a6
+  cpee:activity: a6
+  cpee:activity_uuid: 27980bbd428f61049248f1eb69ad902a
+  cpee:instance: 94e73f2a-8dc6-4a32-8653-f4880f257ce2
+  lifecycle:transition: unknown
+  cpee:lifecycle:transition: activity/receiving
+  data:
+  - name: dataelements
+    mimetype: application/json
+    data: '{"CPEE-INSTANCE":"63153","CPEE-INSTANCE-URL":"https://cpee.org/flow/engine/63153","CPEE-INSTANCE-UUID":"bc2a9786-0cbe-4e41-ab2f-b997ad28b309","CPEE-STATE":"finished","count":11,"touch":true}'
+  time:timestamp: '2025-08-11T19:43:30.686950+02:00'
+---
+event:
+  concept:instance: 63150
+  concept:name: Move down until touch
+  concept:endpoint: https://cpee.org/flow/start/url/
+  id:id: a6
+  cpee:activity: a6
+  cpee:activity_uuid: 27980bbd428f61049248f1eb69ad902a
+  cpee:instance: 94e73f2a-8dc6-4a32-8653-f4880f257ce2
+  lifecycle:transition: complete
+  cpee:lifecycle:transition: activity/done
+  time:timestamp: '2025-08-11T19:43:30.696433+02:00'
+---
+event:
+  concept:instance: 63150
+  concept:name: Move down until touch
+  concept:endpoint: https://cpee.org/flow/start/url/
+  id:id: a6
+  cpee:activity: a6
+  cpee:activity_uuid: 27980bbd428f61049248f1eb69ad902a
+  cpee:instance: 94e73f2a-8dc6-4a32-8653-f4880f257ce2
+  lifecycle:transition: unknown
+  cpee:lifecycle:transition: dataelements/change
+  data:
+  - name: sizes
+    value:
+      pos1: 8
+      pos2: 2
+      pos3: 11
+  time:timestamp: '2025-08-11T19:43:30.696246+02:00'
+---
+event:
+  concept:instance: 63150
+  id:id: external
+  cpee:activity: external
+  cpee:instance: 94e73f2a-8dc6-4a32-8653-f4880f257ce2
+  lifecycle:transition: unknown
+  cpee:lifecycle:transition: state/change
+  cpee:state: finished
+  time:timestamp: '2025-08-11T19:43:30.720528+02:00'

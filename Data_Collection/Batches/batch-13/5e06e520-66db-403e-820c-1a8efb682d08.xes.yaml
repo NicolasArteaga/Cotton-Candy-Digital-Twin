@@ -1,0 +1,611 @@
+---
+log:
+  namespaces:
+    stream: https://cpee.org/datastream/
+    ssn: http://www.w3.org/ns/ssn/
+    sosa: http://www.w3.org/ns/sosa/
+  xes:
+    creator: cpee.org
+    features: nested-attributes
+  extension:
+    time: http://www.xes-standard.org/time.xesext
+    concept: http://www.xes-standard.org/concept.xesext
+    id: http://www.xes-standard.org/identity.xesext
+    lifecycle: http://www.xes-standard.org/lifecycle.xesext
+    cpee: http://cpee.org/cpee.xesext
+    stream: https://cpee.org/datastream/datastream.xesext
+  global:
+    trace:
+      concept:name: __NOTSPECIFIED__
+      cpee:name: __NOTSPECIFIED__
+    event:
+      concept:instance: -1
+      concept:name: __NOTSPECIFIED__
+      concept:endpoint: __NOTSPECIFIED__
+      id:id: __NOTSPECIFIED__
+      cpee:uuid: __NOTSPECIFIED__
+      lifecycle:transition: complete
+      cpee:lifecycle:transition: activity/calling
+      time:timestamp: ''
+  trace:
+    concept:name: 63535
+    cpee:name: move_touch_down
+    cpee:instance: 5e06e520-66db-403e-820c-1a8efb682d08
+---
+event:
+  concept:instance: 63535
+  id:id: external
+  cpee:activity: external
+  cpee:instance: 5e06e520-66db-403e-820c-1a8efb682d08
+  lifecycle:transition: unknown
+  cpee:lifecycle:transition: endpoints/change
+  data:
+  - name: timeout
+    value: https://cpee.org/services/timeout.php
+  - name: subprocess
+    value: https://cpee.org/flow/start/url/
+  - name: move_down
+    value: https://lab.bpm.in.tum.de/ur5/lawine/programs/Nicolas_Arteaga/quality/move_down.urp/wait
+  - name: weigh_touch
+    value: https://lab.bpm.in.tum.de/sugarpi/weigh_touch/
+  time:timestamp: '2025-08-14T21:47:26.157961+02:00'
+---
+event:
+  concept:instance: 63535
+  id:id: external
+  cpee:activity: external
+  cpee:instance: 5e06e520-66db-403e-820c-1a8efb682d08
+  lifecycle:transition: unknown
+  cpee:lifecycle:transition: state/change
+  cpee:state: ready
+  time:timestamp: '2025-08-14T21:47:26.151051+02:00'
+---
+event:
+  concept:instance: 63535
+  id:id: external
+  cpee:activity: external
+  cpee:instance: 5e06e520-66db-403e-820c-1a8efb682d08
+  lifecycle:transition: unknown
+  cpee:lifecycle:transition: dataelements/change
+  data:
+  - name: count
+    value: 0
+  time:timestamp: '2025-08-14T21:47:26.155737+02:00'
+---
+event:
+  concept:instance: 63535
+  id:id: external
+  cpee:activity: external
+  cpee:instance: 5e06e520-66db-403e-820c-1a8efb682d08
+  lifecycle:transition: unknown
+  cpee:lifecycle:transition: attributes/change
+  data:
+  - name: guarded
+    value: none
+  - name: modeltype
+    value: CPEE
+  - name: theme
+    value: extended
+  - name: guarded_id
+    value: ''
+  - name: info
+    value: move_touch_down
+  - name: creator
+    value: Christine Ashcreek
+  - name: author
+    value: Christine Ashcreek
+  - name: model_uuid
+    value: c1b815fc-ab2b-433f-8dd4-6ef68e4baad8
+  - name: model_version
+    value: ''
+  - name: design_dir
+    value: Theses.dir/Nicolas Arteaga.dir
+  - name: design_stage
+    value: development
+  time:timestamp: '2025-08-14T21:47:26.160987+02:00'
+---
+event:
+  concept:instance: 63535
+  id:id: external
+  cpee:activity: external
+  cpee:instance: 5e06e520-66db-403e-820c-1a8efb682d08
+  lifecycle:transition: unknown
+  cpee:lifecycle:transition: description/change
+  cpee:description: |
+    <?xml version="1.0"?>
+    <description xmlns="http://cpee.org/ns/description/1.0">
+      <manipulate id="a3" label="Initialize Count">data.count = 0</manipulate>
+      <loop mode="post_test" condition="!data.touch &amp;&amp; data.count &lt;= 10">
+        <_probability>
+          <_probability_min/>
+          <_probability_max/>
+          <_probability_avg/>
+        </_probability>
+        <call id="a1" endpoint="move_down">
+          <parameters>
+            <label>Move down</label>
+            <method>:put</method>
+            <arguments/>
+          </parameters>
+          <code>
+            <prepare/>
+            <finalize output="result">data.count += 1</finalize>
+            <update output="result"/>
+            <rescue output="result"/>
+          </code>
+          <annotations>
+            <_generic/>
+            <_timing>
+              <_timing_weight/>
+              <_timing_avg/>
+              <explanations/>
+            </_timing>
+            <_shifting>
+              <_shifting_type>Duration</_shifting_type>
+            </_shifting>
+            <_context_data_analysis>
+              <probes/>
+              <ips/>
+            </_context_data_analysis>
+            <report>
+              <url/>
+            </report>
+            <_notes>
+              <_notes_general/>
+            </_notes>
+          </annotations>
+          <documentation>
+            <input/>
+            <output/>
+            <implementation>
+              <description/>
+            </implementation>
+            <code>
+              <description/>
+            </code>
+          </documentation>
+        </call>
+        <call id="a2" endpoint="weigh_touch">
+          <parameters>
+            <label>weigh_touch</label>
+            <method>:get</method>
+            <arguments/>
+          </parameters>
+          <code>
+            <prepare/>
+            <finalize output="result">data.touch = result == 'True' ? true : false</finalize>
+            <update output="result"/>
+            <rescue output="result"/>
+          </code>
+          <annotations>
+            <_generic/>
+            <_timing>
+              <_timing_weight/>
+              <_timing_avg/>
+              <explanations/>
+            </_timing>
+            <_shifting>
+              <_shifting_type>Duration</_shifting_type>
+            </_shifting>
+            <_context_data_analysis>
+              <probes/>
+              <ips/>
+            </_context_data_analysis>
+            <report>
+              <url/>
+            </report>
+            <_notes>
+              <_notes_general/>
+            </_notes>
+          </annotations>
+          <documentation>
+            <input/>
+            <output/>
+            <implementation>
+              <description/>
+            </implementation>
+            <code>
+              <description/>
+            </code>
+          </documentation>
+        </call>
+      </loop>
+    </description>
+  cpee:change_uuid: 354ec2bc54529576f38a6387a6b3691f5c1fa0ee
+  time:timestamp: '2025-08-14T21:47:26.167136+02:00'
+---
+event:
+  concept:instance: 63535
+  concept:name: Initialize Count
+  id:id: a3
+  cpee:activity: a3
+  cpee:activity_uuid: 432f9182faf2eb5942e237c5fb3e2120
+  cpee:instance: 5e06e520-66db-403e-820c-1a8efb682d08
+  lifecycle:transition: unknown
+  cpee:lifecycle:transition: dataelements/change
+  data:
+  - name: count
+    value: 0
+  time:timestamp: '2025-08-14T21:47:27.198388+02:00'
+---
+event:
+  concept:instance: 63535
+  id:id: external
+  cpee:activity: external
+  cpee:instance: 5e06e520-66db-403e-820c-1a8efb682d08
+  lifecycle:transition: unknown
+  cpee:lifecycle:transition: state/change
+  cpee:state: running
+  time:timestamp: '2025-08-14T21:47:27.182649+02:00'
+---
+event:
+  concept:instance: 63535
+  concept:name: Move down
+  concept:endpoint: https://lab.bpm.in.tum.de/ur5/lawine/programs/Nicolas_Arteaga/quality/move_down.urp/wait
+  id:id: a1
+  cpee:activity: a1
+  cpee:activity_uuid: c382dcb8d5f1afe4723b2b27274a6a3c
+  cpee:instance: 5e06e520-66db-403e-820c-1a8efb682d08
+  lifecycle:transition: start
+  cpee:lifecycle:transition: activity/calling
+  data:
+  time:timestamp: '2025-08-14T21:47:27.251020+02:00'
+---
+event:
+  concept:instance: 63535
+  concept:name: Initialize Count
+  id:id: a3
+  cpee:activity: a3
+  cpee:activity_uuid: 432f9182faf2eb5942e237c5fb3e2120
+  cpee:instance: 5e06e520-66db-403e-820c-1a8efb682d08
+  lifecycle:transition: complete
+  cpee:lifecycle:transition: activity/done
+  time:timestamp: '2025-08-14T21:47:27.199564+02:00'
+---
+event:
+  concept:instance: 63535
+  concept:name: Move down
+  concept:endpoint: https://lab.bpm.in.tum.de/ur5/lawine/programs/Nicolas_Arteaga/quality/move_down.urp/wait
+  id:id: a1
+  cpee:activity: a1
+  cpee:activity_uuid: c382dcb8d5f1afe4723b2b27274a6a3c
+  cpee:instance: 5e06e520-66db-403e-820c-1a8efb682d08
+  lifecycle:transition: unknown
+  cpee:lifecycle:transition: activity/receiving
+  time:timestamp: '2025-08-14T21:47:29.582151+02:00'
+---
+event:
+  concept:instance: 63535
+  concept:name: Move down
+  concept:endpoint: https://lab.bpm.in.tum.de/ur5/lawine/programs/Nicolas_Arteaga/quality/move_down.urp/wait
+  id:id: a1
+  cpee:activity: a1
+  cpee:activity_uuid: c382dcb8d5f1afe4723b2b27274a6a3c
+  cpee:instance: 5e06e520-66db-403e-820c-1a8efb682d08
+  lifecycle:transition: unknown
+  cpee:lifecycle:transition: dataelements/change
+  data:
+  - name: count
+    value: 1
+  time:timestamp: '2025-08-14T21:47:29.592704+02:00'
+---
+event:
+  concept:instance: 63535
+  concept:name: Move down
+  concept:endpoint: https://lab.bpm.in.tum.de/ur5/lawine/programs/Nicolas_Arteaga/quality/move_down.urp/wait
+  id:id: a1
+  cpee:activity: a1
+  cpee:activity_uuid: c382dcb8d5f1afe4723b2b27274a6a3c
+  cpee:instance: 5e06e520-66db-403e-820c-1a8efb682d08
+  lifecycle:transition: complete
+  cpee:lifecycle:transition: activity/done
+  time:timestamp: '2025-08-14T21:47:29.592857+02:00'
+---
+event:
+  concept:instance: 63535
+  concept:name: weigh_touch
+  concept:endpoint: https://lab.bpm.in.tum.de/sugarpi/weigh_touch/
+  id:id: a2
+  cpee:activity: a2
+  cpee:activity_uuid: 9ea85ab54f1c278e62f772f7acda3fc2
+  cpee:instance: 5e06e520-66db-403e-820c-1a8efb682d08
+  lifecycle:transition: start
+  cpee:lifecycle:transition: activity/calling
+  data:
+  time:timestamp: '2025-08-14T21:47:29.624029+02:00'
+---
+event:
+  concept:instance: 63535
+  concept:name: weigh_touch
+  concept:endpoint: https://lab.bpm.in.tum.de/sugarpi/weigh_touch/
+  id:id: a2
+  cpee:activity: a2
+  cpee:activity_uuid: 9ea85ab54f1c278e62f772f7acda3fc2
+  cpee:instance: 5e06e520-66db-403e-820c-1a8efb682d08
+  lifecycle:transition: unknown
+  cpee:lifecycle:transition: activity/receiving
+  data:
+  - name: result
+    mimetype: text/html
+    data: 'False'
+  time:timestamp: '2025-08-14T21:47:31.664987+02:00'
+---
+event:
+  concept:instance: 63535
+  concept:name: weigh_touch
+  concept:endpoint: https://lab.bpm.in.tum.de/sugarpi/weigh_touch/
+  id:id: a2
+  cpee:activity: a2
+  cpee:activity_uuid: 9ea85ab54f1c278e62f772f7acda3fc2
+  cpee:instance: 5e06e520-66db-403e-820c-1a8efb682d08
+  lifecycle:transition: unknown
+  cpee:lifecycle:transition: dataelements/change
+  data:
+  - name: touch
+    value: false
+  time:timestamp: '2025-08-14T21:47:31.697540+02:00'
+---
+event:
+  concept:instance: 63535
+  concept:name: weigh_touch
+  concept:endpoint: https://lab.bpm.in.tum.de/sugarpi/weigh_touch/
+  id:id: a2
+  cpee:activity: a2
+  cpee:activity_uuid: 9ea85ab54f1c278e62f772f7acda3fc2
+  cpee:instance: 5e06e520-66db-403e-820c-1a8efb682d08
+  lifecycle:transition: complete
+  cpee:lifecycle:transition: activity/done
+  time:timestamp: '2025-08-14T21:47:31.697702+02:00'
+---
+event:
+  concept:instance: 63535
+  id:id: external
+  cpee:activity: external
+  cpee:instance: 5e06e520-66db-403e-820c-1a8efb682d08
+  lifecycle:transition: unknown
+  cpee:lifecycle:transition: gateway/decide
+  time:timestamp: '2025-08-14T21:47:31.725903+02:00'
+---
+event:
+  concept:instance: 63535
+  concept:name: Move down
+  concept:endpoint: https://lab.bpm.in.tum.de/ur5/lawine/programs/Nicolas_Arteaga/quality/move_down.urp/wait
+  id:id: a1
+  cpee:activity: a1
+  cpee:activity_uuid: 3c5eb95e08cefcf555e3d863f1fdeae0
+  cpee:instance: 5e06e520-66db-403e-820c-1a8efb682d08
+  lifecycle:transition: start
+  cpee:lifecycle:transition: activity/calling
+  data:
+  time:timestamp: '2025-08-14T21:47:31.747060+02:00'
+---
+event:
+  concept:instance: 63535
+  concept:name: Move down
+  concept:endpoint: https://lab.bpm.in.tum.de/ur5/lawine/programs/Nicolas_Arteaga/quality/move_down.urp/wait
+  id:id: a1
+  cpee:activity: a1
+  cpee:activity_uuid: 3c5eb95e08cefcf555e3d863f1fdeae0
+  cpee:instance: 5e06e520-66db-403e-820c-1a8efb682d08
+  lifecycle:transition: unknown
+  cpee:lifecycle:transition: activity/receiving
+  time:timestamp: '2025-08-14T21:47:34.023753+02:00'
+---
+event:
+  concept:instance: 63535
+  concept:name: Move down
+  concept:endpoint: https://lab.bpm.in.tum.de/ur5/lawine/programs/Nicolas_Arteaga/quality/move_down.urp/wait
+  id:id: a1
+  cpee:activity: a1
+  cpee:activity_uuid: 3c5eb95e08cefcf555e3d863f1fdeae0
+  cpee:instance: 5e06e520-66db-403e-820c-1a8efb682d08
+  lifecycle:transition: complete
+  cpee:lifecycle:transition: activity/done
+  time:timestamp: '2025-08-14T21:47:34.033098+02:00'
+---
+event:
+  concept:instance: 63535
+  concept:name: Move down
+  concept:endpoint: https://lab.bpm.in.tum.de/ur5/lawine/programs/Nicolas_Arteaga/quality/move_down.urp/wait
+  id:id: a1
+  cpee:activity: a1
+  cpee:activity_uuid: 3c5eb95e08cefcf555e3d863f1fdeae0
+  cpee:instance: 5e06e520-66db-403e-820c-1a8efb682d08
+  lifecycle:transition: unknown
+  cpee:lifecycle:transition: dataelements/change
+  data:
+  - name: count
+    value: 2
+  time:timestamp: '2025-08-14T21:47:34.032898+02:00'
+---
+event:
+  concept:instance: 63535
+  concept:name: weigh_touch
+  concept:endpoint: https://lab.bpm.in.tum.de/sugarpi/weigh_touch/
+  id:id: a2
+  cpee:activity: a2
+  cpee:activity_uuid: 85c4be695838223c80172bfdc3ba9365
+  cpee:instance: 5e06e520-66db-403e-820c-1a8efb682d08
+  lifecycle:transition: start
+  cpee:lifecycle:transition: activity/calling
+  data:
+  time:timestamp: '2025-08-14T21:47:34.064329+02:00'
+---
+event:
+  concept:instance: 63535
+  concept:name: weigh_touch
+  concept:endpoint: https://lab.bpm.in.tum.de/sugarpi/weigh_touch/
+  id:id: a2
+  cpee:activity: a2
+  cpee:activity_uuid: 85c4be695838223c80172bfdc3ba9365
+  cpee:instance: 5e06e520-66db-403e-820c-1a8efb682d08
+  lifecycle:transition: unknown
+  cpee:lifecycle:transition: activity/receiving
+  data:
+  - name: result
+    mimetype: text/html
+    data: 'False'
+  time:timestamp: '2025-08-14T21:47:36.254562+02:00'
+---
+event:
+  concept:instance: 63535
+  concept:name: weigh_touch
+  concept:endpoint: https://lab.bpm.in.tum.de/sugarpi/weigh_touch/
+  id:id: a2
+  cpee:activity: a2
+  cpee:activity_uuid: 85c4be695838223c80172bfdc3ba9365
+  cpee:instance: 5e06e520-66db-403e-820c-1a8efb682d08
+  lifecycle:transition: unknown
+  cpee:lifecycle:transition: dataelements/change
+  data:
+  - name: touch
+    value: false
+  time:timestamp: '2025-08-14T21:47:36.290950+02:00'
+---
+event:
+  concept:instance: 63535
+  concept:name: weigh_touch
+  concept:endpoint: https://lab.bpm.in.tum.de/sugarpi/weigh_touch/
+  id:id: a2
+  cpee:activity: a2
+  cpee:activity_uuid: 85c4be695838223c80172bfdc3ba9365
+  cpee:instance: 5e06e520-66db-403e-820c-1a8efb682d08
+  lifecycle:transition: complete
+  cpee:lifecycle:transition: activity/done
+  time:timestamp: '2025-08-14T21:47:36.291109+02:00'
+---
+event:
+  concept:instance: 63535
+  id:id: external
+  cpee:activity: external
+  cpee:instance: 5e06e520-66db-403e-820c-1a8efb682d08
+  lifecycle:transition: unknown
+  cpee:lifecycle:transition: gateway/decide
+  time:timestamp: '2025-08-14T21:47:36.326979+02:00'
+---
+event:
+  concept:instance: 63535
+  concept:name: Move down
+  concept:endpoint: https://lab.bpm.in.tum.de/ur5/lawine/programs/Nicolas_Arteaga/quality/move_down.urp/wait
+  id:id: a1
+  cpee:activity: a1
+  cpee:activity_uuid: 329423e7f006607aa945841b3754f73b
+  cpee:instance: 5e06e520-66db-403e-820c-1a8efb682d08
+  lifecycle:transition: start
+  cpee:lifecycle:transition: activity/calling
+  data:
+  time:timestamp: '2025-08-14T21:47:36.343815+02:00'
+---
+event:
+  concept:instance: 63535
+  concept:name: Move down
+  concept:endpoint: https://lab.bpm.in.tum.de/ur5/lawine/programs/Nicolas_Arteaga/quality/move_down.urp/wait
+  id:id: a1
+  cpee:activity: a1
+  cpee:activity_uuid: 329423e7f006607aa945841b3754f73b
+  cpee:instance: 5e06e520-66db-403e-820c-1a8efb682d08
+  lifecycle:transition: unknown
+  cpee:lifecycle:transition: activity/receiving
+  time:timestamp: '2025-08-14T21:47:38.636053+02:00'
+---
+event:
+  concept:instance: 63535
+  concept:name: Move down
+  concept:endpoint: https://lab.bpm.in.tum.de/ur5/lawine/programs/Nicolas_Arteaga/quality/move_down.urp/wait
+  id:id: a1
+  cpee:activity: a1
+  cpee:activity_uuid: 329423e7f006607aa945841b3754f73b
+  cpee:instance: 5e06e520-66db-403e-820c-1a8efb682d08
+  lifecycle:transition: complete
+  cpee:lifecycle:transition: activity/done
+  time:timestamp: '2025-08-14T21:47:38.644392+02:00'
+---
+event:
+  concept:instance: 63535
+  concept:name: Move down
+  concept:endpoint: https://lab.bpm.in.tum.de/ur5/lawine/programs/Nicolas_Arteaga/quality/move_down.urp/wait
+  id:id: a1
+  cpee:activity: a1
+  cpee:activity_uuid: 329423e7f006607aa945841b3754f73b
+  cpee:instance: 5e06e520-66db-403e-820c-1a8efb682d08
+  lifecycle:transition: unknown
+  cpee:lifecycle:transition: dataelements/change
+  data:
+  - name: count
+    value: 3
+  time:timestamp: '2025-08-14T21:47:38.644252+02:00'
+---
+event:
+  concept:instance: 63535
+  concept:name: weigh_touch
+  concept:endpoint: https://lab.bpm.in.tum.de/sugarpi/weigh_touch/
+  id:id: a2
+  cpee:activity: a2
+  cpee:activity_uuid: e571a04d15cc0e689bb0b09635c786e6
+  cpee:instance: 5e06e520-66db-403e-820c-1a8efb682d08
+  lifecycle:transition: start
+  cpee:lifecycle:transition: activity/calling
+  data:
+  time:timestamp: '2025-08-14T21:47:38.675337+02:00'
+---
+event:
+  concept:instance: 63535
+  concept:name: weigh_touch
+  concept:endpoint: https://lab.bpm.in.tum.de/sugarpi/weigh_touch/
+  id:id: a2
+  cpee:activity: a2
+  cpee:activity_uuid: e571a04d15cc0e689bb0b09635c786e6
+  cpee:instance: 5e06e520-66db-403e-820c-1a8efb682d08
+  lifecycle:transition: unknown
+  cpee:lifecycle:transition: activity/receiving
+  data:
+  - name: result
+    mimetype: text/html
+    data: 'True'
+  time:timestamp: '2025-08-14T21:47:40.883742+02:00'
+---
+event:
+  concept:instance: 63535
+  concept:name: weigh_touch
+  concept:endpoint: https://lab.bpm.in.tum.de/sugarpi/weigh_touch/
+  id:id: a2
+  cpee:activity: a2
+  cpee:activity_uuid: e571a04d15cc0e689bb0b09635c786e6
+  cpee:instance: 5e06e520-66db-403e-820c-1a8efb682d08
+  lifecycle:transition: unknown
+  cpee:lifecycle:transition: dataelements/change
+  data:
+  - name: touch
+    value: true
+  time:timestamp: '2025-08-14T21:47:40.910413+02:00'
+---
+event:
+  concept:instance: 63535
+  concept:name: weigh_touch
+  concept:endpoint: https://lab.bpm.in.tum.de/sugarpi/weigh_touch/
+  id:id: a2
+  cpee:activity: a2
+  cpee:activity_uuid: e571a04d15cc0e689bb0b09635c786e6
+  cpee:instance: 5e06e520-66db-403e-820c-1a8efb682d08
+  lifecycle:transition: complete
+  cpee:lifecycle:transition: activity/done
+  time:timestamp: '2025-08-14T21:47:40.910896+02:00'
+---
+event:
+  concept:instance: 63535
+  id:id: external
+  cpee:activity: external
+  cpee:instance: 5e06e520-66db-403e-820c-1a8efb682d08
+  lifecycle:transition: unknown
+  cpee:lifecycle:transition: gateway/decide
+  time:timestamp: '2025-08-14T21:47:40.930899+02:00'
+---
+event:
+  concept:instance: 63535
+  id:id: external
+  cpee:activity: external
+  cpee:instance: 5e06e520-66db-403e-820c-1a8efb682d08
+  lifecycle:transition: unknown
+  cpee:lifecycle:transition: state/change
+  cpee:state: finished
+  time:timestamp: '2025-08-14T21:47:40.931395+02:00'

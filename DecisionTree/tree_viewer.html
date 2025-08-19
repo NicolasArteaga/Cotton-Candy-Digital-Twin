@@ -1,0 +1,214 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Cotton Candy Quality Score Decision Tree</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            margin: 0;
+            padding: 20px;
+            background-color: #f5f5f5;
+        }
+        .container {
+            max-width: 1400px;
+            margin: 0 auto;
+            background: white;
+            border-radius: 10px;
+            padding: 20px;
+            box-shadow: 0 2px 10px rgba(0,0,0,0.1);
+        }
+        h1 {
+            text-align: center;
+            color: #333;
+            margin-bottom: 30px;
+        }
+        .tree-section {
+            margin-bottom: 40px;
+        }
+        .tree-section h2 {
+            color: #2c3e50;
+            border-bottom: 2px solid #3498db;
+            padding-bottom: 10px;
+        }
+        .tree-image {
+            width: 100%;
+            max-width: 100%;
+            height: auto;
+            border: 1px solid #ddd;
+            border-radius: 5px;
+            box-shadow: 0 2px 5px rgba(0,0,0,0.1);
+            margin-bottom: 20px;
+        }
+        .description {
+            background: #ecf0f1;
+            padding: 15px;
+            border-radius: 5px;
+            margin-bottom: 20px;
+        }
+        .stats {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+            gap: 15px;
+            margin: 20px 0;
+        }
+        .stat-card {
+            background: #3498db;
+            color: white;
+            padding: 15px;
+            border-radius: 5px;
+            text-align: center;
+        }
+        .stat-card h3 {
+            margin: 0 0 5px 0;
+            font-size: 1.5em;
+        }
+        .stat-card p {
+            margin: 0;
+            opacity: 0.9;
+        }
+        .nav-buttons {
+            text-align: center;
+            margin: 30px 0;
+        }
+        .nav-button {
+            background: #27ae60;
+            color: white;
+            padding: 10px 20px;
+            margin: 0 10px;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+            font-size: 16px;
+        }
+        .nav-button:hover {
+            background: #229954;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1>🍭 Cotton Candy Quality Score Decision Tree - Complete Visualization</h1>
+        
+        <div class="description">
+            <h3>About This Decision Tree</h3>
+            <p>This decision tree predicts cotton candy <strong>quality score (0-100 scale)</strong> based on manufacturing process parameters extracted from CPEE logs. The model achieved <strong>80.5% R² accuracy</strong> on 48 samples, revealing that <strong>infrared sensors</strong> are critical for quality assessment - completely different from weight prediction sensors.</p>
+        </div>
+
+        <div class="stats">
+            <div class="stat-card">
+                <h3>80.5%</h3>
+                <p>R² Accuracy</p>
+            </div>
+            <div class="stat-card">
+                <h3>48</h3>
+                <p>Quality Samples</p>
+            </div>
+            <div class="stat-card">
+                <h3>0-75</h3>
+                <p>Quality Score Range</p>
+            </div>
+            <div class="stat-card">
+                <h3>71.4%</h3>
+                <p>Infrared Importance</p>
+            </div>
+        </div>
+
+        <div class="nav-buttons">
+            <button class="nav-button" onclick="scrollToSection('complete')">Complete Tree</button>
+            <button class="nav-button" onclick="scrollToSection('horizontal')">Horizontal View</button>
+            <button class="nav-button" onclick="scrollToSection('features')">Feature Usage</button>
+            <button class="nav-button" onclick="scrollToSection('depth')">Depth Analysis</button>
+        </div>
+
+        <div class="tree-section" id="complete">
+            <h2>🌳 Complete Decision Tree</h2>
+            <div class="description">
+                <p>This is the full quality score decision tree showing all nodes, splits, and predictions. Each node shows:</p>
+                <ul>
+                    <li><strong>Feature & Threshold:</strong> The condition used to split the data (e.g., "after_flow_start_env_IrO ≤ 60.23")</li>
+                    <li><strong>Samples:</strong> Number of training samples reaching this node</li>
+                    <li><strong>Value:</strong> Predicted cotton candy quality score (0-100 scale)</li>
+                    <li><strong>MSE (Mean Squared Error):</strong> How "pure" this node is - lower values mean more consistent quality scores</li>
+                </ul>
+                <p><strong>📊 Understanding MSE:</strong> MSE measures prediction quality at each node:</p>
+                <ul>
+                    <li><strong>Low MSE (0-50):</strong> Excellent - samples have very similar quality scores</li>
+                    <li><strong>Medium MSE (50-150):</strong> Good - reasonable quality consistency</li>
+                    <li><strong>High MSE (150+):</strong> Poor - high quality variation, needs more splitting</li>
+                </ul>
+            </div>
+            <img src="complete_decision_tree.png" alt="Complete Decision Tree" class="tree-image">
+        </div>
+
+        <div class="tree-section" id="horizontal">
+            <h2>🌲 Horizontal Tree Layout</h2>
+            <div class="description">
+                <p>The same decision tree displayed in a horizontal layout for better readability. This view makes it easier to follow the decision paths from left to right.</p>
+            </div>
+            <img src="horizontal_decision_tree.png" alt="Horizontal Decision Tree" class="tree-image">
+        </div>
+
+        <div class="tree-section" id="features">
+            <h2>📊 Feature Usage Analysis</h2>
+            <div class="description">
+                <p>This chart shows how many times each manufacturing parameter is used for splitting in the decision tree. The most important features for <strong>quality prediction</strong> are infrared sensors - completely different from weight prediction.</p>
+            </div>
+            <img src="feature_usage_in_tree.png" alt="Feature Usage Analysis" class="tree-image">
+        </div>
+
+        <div class="tree-section" id="depth">
+            <h2>📈 Node Depth Analysis</h2>
+            <div class="description">
+                <p>Analysis of how nodes are distributed across different depths in the tree. This helps understand the tree's complexity and decision-making structure.</p>
+            </div>
+            <img src="node_depth_analysis.png" alt="Node Depth Analysis" class="tree-image">
+        </div>
+
+        <div class="description" style="margin-top: 40px;">
+            <h3>🔍 Quality Score Sensor Analysis - KEY DISCOVERY</h3>
+            <p>The quality score decision tree revealed that <strong>infrared radiation sensors</strong> dominate quality prediction with <strong>71.4% combined importance</strong> - completely different from weight prediction which used humidity/temperature!</p>
+            
+            <h4>🌡️ Infrared Radiation (IrO) - After Flow Start - 26.8% Importance</h4>
+            <ul>
+                <li><strong>Primary Quality Indicator</strong> - Heat signature during cotton candy formation</li>
+                <li>Critical thermal patterns that correlate with final quality</li>
+            </ul>
+            
+            <h4>� Infrared Radiation (IrA) - Before Turn-On - 21.4% Importance</h4>
+            <ul>
+                <li><strong>Initial Heat State</strong> - Pre-process thermal conditions</li>
+                <li>Baseline infrared readings affecting quality outcomes</li>
+            </ul>
+            
+            <h4>� Infrared Radiation (IrA) - After Cooldown - 12.1% Importance</h4>
+            <ul>
+                <li><strong>Final Heat Signature</strong> - Post-process thermal analysis</li>
+                <li>Quality assessment from cooling patterns</li>
+            </ul>
+            
+            <h4>🌡️ Internal Temperature (InT) - Before Turn-On - 11.1% Importance</h4>
+            <ul>
+                <li><strong>Process Temperature</strong> - Initial chamber temperature</li>
+            </ul>
+            
+            <h4>💨 Other Sensors - 28.6% Combined</h4>
+            <ul>
+                <li>Environmental humidity, flow duration, and other process parameters</li>
+            </ul>
+            
+            <p><em><strong>Revolutionary Insight:</strong> Quality assessment requires infrared sensors (71.4% importance) while weight prediction needed humidity/temperature sensors. This proves quality and weight are fundamentally different cotton candy characteristics requiring different measurement approaches!</em></p>
+        </div>
+    </div>
+
+    <script>
+        function scrollToSection(sectionId) {
+            document.getElementById(sectionId).scrollIntoView({
+                behavior: 'smooth',
+                block: 'start'
+            });
+        }
+    </script>
+</body>
+</html>
