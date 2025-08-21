@@ -96,17 +96,7 @@ This methodology captures energy consumption across all production phases (start
 % 
 % The trapezoidal integration method assumes linear interpolation between discrete measurement points. While this introduces some approximation error, the 2-second sampling interval is sufficiently fine-grained relative to the thermal and mechanical time constants of the cotton candy machine to provide accurate energy estimates. Additionally, the method handles variable time intervals between measurements, accommodating any minor variations in data logging frequency.
 
-
-\section{Product Quality Measurement}
-% Stichpunkte:
-% - During each run, collect product-related measurements
-% - Store data in structured dataset
-% - Used to evaluate output quality
-% - Includes input sugar, output weight, volume, etc.
-
-During the data collection phase, a structured dataset was compiled by recording relevant product-related parameters during each cotton candy production run. These measurements include the input sugar weight, the final cotton candy weight, estimated volume based on geometry, and the derived Fluffiness Index. This enabled consistent tracking across experiments and formed the basis for downstream quality evaluation and performance comparisons for the Model.
-
-\subsection{Weight Measurement}
+\subsection{Weight Measurement} 
 
 % Stichpunkte:
 % - Manually weigh sugar before each run (input)
@@ -185,6 +175,71 @@ This index serves as a proxy for the density of the cotton candy, with higher va
 \subsection{Limitations in Volume Measurement}
 
 The estimation of cotton candy volume relied on manual measurements of width and height, followed by geometric approximation. While this method provides a reasonable basis for comparative analysis, it is subject to several limitations: (a) the inherently irregular and fragile structure of cotton candy, (b) potential observer bias during manual measurement, and (c) the assumption of a regular geometric shape. As such, the absolute values of estimated volume should be interpreted with caution. However, because the same procedure was applied uniformly across all experimental runs, the relative differences and trends derived from this method remain valid for assessing the effects of the digital twin optimization.
+
+\section{Pressure Functions}
+Here I want to briefly show the pressure funcs we get from the scale and our implemented function, and why we decided not to use them (spoiler: To little time)
+
+
+\section{Product Quality Measurement}
+The development of an automated quality assessment system for cotton candy production presented significant challenges due to the inherently complex and variable nature of the product. Initial attempts to quantify cotton candy quality through traditional volumetric measurements proved unfeasible, as the product's form changes dramatically during the spinning process, making consistent volume measurements impractical within our laboratory constraints.
+
+\subsection{Quality Assessment Approach}
+
+Given the limitations of direct physical measurements, we established a ground-truth quality scoring system based on manual evaluation of the first 100 cotton candy samples. Each sample was assessed across three primary dimensions:
+
+\begin{itemize}
+    \item \textbf{Weight consistency}: Deviation from target weight parameters
+    \item \textbf{Structural integrity}: Evaluation of cotton candy fluffiness and density
+    \item \textbf{Overall form quality}: Categorical assessment (1-3 scale: poor, acceptable, good)
+\end{itemize}
+
+The manual scoring process was conducted systematically to minimize evaluator bias, with scores ranging from 0 to 75 points. This approach provided a consistent baseline for developing an automated quality prediction system.
+
+\subsection{Algorithmic Quality Prediction}
+
+To automate quality assessment, we used machine learning to predict quality scores from sensor measurements. The system uses three types of input data:
+
+\begin{itemize}
+    \item \texttt{touch\_pos1-3}: Contact positions when the robotic arm touches the cotton candy to measure its size at different heights
+    \item \texttt{max\_pos1-3}: Pressure readings when moving the cotton candy down 5cm and back up, indicating structural strength
+    \item \texttt{cc\_weight}: Final weight of cotton candy (without stick) from 12.65g sugar input
+\end{itemize}
+
+We developed a linear regression model with custom features based on our understanding of cotton candy quality. This process involved several key steps and discoveries:
+
+\textbf{Understanding the Data:} Each cotton candy sample gives us seven measurements - three touch positions, three pressure readings, and one weight. The touch positions tell us how big the cotton candy is at different heights. When the robotic arm can touch the cotton candy close to the stick, it means the cotton candy is fluffy and well-formed. When it has to reach far out, the cotton candy is either too dense or poorly shaped.
+
+\textbf{Smart Features:} We created mathematical formulas that capture what makes good cotton candy. Instead of just using raw measurements, we built features that understand cotton candy physics:
+\begin{itemize}
+    \item \textbf{Weight optimality:} We learned that 9--12 grams is the sweet spot for high-quality cotton candy. Too light means not enough sugar stuck to form proper structure, while too heavy indicates the presence of lumps from previous production runs, which creates an undesirable texture. Weights of 7--9 grams produce normal quality but receive lower scores, while anything below 7 grams indicates poor cotton candy formation.
+    \item \textbf{Touch quality:} The touch position measurements work inversely---smaller distances (closer to the stick) indicate better structure and fluffiness. When the sensor reads 11, it means the robotic arm didn't make contact at all, representing the worst possible structure. The optimal range appears to be between 3--6, though the exact sweet spot within this range required empirical determination through our dataset. For the height (\texttt{touch\_pos2}), 6 means no contact at all.
+    \item \textbf{Pressure patterns:} The way cotton candy resists being pushed down reveals its internal structure. Too little pressure (below 20 grams) indicates the cotton candy is overly fluffy with poor cohesion, while too much pressure (above 30 grams) suggests crystallization and density issues that reduce quality. The optimal pressure range of 20--30 grams indicates proper sugar fiber formation and structural integrity.
+    \todo{cite the research that we did up that proves this}
+\end{itemize}
+
+\textbf{The First Problem - Training Bias:} Our initial approach had a major flaw. We only used data from successful production runs (iterations 56 and above) because we thought this would give us a "clean" dataset. This was a mistake. The algorithm learned to recognize good cotton candy but had never seen truly bad cotton candy during training. When we tested it on early production attempts, it consistently gave scores that were 30 points too high - it simply didn't know what failure looked like.
+
+\textbf{The Solution - Complete Dataset Training:} We retrained the model using all 72 samples, including the early failed attempts where we were still learning how to operate the machine. This gave the algorithm experience with the full quality spectrum, from complete failures to perfect cotton candy. The improvement was dramatic - the bias problem disappeared.
+
+\textbf{Why We Used All Data:} Unlike typical machine learning projects where you split data into training and testing sets, we used our complete dataset for training. This decision follows best practices for small dataset scenarios \cite{Zaki2020}. Since our goal was to build a production tool rather than prove the algorithm works on unseen machines, using all available data gave us the best possible model for our specific setup.
+
+\textbf{Feature Selection Process:} We systematically tested which measurements actually helped predict quality. Some obvious candidates failed completely - for example, height measurements were inconsistent because cotton candy changes shape so easily. We kept only the features that showed reliable correlation with human quality judgments across all our samples.
+
+\subsection{Validation Results}
+
+The final algorithm achieved strong correlation with manual assessments (r = 0.853, MAE = 7.83 points). The correlation coefficient shows the algorithm captures about 73% of quality variation, while the mean absolute error represents roughly 10% deviation on our 0-75 point scale \cite{Zaki2020}.
+
+Figure~\ref{fig:quality_comparison} shows the close match between predicted and actual quality scores across all production runs, validating our approach for automated quality control.
+
+\begin{figure}[htbp]
+    \centering
+    \includegraphics[width=1\textwidth]{figures/ground_truth_vs_score3_iterations.png}
+    \caption{Comparison of manual quality scores (ground truth) and algorithmic predictions across production iterations. The strong correlation (r = 0.853) validates the automated quality assessment approach.}
+    \label{fig:quality_comparison}
+\end{figure}
+
+The algorithm successfully captures both the learning progression evident in early iterations and the quality consistency achieved in later production runs, providing a reliable foundation for automated quality control in the digital twin system. This automated quality assessment eliminates the need for manual evaluation while maintaining assessment accuracy, enabling real-time quality monitoring and process optimization.
+
 
 \section{Feature Engineering for Decision Tree Optimization}
 \label{sec:feature-engineering}

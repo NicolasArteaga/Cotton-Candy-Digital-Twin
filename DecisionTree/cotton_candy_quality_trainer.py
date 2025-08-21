@@ -19,8 +19,8 @@ import warnings
 warnings.filterwarnings('ignore')
 
 class CottonCandyDigitalTwin:
-    def __init__(self, features_path="/Users/nicolas/Desktop/Cotton-Candy-Digital-Twin/Data_Collection/features_X.csv", 
-                 targets_path="/Users/nicolas/Desktop/Cotton-Candy-Digital-Twin/Data_Collection/target_y.csv",
+    def __init__(self, features_path="/Users/nicolas/Desktop/Cotton-Candy-Digital-Twin/Data_Collection/xy/features_X.csv", 
+                 targets_path="/Users/nicolas/Desktop/Cotton-Candy-Digital-Twin/Data_Collection/xy/target_y.csv",
                  preferred_target=None):
         """Initialize the Cotton Candy Digital Twin.
         

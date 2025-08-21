@@ -16,7 +16,7 @@ import numpy as np
 
 class CottonCandyTreeVisualizer:
     def __init__(self, model_path="cotton_candy_digital_twin.joblib", 
-                 features_path="/Users/nicolas/Desktop/Cotton-Candy-Digital-Twin/Data_Collection/features_X.csv"):
+                 features_path="/Users/nicolas/Desktop/Cotton-Candy-Digital-Twin/Data_Collection/xy/features_X.csv"):
         """Initialize the tree visualizer."""
         self.model_path = Path(model_path)
         self.features_path = Path(features_path)

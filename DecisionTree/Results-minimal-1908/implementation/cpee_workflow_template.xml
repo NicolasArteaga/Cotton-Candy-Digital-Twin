@@ -1,0 +1,412 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!--
+CPEE Workflow Template for Cotton Candy Digital Twin
+===================================================
+
+This CPEE workflow template integrates the minimal decision tree model
+for real-time quality prediction and process optimization.
+
+Features:
+- Real-time quality prediction before production
+- Parameter optimization based on current conditions
+- Maintenance scheduling recommendations
+- Quality monitoring and alerts
+
+Usage:
+1. Import this template into your CPEE instance
+2. Configure the decision engine endpoint
+3. Map your sensor data to the required parameters
+4. Run the workflow for automated decision making
+-->
+
+<testset xmlns="http://cpee.org/ns/properties/2.0">
+  <properties>
+    <property name="description">Cotton Candy Digital Twin - Minimal Decision Tree</property>
+    <property name="theme">DigitalTwin</property>
+    <property name="version">1.0</property>
+    <property name="author">Cotton Candy Manufacturing</property>
+    
+    <!-- Decision Engine Configuration -->
+    <property name="decision_engine_url">http://localhost:5000</property>
+    <property name="quality_threshold">25.0</property>
+    <property name="maintenance_threshold">21</property>
+  </properties>
+  
+  <events>
+    <!-- Process Start Event -->
+    <event>
+      <name>process_start</name>
+      <description>Manufacturing process initiated</description>
+    </event>
+    
+    <!-- Quality Prediction Event -->
+    <event>
+      <name>quality_predicted</name>
+      <description>Quality score predicted by decision tree</description>
+    </event>
+    
+    <!-- Parameter Optimization Event -->
+    <event>
+      <name>parameters_optimized</name>
+      <description>Process parameters optimized</description>
+    </event>
+    
+    <!-- Process Completion Event -->
+    <event>
+      <name>process_complete</name>
+      <description>Manufacturing process completed</description>
+    </event>
+  </events>
+
+  <dataelements>
+    <!-- Input Parameters (from sensors/configuration) -->
+    <data>
+      <name>iteration_since_maintenance</name>
+      <type>number</type>
+      <description>Number of iterations since last maintenance</description>
+    </data>
+    
+    <data>
+      <name>wait_time</name>
+      <type>number</type>
+      <description>Wait time before starting process (seconds)</description>
+    </data>
+    
+    <data>
+      <name>cook_time</name>
+      <type>number</type>
+      <description>Cooking duration (seconds)</description>
+    </data>
+    
+    <data>
+      <name>cooldown_time</name>
+      <type>number</type>
+      <description>Cooldown duration (seconds)</description>
+    </data>
+    
+    <data>
+      <name>duration_cc_flow</name>
+      <type>number</type>
+      <description>Cotton candy flow duration (seconds)</description>
+    </data>
+    
+    <data>
+      <name>baseline_env_EnvH</name>
+      <type>number</type>
+      <description>Baseline environment humidity (%)</description>
+    </data>
+    
+    <data>
+      <name>baseline_env_EnvT</name>
+      <type>number</type>
+      <description>Baseline environment temperature (°C)</description>
+    </data>
+    
+    <data>
+      <name>before_turn_on_env_InH</name>
+      <type>number</type>
+      <description>Internal humidity before turn on (%)</description>
+    </data>
+    
+    <data>
+      <name>before_turn_on_env_InT</name>
+      <type>number</type>
+      <description>Internal temperature before turn on (°C)</description>
+    </data>
+    
+    <data>
+      <name>before_turn_on_env_IrO</name>
+      <type>number</type>
+      <description>Infrared oxygen sensor before turn on</description>
+    </data>
+    
+    <data>
+      <name>before_turn_on_env_IrA</name>
+      <type>number</type>
+      <description>Infrared ambient sensor before turn on</description>
+    </data>
+    
+    <!-- Output Results -->
+    <data>
+      <name>predicted_quality</name>
+      <type>number</type>
+      <description>Predicted quality score (0-100)</description>
+    </data>
+    
+    <data>
+      <name>quality_category</name>
+      <type>string</type>
+      <description>Quality category (EXCELLENT/GOOD/ACCEPTABLE/POOR)</description>
+    </data>
+    
+    <data>
+      <name>optimization_suggestions</name>
+      <type>object</type>
+      <description>Parameter optimization suggestions</description>
+    </data>
+    
+    <data>
+      <name>proceed_production</name>
+      <type>boolean</type>
+      <description>Decision to proceed with production</description>
+    </data>
+  </dataelements>
+
+  <activities>
+    <!-- Activity 1: Collect Sensor Data -->
+    <activity id="collect_sensor_data">
+      <name>Collect Sensor Data</name>
+      <description>Gather all required sensor readings and process parameters</description>
+      <type>service</type>
+      <implementation>
+        <service>sensor_data_collector</service>
+        <parameters>
+          <parameter name="sensors">
+            ["env_InH", "env_InT", "env_IrO", "env_IrA", "env_EnvH", "env_EnvT"]
+          </parameter>
+        </parameters>
+      </implementation>
+      <outputs>
+        <output name="sensor_data" type="object"/>
+      </outputs>
+    </activity>
+
+    <!-- Activity 2: Predict Quality -->
+    <activity id="predict_quality">
+      <name>Predict Quality Score</name>
+      <description>Use minimal decision tree to predict cotton candy quality</description>
+      <type>service</type>
+      <implementation>
+        <service>http_post</service>
+        <parameters>
+          <parameter name="url">#{decision_engine_url}/predict_quality</parameter>
+          <parameter name="headers">{"Content-Type": "application/json"}</parameter>
+          <parameter name="body">{
+            "iteration_since_maintenance": #{iteration_since_maintenance},
+            "wait_time": #{wait_time},
+            "cook_time": #{cook_time},
+            "cooldown_time": #{cooldown_time},
+            "duration_cc_flow": #{duration_cc_flow},
+            "baseline_env_EnvH": #{baseline_env_EnvH},
+            "baseline_env_EnvT": #{baseline_env_EnvT},
+            "before_turn_on_env_InH": #{before_turn_on_env_InH},
+            "before_turn_on_env_InT": #{before_turn_on_env_InT},
+            "before_turn_on_env_IrO": #{before_turn_on_env_IrO},
+            "before_turn_on_env_IrA": #{before_turn_on_env_IrA}
+          }</parameter>
+        </parameters>
+      </implementation>
+      <outputs>
+        <output name="prediction_result" type="object"/>
+      </outputs>
+    </activity>
+
+    <!-- Activity 3: Decision Gate -->
+    <activity id="quality_decision_gate">
+      <name>Quality Decision Gate</name>
+      <description>Decide whether to proceed based on predicted quality</description>
+      <type>script</type>
+      <implementation>
+        <script language="ruby">
+          predicted_score = data.get('prediction_result')['predicted_score']
+          quality_category = data.get('prediction_result')['quality_category']
+          
+          # Decision logic based on quality threshold
+          if predicted_score >= data.get('quality_threshold')
+            data.set('proceed_production', true)
+            data.set('decision_reason', 'Quality score meets threshold')
+          else
+            data.set('proceed_production', false)
+            data.set('decision_reason', 'Quality score below threshold, optimization needed')
+          end
+          
+          # Set additional data for logging
+          data.set('predicted_quality', predicted_score)
+          data.set('quality_category', quality_category)
+        </script>
+      </implementation>
+    </activity>
+
+    <!-- Activity 4: Optimize Parameters (if needed) -->
+    <activity id="optimize_parameters">
+      <name>Optimize Process Parameters</name>
+      <description>Get parameter optimization suggestions if quality is low</description>
+      <type>service</type>
+      <condition>#{proceed_production} == false</condition>
+      <implementation>
+        <service>http_post</service>
+        <parameters>
+          <parameter name="url">#{decision_engine_url}/optimize_parameters</parameter>
+          <parameter name="headers">{"Content-Type": "application/json"}</parameter>
+          <parameter name="body">{
+            "iteration_since_maintenance": #{iteration_since_maintenance},
+            "wait_time": #{wait_time},
+            "cook_time": #{cook_time},
+            "cooldown_time": #{cooldown_time},
+            "duration_cc_flow": #{duration_cc_flow},
+            "baseline_env_EnvH": #{baseline_env_EnvH},
+            "baseline_env_EnvT": #{baseline_env_EnvT},
+            "before_turn_on_env_InH": #{before_turn_on_env_InH},
+            "before_turn_on_env_InT": #{before_turn_on_env_InT},
+            "before_turn_on_env_IrO": #{before_turn_on_env_IrO},
+            "before_turn_on_env_IrA": #{before_turn_on_env_IrA},
+            "target_quality": #{quality_threshold}
+          }</parameter>
+        </parameters>
+      </implementation>
+      <outputs>
+        <output name="optimization_result" type="object"/>
+      </outputs>
+    </activity>
+
+    <!-- Activity 5: Apply Optimizations -->
+    <activity id="apply_optimizations">
+      <name>Apply Parameter Optimizations</name>
+      <description>Apply suggested parameter changes</description>
+      <type>script</type>
+      <condition>#{proceed_production} == false</condition>
+      <implementation>
+        <script language="ruby">
+          optimization_result = data.get('optimization_result')
+          suggestions = optimization_result['suggestions']
+          
+          # Apply high priority suggestions automatically
+          suggestions.each do |param, suggestion|
+            if suggestion['priority'] == 'HIGH'
+              # Update the parameter (this would interface with actual hardware)
+              puts "Applying #{param}: #{suggestion['suggested']} (#{suggestion['reason']})"
+              
+              # For demonstration, update the data element
+              case param
+              when 'before_turn_on_env_InH'
+                data.set('before_turn_on_env_InH', suggestion['suggested'].split('-')[1].to_f)
+              when 'wait_time'
+                data.set('wait_time', suggestion['suggested'].split('-')[1].to_f)
+              when 'duration_cc_flow'
+                data.set('duration_cc_flow', suggestion['suggested'].split('-')[1].to_f)
+              end
+            end
+          end
+          
+          data.set('optimization_suggestions', suggestions)
+        </script>
+      </implementation>
+    </activity>
+
+    <!-- Activity 6: Re-predict After Optimization -->
+    <activity id="repredict_quality">
+      <name>Re-predict Quality After Optimization</name>
+      <description>Predict quality again after applying optimizations</description>
+      <type>service</type>
+      <condition>#{proceed_production} == false</condition>
+      <implementation>
+        <service>http_post</service>
+        <parameters>
+          <parameter name="url">#{decision_engine_url}/predict_quality</parameter>
+          <parameter name="headers">{"Content-Type": "application/json"}</parameter>
+          <parameter name="body">{
+            "iteration_since_maintenance": #{iteration_since_maintenance},
+            "wait_time": #{wait_time},
+            "cook_time": #{cook_time},
+            "cooldown_time": #{cooldown_time},
+            "duration_cc_flow": #{duration_cc_flow},
+            "baseline_env_EnvH": #{baseline_env_EnvH},
+            "baseline_env_EnvT": #{baseline_env_EnvT},
+            "before_turn_on_env_InH": #{before_turn_on_env_InH},
+            "before_turn_on_env_InT": #{before_turn_on_env_InT},
+            "before_turn_on_env_IrO": #{before_turn_on_env_IrO},
+            "before_turn_on_env_IrA": #{before_turn_on_env_IrA}
+          }</parameter>
+        </parameters>
+      </implementation>
+      <outputs>
+        <output name="updated_prediction" type="object"/>
+      </outputs>
+    </activity>
+
+    <!-- Activity 7: Execute Production -->
+    <activity id="execute_production">
+      <name>Execute Cotton Candy Production</name>
+      <description>Run the actual cotton candy manufacturing process</description>
+      <type>service</type>
+      <condition>#{proceed_production} == true</condition>
+      <implementation>
+        <service>cotton_candy_controller</service>
+        <parameters>
+          <parameter name="process_parameters">{
+            "wait_time": #{wait_time},
+            "cook_time": #{cook_time},
+            "cooldown_time": #{cooldown_time},
+            "duration_cc_flow": #{duration_cc_flow}
+          }</parameter>
+          <parameter name="expected_quality">#{predicted_quality}</parameter>
+        </parameters>
+      </implementation>
+      <outputs>
+        <output name="production_result" type="object"/>
+      </outputs>
+    </activity>
+
+    <!-- Activity 8: Log Results -->
+    <activity id="log_results">
+      <name>Log Production Results</name>
+      <description>Log the prediction accuracy and actual results</description>
+      <type>service</type>
+      <implementation>
+        <service>data_logger</service>
+        <parameters>
+          <parameter name="log_data">{
+            "timestamp": "#{Time.now.iso8601}",
+            "predicted_quality": #{predicted_quality},
+            "quality_category": "#{quality_category}",
+            "proceeded_with_production": #{proceed_production},
+            "optimization_applied": #{optimization_suggestions != nil},
+            "process_parameters": {
+              "iteration_since_maintenance": #{iteration_since_maintenance},
+              "wait_time": #{wait_time},
+              "cook_time": #{cook_time},
+              "cooldown_time": #{cooldown_time},
+              "duration_cc_flow": #{duration_cc_flow},
+              "before_turn_on_env_InH": #{before_turn_on_env_InH}
+            }
+          }</parameter>
+        </parameters>
+      </implementation>
+    </activity>
+  </activities>
+
+  <flow>
+    <!-- Workflow Sequence -->
+    <sequence>
+      <!-- Start with data collection -->
+      <activity_ref ref="collect_sensor_data"/>
+      
+      <!-- Predict quality using decision tree -->
+      <activity_ref ref="predict_quality"/>
+      
+      <!-- Make go/no-go decision -->
+      <activity_ref ref="quality_decision_gate"/>
+      
+      <!-- Parallel branches based on decision -->
+      <parallel>
+        <!-- Branch 1: Production (if quality is good) -->
+        <sequence>
+          <activity_ref ref="execute_production"/>
+        </sequence>
+        
+        <!-- Branch 2: Optimization (if quality is poor) -->
+        <sequence>
+          <activity_ref ref="optimize_parameters"/>
+          <activity_ref ref="apply_optimizations"/>
+          <activity_ref ref="repredict_quality"/>
+          
+          <!-- After optimization, try production again -->
+          <activity_ref ref="execute_production"/>
+        </sequence>
+      </parallel>
+      
+      <!-- Always log results -->
+      <activity_ref ref="log_results"/>
+    </sequence>
+  </flow>
+</testset>
