@@ -65,13 +65,8 @@ app = Bottle()
 
 @app.route('/')
 def read():
-    data = read_all_sensors()
-    # Debug: print the actual types
-    for key, value in data.items():
-        if key != 'timestamp':
-            print(f"{key}: {value} (type: {type(value)})")
     response.content_type = 'application/json'
-    return json.dumps(data)
+    return json.dumps(read_all_sensors())
 
 if __name__ == '__main__':
     run(app, host='0.0.0.0', port=7201, debug=True)
