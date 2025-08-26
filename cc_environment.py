@@ -31,7 +31,6 @@ def read_all_sensors():
 
     now = datetime.now()
     ms_two_digits = f"{int(now.microsecond / 1000):03d}"[:2]
-    entry['timestamp'] = now.strftime(f"%Y-%m-%d %H:%M:%S.{ms_two_digits}")  # Timestamp with milliseconds
 
     try:
         entry['EnvH'] = round(float(hdc0.relative_humidity), 2)
@@ -58,6 +57,8 @@ def read_all_sensors():
         entry['IrA'] = None
         entry['IrO'] = None
 
+    entry['timestamp'] = now.strftime(f"%Y-%m-%d %H:%M:%S.{ms_two_digits}")  # Timestamp with milliseconds
+    
     return entry
 
 # Create Bottle app
