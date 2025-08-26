@@ -34,16 +34,16 @@ def read_all_sensors():
     entry['timestamp'] = now.strftime(f"%Y-%m-%d %H:%M:%S.{ms_two_digits}")  # Timestamp with milliseconds
 
     try:
-        entry['EnvH'] = f"{hdc0.relative_humidity:.2f}"
-        entry['EnvT'] = f"{hdc0.temperature:.2f}"
+        entry['EnvH'] = round(hdc0.relative_humidity, 2)
+        entry['EnvT'] = round(hdc0.temperature, 2)
     except Exception as e:
         print(f"Error reading hdc0: {e}")
         entry['EnvH'] = None
         entry['EnvT'] = None
 
     try:
-        entry['InH'] = f"{hdc1.relative_humidity:.2f}"
-        entry['InT'] = f"{hdc1.temperature:.2f}"
+        entry['InH'] = round(hdc1.relative_humidity, 2)
+        entry['InT'] = round(hdc1.temperature, 2)
     except Exception as e:
         print(f"Error reading hdc1: {e}")
         entry['InH'] = None
@@ -51,8 +51,8 @@ def read_all_sensors():
 
     # IrA is ambient temperature, IrO is object temperature
     try:
-        entry['IrA'] = f"{mlx.ambient_temperature:.2f}"
-        entry['IrO'] = f"{mlx.object_temperature:.2f}"
+        entry['IrA'] = round(mlx.ambient_temperature, 2)
+        entry['IrO'] = round(mlx.object_temperature, 2)
     except Exception as e:
         print(f"Error reading mlx: {e}")
         entry['IrA'] = None

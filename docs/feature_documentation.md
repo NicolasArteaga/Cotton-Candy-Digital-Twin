@@ -36,7 +36,7 @@ These are the primary control parameters that operators can adjust to influence 
 - **Description**: Number of cotton candy production cycles completed since the last maintenance operation
 - **Impact**: Higher values may indicate unclean machine, potentially affecting quality and consistency
 - **Range**: 0 to 60
-- **Example**: 0 (freshly maintained), 40 (needs maintenance soon)
+- **Example**: 0 (freshly maintained), 30 (needs maintenance soon)
 
 #### `wait_time`
 - **Type**: Float

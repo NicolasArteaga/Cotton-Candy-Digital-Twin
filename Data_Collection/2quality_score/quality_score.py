@@ -1,4 +1,3 @@
-#!/usr/bin/env python3
 """
 Quality Score - quality score for my_cc_dataset.csv
 Usage: python quality_score.py [--range start end]

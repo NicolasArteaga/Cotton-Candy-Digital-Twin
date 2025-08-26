@@ -1,0 +1,4761 @@
+---
+log:
+  namespaces:
+    stream: https://cpee.org/datastream/
+    ssn: http://www.w3.org/ns/ssn/
+    sosa: http://www.w3.org/ns/sosa/
+  xes:
+    creator: cpee.org
+    features: nested-attributes
+  extension:
+    time: http://www.xes-standard.org/time.xesext
+    concept: http://www.xes-standard.org/concept.xesext
+    id: http://www.xes-standard.org/identity.xesext
+    lifecycle: http://www.xes-standard.org/lifecycle.xesext
+    cpee: http://cpee.org/cpee.xesext
+    stream: https://cpee.org/datastream/datastream.xesext
+  global:
+    trace:
+      concept:name: __NOTSPECIFIED__
+      cpee:name: __NOTSPECIFIED__
+    event:
+      concept:instance: -1
+      concept:name: __NOTSPECIFIED__
+      concept:endpoint: __NOTSPECIFIED__
+      id:id: __NOTSPECIFIED__
+      cpee:uuid: __NOTSPECIFIED__
+      lifecycle:transition: complete
+      cpee:lifecycle:transition: activity/calling
+      time:timestamp: ''
+  trace:
+    concept:name: 64520
+    cpee:name: Create 11 Cotton Candies vAutonomous
+    cpee:instance: 8fa9b3a5-4d0d-4532-868d-09302001d1e2
+---
+event:
+  concept:instance: 64520
+  id:id: external
+  cpee:activity: external
+  cpee:instance: 8fa9b3a5-4d0d-4532-868d-09302001d1e2
+  lifecycle:transition: unknown
+  cpee:lifecycle:transition: state/change
+  cpee:state: ready
+  time:timestamp: '2025-08-22T06:39:12.683754+02:00'
+---
+event:
+  concept:instance: 64520
+  id:id: external
+  cpee:activity: external
+  cpee:instance: 8fa9b3a5-4d0d-4532-868d-09302001d1e2
+  lifecycle:transition: unknown
+  cpee:lifecycle:transition: endpoints/change
+  data:
+  - name: timeout
+    value: https://cpee.org/services/timeout.php
+  - name: subprocess
+    value: https://cpee.org/flow/start/url/
+  time:timestamp: '2025-08-22T06:39:12.688429+02:00'
+---
+event:
+  concept:instance: 64520
+  id:id: external
+  cpee:activity: external
+  cpee:instance: 8fa9b3a5-4d0d-4532-868d-09302001d1e2
+  lifecycle:transition: unknown
+  cpee:lifecycle:transition: dataelements/change
+  data:
+  - name: batch_number
+    value: 14
+  - name: iteration_since_maintenance
+    value: 42
+  - name: stick
+    value: 0
+  - name: wait_time
+    value: 29
+  - name: cook_time
+    value: 64
+  - name: cooldown_time
+    value: 80
+  - name: stick_weight
+    value: 1.9
+  time:timestamp: '2025-08-22T06:39:12.686579+02:00'
+---
+event:
+  concept:instance: 64520
+  id:id: external
+  cpee:activity: external
+  cpee:instance: 8fa9b3a5-4d0d-4532-868d-09302001d1e2
+  lifecycle:transition: unknown
+  cpee:lifecycle:transition: attributes/change
+  data:
+  - name: guarded
+    value: none
+  - name: modeltype
+    value: CPEE
+  - name: theme
+    value: extended
+  - name: guarded_id
+    value: ''
+  - name: info
+    value: Create 11 Cotton Candies vAutonomous
+  - name: creator
+    value: Christine Ashcreek
+  - name: author
+    value: Christine Ashcreek
+  - name: model_uuid
+    value: 2c83ed7a-6e7d-41ab-bd51-93da7d688294
+  - name: model_version
+    value: ''
+  - name: design_dir
+    value: Theses.dir/Nicolas Arteaga.dir/
+  - name: design_stage
+    value: development
+  time:timestamp: '2025-08-22T06:39:12.690529+02:00'
+---
+event:
+  concept:instance: 64520
+  id:id: external
+  cpee:activity: external
+  cpee:instance: 8fa9b3a5-4d0d-4532-868d-09302001d1e2
+  lifecycle:transition: unknown
+  cpee:lifecycle:transition: description/change
+  cpee:description: |
+    <?xml version="1.0"?>
+    <description xmlns="http://cpee.org/ns/description/1.0">
+      <manipulate id="a3" label="Initialize the Start position of the first Stick (0 for the first hole)">data.stick = 0</manipulate>
+      <loop mode="pre_test" condition="data.stick &lt;= 10">
+        <manipulate id="a4" label="Initialize iteration">data.wait_time = data.stick == 0 ? 70 : (54 - 2*data.stick)
+    data.cook_time = data.stick == 0 ? 70 : (66 + 1*data.stick)</manipulate>
+        <_probability>
+          <_probability_min/>
+          <_probability_max/>
+          <_probability_avg/>
+        </_probability>
+        <call id="a1" endpoint="subprocess">
+          <parameters>
+            <label>Call The Cottonbot with Data Collection</label>
+            <method>:post</method>
+            <arguments>
+              <behavior>wait_running</behavior>
+              <url>https://cpee.org/hub/server/Theses.dir/Nicolas%20Arteaga.dir/Cottonbot%20-%20Run%20with%20Data%20Collection.xml</url>
+              <init>
+                <batch_number>!data.batch_number</batch_number>
+                <iteration_since_maintenance>!data.iteration_since_maintenance</iteration_since_maintenance>
+                <stick>!data.stick</stick>
+                <stick_weight>!data.stick_weight</stick_weight>
+                <wait_time>!data.wait_time</wait_time>
+                <cook_time>!data.cook_time</cook_time>
+              </init>
+              <endpoints/>
+              <attributes/>
+              <customization/>
+            </arguments>
+          </parameters>
+          <code>
+            <signal_receive>on</signal_receive>
+            <signal_change>on</signal_change>
+            <prepare/>
+            <finalize output="result"/>
+            <update output="result"/>
+            <rescue output="result"/>
+          </code>
+          <annotations>
+            <_generic/>
+            <_timing>
+              <_timing_weight/>
+              <_timing_avg/>
+              <explanations/>
+            </_timing>
+            <_shifting>
+              <_shifting_type>Duration</_shifting_type>
+            </_shifting>
+            <_context_data_analysis>
+              <probes/>
+              <ips/>
+            </_context_data_analysis>
+            <report>
+              <url/>
+            </report>
+            <_notes>
+              <_notes_general/>
+            </_notes>
+          </annotations>
+          <documentation>
+            <input/>
+            <output/>
+            <implementation>
+              <description/>
+            </implementation>
+            <code>
+              <description/>
+            </code>
+          </documentation>
+        </call>
+        <manipulate id="a2" label="Go to the next available Stick">data.stick += 1
+    data.iteration_since_maintenance += 1</manipulate>
+      </loop>
+    </description>
+  cpee:change_uuid: e154fb1be424455b6d4f5170ad69326c36ae3d53
+  time:timestamp: '2025-08-22T06:39:12.697770+02:00'
+---
+event:
+  concept:instance: 64520
+  id:id: external
+  cpee:activity: external
+  cpee:instance: 8fa9b3a5-4d0d-4532-868d-09302001d1e2
+  lifecycle:transition: unknown
+  cpee:lifecycle:transition: attributes/change
+  data:
+  - name: theme
+    value: extended
+  time:timestamp: '2025-08-22T06:39:15.204730+02:00'
+---
+event:
+  concept:instance: 64520
+  id:id: external
+  cpee:activity: external
+  cpee:instance: 8fa9b3a5-4d0d-4532-868d-09302001d1e2
+  lifecycle:transition: unknown
+  cpee:lifecycle:transition: attributes/change
+  data:
+  - name: modeltype
+    value: CPEE
+  time:timestamp: '2025-08-22T06:39:16.183685+02:00'
+---
+event:
+  concept:instance: 64520
+  id:id: external
+  cpee:activity: external
+  cpee:instance: 8fa9b3a5-4d0d-4532-868d-09302001d1e2
+  lifecycle:transition: unknown
+  cpee:lifecycle:transition: attributes/change
+  data:
+  - name: guarded
+    value: none
+  - name: guarded_id
+    value: ''
+  time:timestamp: '2025-08-22T06:39:17.178867+02:00'
+---
+event:
+  concept:instance: 64520
+  id:id: external
+  cpee:activity: external
+  cpee:instance: 8fa9b3a5-4d0d-4532-868d-09302001d1e2
+  lifecycle:transition: unknown
+  cpee:lifecycle:transition: state/change
+  cpee:state: ready
+  time:timestamp: '2025-08-22T06:39:18.213559+02:00'
+---
+event:
+  concept:instance: 64520
+  id:id: external
+  cpee:activity: external
+  cpee:instance: 8fa9b3a5-4d0d-4532-868d-09302001d1e2
+  lifecycle:transition: unknown
+  cpee:lifecycle:transition: state/change
+  cpee:state: ready
+  time:timestamp: '2025-08-22T06:39:18.273613+02:00'
+---
+event:
+  concept:instance: 64520
+  id:id: external
+  cpee:activity: external
+  cpee:instance: 8fa9b3a5-4d0d-4532-868d-09302001d1e2
+  lifecycle:transition: unknown
+  cpee:lifecycle:transition: state/change
+  cpee:state: ready
+  time:timestamp: '2025-08-22T06:39:18.276452+02:00'
+---
+event:
+  concept:instance: 64520
+  id:id: external
+  cpee:activity: external
+  cpee:instance: 8fa9b3a5-4d0d-4532-868d-09302001d1e2
+  lifecycle:transition: unknown
+  cpee:lifecycle:transition: description/change
+  cpee:description: |
+    <?xml version="1.0"?>
+    <description xmlns="http://cpee.org/ns/description/1.0">
+      <manipulate id="a3" label="Initialize the Start position of the first Stick (0 for the first hole)">data.stick = 0</manipulate>
+      <loop mode="pre_test" condition="data.stick &lt;= 10">
+        <manipulate id="a4" label="Initialize iteration">data.wait_time = data.stick == 0 ? 70 : (54 - 2*data.stick)
+    data.cook_time = data.stick == 0 ? 70 : (66 + 1*data.stick)</manipulate>
+        <_probability>
+          <_probability_min/>
+          <_probability_max/>
+          <_probability_avg/>
+        </_probability>
+        <call id="a1" endpoint="subprocess">
+          <parameters>
+            <label>Call The Cottonbot with Data Collection</label>
+            <method>:post</method>
+            <arguments>
+              <behavior>wait_running</behavior>
+              <url>https://cpee.org/hub/server/Theses.dir/Nicolas%20Arteaga.dir/Cottonbot%20-%20Run%20with%20Data%20Collection%20vAutonomous.xml</url>
+              <init>
+                <batch_number>!data.batch_number</batch_number>
+                <iteration_since_maintenance>!data.iteration_since_maintenance</iteration_since_maintenance>
+                <stick>!data.stick</stick>
+                <stick_weight>!data.stick_weight</stick_weight>
+                <wait_time>!data.wait_time</wait_time>
+                <cook_time>!data.cook_time</cook_time>
+              </init>
+              <endpoints/>
+              <attributes/>
+              <customization/>
+            </arguments>
+          </parameters>
+          <code>
+            <signal_receive>on</signal_receive>
+            <signal_change>on</signal_change>
+            <prepare/>
+            <finalize output="result"/>
+            <update output="result"/>
+            <rescue output="result"/>
+          </code>
+          <annotations>
+            <_generic/>
+            <_timing>
+              <_timing_weight/>
+              <_timing_avg/>
+              <explanations/>
+            </_timing>
+            <_shifting>
+              <_shifting_type>Duration</_shifting_type>
+            </_shifting>
+            <_context_data_analysis>
+              <probes/>
+              <ips/>
+            </_context_data_analysis>
+            <report>
+              <url/>
+            </report>
+            <_notes>
+              <_notes_general/>
+            </_notes>
+          </annotations>
+          <documentation>
+            <input/>
+            <output/>
+            <implementation>
+              <description/>
+            </implementation>
+            <code>
+              <description/>
+            </code>
+          </documentation>
+        </call>
+        <manipulate id="a2" label="Go to the next available Stick">data.stick += 1
+    data.iteration_since_maintenance += 1</manipulate>
+      </loop>
+    </description>
+  cpee:change_uuid: c5c08c3152f85e956ca9694a93ae3b34b77e6a8f
+  time:timestamp: '2025-08-22T06:39:23.873889+02:00'
+---
+event:
+  concept:instance: 64520
+  id:id: external
+  cpee:activity: external
+  cpee:instance: 8fa9b3a5-4d0d-4532-868d-09302001d1e2
+  lifecycle:transition: unknown
+  cpee:lifecycle:transition: description/change
+  cpee:description: |
+    <?xml version="1.0"?>
+    <description xmlns="http://cpee.org/ns/description/1.0">
+      <manipulate id="a3" label="Initialize the Start position of the first Stick (0 for the first hole)">data.stick = 0</manipulate>
+      <loop mode="pre_test" condition="data.stick &lt;= 10">
+        <manipulate id="a4" label="Initialize iteration">data.wait_time = data.stick == 0 ? 70 : (54 - 2*data.stick)
+    data.cook_time = data.stick == 0 ? 70 : (66 + 1*data.stick)</manipulate>
+        <_probability>
+          <_probability_min/>
+          <_probability_max/>
+          <_probability_avg/>
+        </_probability>
+        <call id="a1" endpoint="subprocess">
+          <parameters>
+            <label>Call The Cottonbot with Data Collection</label>
+            <method>:post</method>
+            <arguments>
+              <behavior>wait_running</behavior>
+              <url>https://cpee.org/hub/server/Theses.dir/Nicolas%20Arteaga.dir/Cottonbot%20-%20Run%20with%20Data%20Collection%20vAutonomous.xml</url>
+              <init>
+                <batch_number>!data.batch_number</batch_number>
+                <iteration_since_maintenance>!data.iteration_since_maintenance</iteration_since_maintenance>
+                <stick>!data.stick</stick>
+                <stick_weight>!data.stick_weight</stick_weight>
+                <wait_time>!data.wait_time</wait_time>
+                <cook_time>!data.cook_time</cook_time>
+                <start_temp/>
+              </init>
+              <endpoints/>
+              <attributes/>
+              <customization/>
+            </arguments>
+          </parameters>
+          <code>
+            <signal_receive>on</signal_receive>
+            <signal_change>on</signal_change>
+            <prepare/>
+            <finalize output="result"/>
+            <update output="result"/>
+            <rescue output="result"/>
+          </code>
+          <annotations>
+            <_generic/>
+            <_timing>
+              <_timing_weight/>
+              <_timing_avg/>
+              <explanations/>
+            </_timing>
+            <_shifting>
+              <_shifting_type>Duration</_shifting_type>
+            </_shifting>
+            <_context_data_analysis>
+              <probes/>
+              <ips/>
+            </_context_data_analysis>
+            <report>
+              <url/>
+            </report>
+            <_notes>
+              <_notes_general/>
+            </_notes>
+          </annotations>
+          <documentation>
+            <input/>
+            <output/>
+            <implementation>
+              <description/>
+            </implementation>
+            <code>
+              <description/>
+            </code>
+          </documentation>
+        </call>
+        <manipulate id="a2" label="Go to the next available Stick">data.stick += 1
+    data.iteration_since_maintenance += 1</manipulate>
+      </loop>
+    </description>
+  cpee:change_uuid: 60bdf41da19755011ae234f3c1db5df8513e6dd6
+  time:timestamp: '2025-08-22T06:40:51.884143+02:00'
+---
+event:
+  concept:instance: 64520
+  id:id: external
+  cpee:activity: external
+  cpee:instance: 8fa9b3a5-4d0d-4532-868d-09302001d1e2
+  lifecycle:transition: unknown
+  cpee:lifecycle:transition: description/change
+  cpee:description: |
+    <?xml version="1.0"?>
+    <description xmlns="http://cpee.org/ns/description/1.0">
+      <manipulate id="a3" label="Initialize the Start position of the first Stick (0 for the first hole)">data.stick = 0</manipulate>
+      <loop mode="pre_test" condition="data.stick &lt;= 10">
+        <manipulate id="a4" label="Initialize iteration">data.wait_time = data.stick == 0 ? 70 : (54 - 2*data.stick)
+    data.cook_time = data.stick == 0 ? 70 : (66 + 1*data.stick)</manipulate>
+        <_probability>
+          <_probability_min/>
+          <_probability_max/>
+          <_probability_avg/>
+        </_probability>
+        <call id="a1" endpoint="subprocess">
+          <parameters>
+            <label>Call The Cottonbot with Data Collection</label>
+            <method>:post</method>
+            <arguments>
+              <behavior>wait_running</behavior>
+              <url>https://cpee.org/hub/server/Theses.dir/Nicolas%20Arteaga.dir/Cottonbot%20-%20Run%20with%20Data%20Collection%20vAutonomous.xml</url>
+              <init>
+                <batch_number>!data.batch_number</batch_number>
+                <iteration_since_maintenance>!data.iteration_since_maintenance</iteration_since_maintenance>
+                <stick>!data.stick</stick>
+                <stick_weight>!data.stick_weight</stick_weight>
+                <wait_time>!data.wait_time</wait_time>
+                <cook_time>!data.cook_time</cook_time>
+                <start_temp/>
+                <cook_temp/>
+              </init>
+              <endpoints/>
+              <attributes/>
+              <customization/>
+            </arguments>
+          </parameters>
+          <code>
+            <signal_receive>on</signal_receive>
+            <signal_change>on</signal_change>
+            <prepare/>
+            <finalize output="result"/>
+            <update output="result"/>
+            <rescue output="result"/>
+          </code>
+          <annotations>
+            <_generic/>
+            <_timing>
+              <_timing_weight/>
+              <_timing_avg/>
+              <explanations/>
+            </_timing>
+            <_shifting>
+              <_shifting_type>Duration</_shifting_type>
+            </_shifting>
+            <_context_data_analysis>
+              <probes/>
+              <ips/>
+            </_context_data_analysis>
+            <report>
+              <url/>
+            </report>
+            <_notes>
+              <_notes_general/>
+            </_notes>
+          </annotations>
+          <documentation>
+            <input/>
+            <output/>
+            <implementation>
+              <description/>
+            </implementation>
+            <code>
+              <description/>
+            </code>
+          </documentation>
+        </call>
+        <manipulate id="a2" label="Go to the next available Stick">data.stick += 1
+    data.iteration_since_maintenance += 1</manipulate>
+      </loop>
+    </description>
+  cpee:change_uuid: ee76b3422022c825e9d42df31590cf6df9eef2b7
+  time:timestamp: '2025-08-22T06:40:58.717953+02:00'
+---
+event:
+  concept:instance: 64520
+  id:id: external
+  cpee:activity: external
+  cpee:instance: 8fa9b3a5-4d0d-4532-868d-09302001d1e2
+  lifecycle:transition: unknown
+  cpee:lifecycle:transition: description/change
+  cpee:description: |
+    <?xml version="1.0"?>
+    <description xmlns="http://cpee.org/ns/description/1.0">
+      <manipulate id="a3" label="Initialize the Start position of the first Stick (0 for the first hole)">data.stick = 0</manipulate>
+      <loop mode="pre_test" condition="data.stick &lt;= 10">
+        <manipulate id="a4" label="Initialize iteration">data.wait_time = data.stick == 0 ? 70 : (54 - 2*data.stick)
+    data.cook_time = data.stick == 0 ? 70 : (66 + 1*data.stick)</manipulate>
+        <_probability>
+          <_probability_min/>
+          <_probability_max/>
+          <_probability_avg/>
+        </_probability>
+        <call id="a1" endpoint="subprocess">
+          <parameters>
+            <label>Call The Cottonbot with Data Collection</label>
+            <method>:post</method>
+            <arguments>
+              <behavior>wait_running</behavior>
+              <url>https://cpee.org/hub/server/Theses.dir/Nicolas%20Arteaga.dir/Cottonbot%20-%20Run%20with%20Data%20Collection%20vAutonomous.xml</url>
+              <init>
+                <batch_number>!data.batch_number</batch_number>
+                <iteration_since_maintenance>!data.iteration_since_maintenance</iteration_since_maintenance>
+                <stick>!data.stick</stick>
+                <stick_weight>!data.stick_weight</stick_weight>
+                <wait_time>!data.wait_time</wait_time>
+                <cook_time>!data.cook_time</cook_time>
+                <start_temp/>
+                <cook_temp/>
+                <cooled_temp/>
+              </init>
+              <endpoints/>
+              <attributes/>
+              <customization/>
+            </arguments>
+          </parameters>
+          <code>
+            <signal_receive>on</signal_receive>
+            <signal_change>on</signal_change>
+            <prepare/>
+            <finalize output="result"/>
+            <update output="result"/>
+            <rescue output="result"/>
+          </code>
+          <annotations>
+            <_generic/>
+            <_timing>
+              <_timing_weight/>
+              <_timing_avg/>
+              <explanations/>
+            </_timing>
+            <_shifting>
+              <_shifting_type>Duration</_shifting_type>
+            </_shifting>
+            <_context_data_analysis>
+              <probes/>
+              <ips/>
+            </_context_data_analysis>
+            <report>
+              <url/>
+            </report>
+            <_notes>
+              <_notes_general/>
+            </_notes>
+          </annotations>
+          <documentation>
+            <input/>
+            <output/>
+            <implementation>
+              <description/>
+            </implementation>
+            <code>
+              <description/>
+            </code>
+          </documentation>
+        </call>
+        <manipulate id="a2" label="Go to the next available Stick">data.stick += 1
+    data.iteration_since_maintenance += 1</manipulate>
+      </loop>
+    </description>
+  cpee:change_uuid: b22b2ae50f25724f1fd51f3728d9ffb33809c0b9
+  time:timestamp: '2025-08-22T06:41:05.052388+02:00'
+---
+event:
+  concept:instance: 64520
+  id:id: external
+  cpee:activity: external
+  cpee:instance: 8fa9b3a5-4d0d-4532-868d-09302001d1e2
+  lifecycle:transition: unknown
+  cpee:lifecycle:transition: description/change
+  cpee:description: |
+    <?xml version="1.0"?>
+    <description xmlns="http://cpee.org/ns/description/1.0">
+      <manipulate id="a3" label="Initialize the Start position of the first Stick (0 for the first hole)">data.stick = 0</manipulate>
+      <loop mode="pre_test" condition="data.stick &lt;= 10">
+        <manipulate id="a4" label="Initialize iteration">data.wait_time = data.stick == 0 ? 70 : (54 - 2*data.stick)
+    data.cook_time = data.stick == 0 ? 70 : (66 + 1*data.stick)</manipulate>
+        <_probability>
+          <_probability_min/>
+          <_probability_max/>
+          <_probability_avg/>
+        </_probability>
+        <call id="a1" endpoint="subprocess">
+          <parameters>
+            <label>Call The Cottonbot with Data Collection</label>
+            <method>:post</method>
+            <arguments>
+              <behavior>wait_running</behavior>
+              <url>https://cpee.org/hub/server/Theses.dir/Nicolas%20Arteaga.dir/Cottonbot%20-%20Run%20with%20Data%20Collection%20vAutonomous.xml</url>
+              <init>
+                <batch_number>!data.batch_number</batch_number>
+                <iteration_since_maintenance>!data.iteration_since_maintenance</iteration_since_maintenance>
+                <stick>!data.stick</stick>
+                <stick_weight>!data.stick_weight</stick_weight>
+                <wait_time>!data.wait_time</wait_time>
+                <cook_time>!data.cook_time</cook_time>
+                <start_temp/>
+                <cook_temp/>
+                <cooled_temp/>
+                <cook_time/>
+              </init>
+              <endpoints/>
+              <attributes/>
+              <customization/>
+            </arguments>
+          </parameters>
+          <code>
+            <signal_receive>on</signal_receive>
+            <signal_change>on</signal_change>
+            <prepare/>
+            <finalize output="result"/>
+            <update output="result"/>
+            <rescue output="result"/>
+          </code>
+          <annotations>
+            <_generic/>
+            <_timing>
+              <_timing_weight/>
+              <_timing_avg/>
+              <explanations/>
+            </_timing>
+            <_shifting>
+              <_shifting_type>Duration</_shifting_type>
+            </_shifting>
+            <_context_data_analysis>
+              <probes/>
+              <ips/>
+            </_context_data_analysis>
+            <report>
+              <url/>
+            </report>
+            <_notes>
+              <_notes_general/>
+            </_notes>
+          </annotations>
+          <documentation>
+            <input/>
+            <output/>
+            <implementation>
+              <description/>
+            </implementation>
+            <code>
+              <description/>
+            </code>
+          </documentation>
+        </call>
+        <manipulate id="a2" label="Go to the next available Stick">data.stick += 1
+    data.iteration_since_maintenance += 1</manipulate>
+      </loop>
+    </description>
+  cpee:change_uuid: ebede53c8e9313956a8c9c660bdf2ce12e9dfca5
+  time:timestamp: '2025-08-22T06:41:16.439343+02:00'
+---
+event:
+  concept:instance: 64520
+  id:id: external
+  cpee:activity: external
+  cpee:instance: 8fa9b3a5-4d0d-4532-868d-09302001d1e2
+  lifecycle:transition: unknown
+  cpee:lifecycle:transition: description/change
+  cpee:description: |
+    <?xml version="1.0"?>
+    <description xmlns="http://cpee.org/ns/description/1.0">
+      <manipulate id="a3" label="Initialize the Start position of the first Stick (0 for the first hole)">data.stick = 0</manipulate>
+      <loop mode="pre_test" condition="data.stick &lt;= 10">
+        <manipulate id="a4" label="Initialize iteration">data.wait_time = data.stick == 0 ? 70 : (54 - 2*data.stick)
+    data.cook_time = data.stick == 0 ? 70 : (66 + 1*data.stick)</manipulate>
+        <_probability>
+          <_probability_min/>
+          <_probability_max/>
+          <_probability_avg/>
+        </_probability>
+        <call id="a1" endpoint="subprocess">
+          <parameters>
+            <label>Call The Cottonbot with Data Collection</label>
+            <method>:post</method>
+            <arguments>
+              <behavior>wait_running</behavior>
+              <url>https://cpee.org/hub/server/Theses.dir/Nicolas%20Arteaga.dir/Cottonbot%20-%20Run%20with%20Data%20Collection%20vAutonomous.xml</url>
+              <init>
+                <batch_number>!data.batch_number</batch_number>
+                <iteration_since_maintenance>!data.iteration_since_maintenance</iteration_since_maintenance>
+                <stick>!data.stick</stick>
+                <stick_weight>!data.stick_weight</stick_weight>
+                <wait_time>!data.wait_time</wait_time>
+                <cook_time>!data.cook_time</cook_time>
+                <start_temp>!data.</start_temp>
+                <cook_temp/>
+                <cooled_temp/>
+                <cook_time/>
+              </init>
+              <endpoints/>
+              <attributes/>
+              <customization/>
+            </arguments>
+          </parameters>
+          <code>
+            <signal_receive>on</signal_receive>
+            <signal_change>on</signal_change>
+            <prepare/>
+            <finalize output="result"/>
+            <update output="result"/>
+            <rescue output="result"/>
+          </code>
+          <annotations>
+            <_generic/>
+            <_timing>
+              <_timing_weight/>
+              <_timing_avg/>
+              <explanations/>
+            </_timing>
+            <_shifting>
+              <_shifting_type>Duration</_shifting_type>
+            </_shifting>
+            <_context_data_analysis>
+              <probes/>
+              <ips/>
+            </_context_data_analysis>
+            <report>
+              <url/>
+            </report>
+            <_notes>
+              <_notes_general/>
+            </_notes>
+          </annotations>
+          <documentation>
+            <input/>
+            <output/>
+            <implementation>
+              <description/>
+            </implementation>
+            <code>
+              <description/>
+            </code>
+          </documentation>
+        </call>
+        <manipulate id="a2" label="Go to the next available Stick">data.stick += 1
+    data.iteration_since_maintenance += 1</manipulate>
+      </loop>
+    </description>
+  cpee:change_uuid: b5964ad51da3a1adbdbf99f84538fab8021f55b3
+  time:timestamp: '2025-08-22T06:41:31.873950+02:00'
+---
+event:
+  concept:instance: 64520
+  id:id: external
+  cpee:activity: external
+  cpee:instance: 8fa9b3a5-4d0d-4532-868d-09302001d1e2
+  lifecycle:transition: unknown
+  cpee:lifecycle:transition: description/change
+  cpee:description: |
+    <?xml version="1.0"?>
+    <description xmlns="http://cpee.org/ns/description/1.0">
+      <manipulate id="a3" label="Initialize the Start position of the first Stick (0 for the first hole)">data.stick = 0</manipulate>
+      <loop mode="pre_test" condition="data.stick &lt;= 10">
+        <manipulate id="a4" label="Initialize iteration">data.wait_time = data.stick == 0 ? 70 : (54 - 2*data.stick)
+    data.cook_time = data.stick == 0 ? 70 : (66 + 1*data.stick)</manipulate>
+        <_probability>
+          <_probability_min/>
+          <_probability_max/>
+          <_probability_avg/>
+        </_probability>
+        <call id="a1" endpoint="subprocess">
+          <parameters>
+            <label>Call The Cottonbot with Data Collection</label>
+            <method>:post</method>
+            <arguments>
+              <behavior>wait_running</behavior>
+              <url>https://cpee.org/hub/server/Theses.dir/Nicolas%20Arteaga.dir/Cottonbot%20-%20Run%20with%20Data%20Collection%20vAutonomous.xml</url>
+              <init>
+                <batch_number>!data.batch_number</batch_number>
+                <iteration_since_maintenance>!data.iteration_since_maintenance</iteration_since_maintenance>
+                <stick>!data.stick</stick>
+                <stick_weight>!data.stick_weight</stick_weight>
+                <wait_time>!data.wait_time</wait_time>
+                <cook_time>!data.cook_time</cook_time>
+                <start_temp>!data.</start_temp>
+                <cook_temp>!data.</cook_temp>
+                <cooled_temp/>
+                <cook_time/>
+              </init>
+              <endpoints/>
+              <attributes/>
+              <customization/>
+            </arguments>
+          </parameters>
+          <code>
+            <signal_receive>on</signal_receive>
+            <signal_change>on</signal_change>
+            <prepare/>
+            <finalize output="result"/>
+            <update output="result"/>
+            <rescue output="result"/>
+          </code>
+          <annotations>
+            <_generic/>
+            <_timing>
+              <_timing_weight/>
+              <_timing_avg/>
+              <explanations/>
+            </_timing>
+            <_shifting>
+              <_shifting_type>Duration</_shifting_type>
+            </_shifting>
+            <_context_data_analysis>
+              <probes/>
+              <ips/>
+            </_context_data_analysis>
+            <report>
+              <url/>
+            </report>
+            <_notes>
+              <_notes_general/>
+            </_notes>
+          </annotations>
+          <documentation>
+            <input/>
+            <output/>
+            <implementation>
+              <description/>
+            </implementation>
+            <code>
+              <description/>
+            </code>
+          </documentation>
+        </call>
+        <manipulate id="a2" label="Go to the next available Stick">data.stick += 1
+    data.iteration_since_maintenance += 1</manipulate>
+      </loop>
+    </description>
+  cpee:change_uuid: c206f7c5511ce1f76210a9127ffe127abb3a42c8
+  time:timestamp: '2025-08-22T06:41:32.662189+02:00'
+---
+event:
+  concept:instance: 64520
+  id:id: external
+  cpee:activity: external
+  cpee:instance: 8fa9b3a5-4d0d-4532-868d-09302001d1e2
+  lifecycle:transition: unknown
+  cpee:lifecycle:transition: description/change
+  cpee:description: |
+    <?xml version="1.0"?>
+    <description xmlns="http://cpee.org/ns/description/1.0">
+      <manipulate id="a3" label="Initialize the Start position of the first Stick (0 for the first hole)">data.stick = 0</manipulate>
+      <loop mode="pre_test" condition="data.stick &lt;= 10">
+        <manipulate id="a4" label="Initialize iteration">data.wait_time = data.stick == 0 ? 70 : (54 - 2*data.stick)
+    data.cook_time = data.stick == 0 ? 70 : (66 + 1*data.stick)</manipulate>
+        <_probability>
+          <_probability_min/>
+          <_probability_max/>
+          <_probability_avg/>
+        </_probability>
+        <call id="a1" endpoint="subprocess">
+          <parameters>
+            <label>Call The Cottonbot with Data Collection</label>
+            <method>:post</method>
+            <arguments>
+              <behavior>wait_running</behavior>
+              <url>https://cpee.org/hub/server/Theses.dir/Nicolas%20Arteaga.dir/Cottonbot%20-%20Run%20with%20Data%20Collection%20vAutonomous.xml</url>
+              <init>
+                <batch_number>!data.batch_number</batch_number>
+                <iteration_since_maintenance>!data.iteration_since_maintenance</iteration_since_maintenance>
+                <stick>!data.stick</stick>
+                <stick_weight>!data.stick_weight</stick_weight>
+                <wait_time>!data.wait_time</wait_time>
+                <cook_time>!data.cook_time</cook_time>
+                <start_temp>!data.</start_temp>
+                <cook_temp>!data.</cook_temp>
+                <cooled_temp>!data.</cooled_temp>
+                <cook_time/>
+              </init>
+              <endpoints/>
+              <attributes/>
+              <customization/>
+            </arguments>
+          </parameters>
+          <code>
+            <signal_receive>on</signal_receive>
+            <signal_change>on</signal_change>
+            <prepare/>
+            <finalize output="result"/>
+            <update output="result"/>
+            <rescue output="result"/>
+          </code>
+          <annotations>
+            <_generic/>
+            <_timing>
+              <_timing_weight/>
+              <_timing_avg/>
+              <explanations/>
+            </_timing>
+            <_shifting>
+              <_shifting_type>Duration</_shifting_type>
+            </_shifting>
+            <_context_data_analysis>
+              <probes/>
+              <ips/>
+            </_context_data_analysis>
+            <report>
+              <url/>
+            </report>
+            <_notes>
+              <_notes_general/>
+            </_notes>
+          </annotations>
+          <documentation>
+            <input/>
+            <output/>
+            <implementation>
+              <description/>
+            </implementation>
+            <code>
+              <description/>
+            </code>
+          </documentation>
+        </call>
+        <manipulate id="a2" label="Go to the next available Stick">data.stick += 1
+    data.iteration_since_maintenance += 1</manipulate>
+      </loop>
+    </description>
+  cpee:change_uuid: '071823a6d4f843a433c8f4b2740b236f75c6bb73'
+  time:timestamp: '2025-08-22T06:41:33.450893+02:00'
+---
+event:
+  concept:instance: 64520
+  id:id: external
+  cpee:activity: external
+  cpee:instance: 8fa9b3a5-4d0d-4532-868d-09302001d1e2
+  lifecycle:transition: unknown
+  cpee:lifecycle:transition: description/change
+  cpee:description: |
+    <?xml version="1.0"?>
+    <description xmlns="http://cpee.org/ns/description/1.0">
+      <manipulate id="a3" label="Initialize the Start position of the first Stick (0 for the first hole)">data.stick = 0</manipulate>
+      <loop mode="pre_test" condition="data.stick &lt;= 10">
+        <manipulate id="a4" label="Initialize iteration">data.wait_time = data.stick == 0 ? 70 : (54 - 2*data.stick)
+    data.cook_time = data.stick == 0 ? 70 : (66 + 1*data.stick)</manipulate>
+        <_probability>
+          <_probability_min/>
+          <_probability_max/>
+          <_probability_avg/>
+        </_probability>
+        <call id="a1" endpoint="subprocess">
+          <parameters>
+            <label>Call The Cottonbot with Data Collection</label>
+            <method>:post</method>
+            <arguments>
+              <behavior>wait_running</behavior>
+              <url>https://cpee.org/hub/server/Theses.dir/Nicolas%20Arteaga.dir/Cottonbot%20-%20Run%20with%20Data%20Collection%20vAutonomous.xml</url>
+              <init>
+                <batch_number>!data.batch_number</batch_number>
+                <iteration_since_maintenance>!data.iteration_since_maintenance</iteration_since_maintenance>
+                <stick>!data.stick</stick>
+                <stick_weight>!data.stick_weight</stick_weight>
+                <wait_time>!data.wait_time</wait_time>
+                <cook_time>!data.cook_time</cook_time>
+                <start_temp>!data.</start_temp>
+                <cook_temp>!data.</cook_temp>
+                <cooled_temp>!data.</cooled_temp>
+                <cook_time>!data.</cook_time>
+              </init>
+              <endpoints/>
+              <attributes/>
+              <customization/>
+            </arguments>
+          </parameters>
+          <code>
+            <signal_receive>on</signal_receive>
+            <signal_change>on</signal_change>
+            <prepare/>
+            <finalize output="result"/>
+            <update output="result"/>
+            <rescue output="result"/>
+          </code>
+          <annotations>
+            <_generic/>
+            <_timing>
+              <_timing_weight/>
+              <_timing_avg/>
+              <explanations/>
+            </_timing>
+            <_shifting>
+              <_shifting_type>Duration</_shifting_type>
+            </_shifting>
+            <_context_data_analysis>
+              <probes/>
+              <ips/>
+            </_context_data_analysis>
+            <report>
+              <url/>
+            </report>
+            <_notes>
+              <_notes_general/>
+            </_notes>
+          </annotations>
+          <documentation>
+            <input/>
+            <output/>
+            <implementation>
+              <description/>
+            </implementation>
+            <code>
+              <description/>
+            </code>
+          </documentation>
+        </call>
+        <manipulate id="a2" label="Go to the next available Stick">data.stick += 1
+    data.iteration_since_maintenance += 1</manipulate>
+      </loop>
+    </description>
+  cpee:change_uuid: b60d4e33bfddc3a018b8829957c978f9e7a52b95
+  time:timestamp: '2025-08-22T06:41:34.461710+02:00'
+---
+event:
+  concept:instance: 64520
+  id:id: external
+  cpee:activity: external
+  cpee:instance: 8fa9b3a5-4d0d-4532-868d-09302001d1e2
+  lifecycle:transition: unknown
+  cpee:lifecycle:transition: description/change
+  cpee:description: |
+    <?xml version="1.0"?>
+    <description xmlns="http://cpee.org/ns/description/1.0">
+      <manipulate id="a3" label="Initialize the Start position of the first Stick (0 for the first hole)">data.stick = 0</manipulate>
+      <loop mode="pre_test" condition="data.stick &lt;= 10">
+        <manipulate id="a4" label="Initialize iteration">data.wait_time = data.stick == 0 ? 70 : (54 - 2*data.stick)
+    data.cook_time = data.stick == 0 ? 70 : (66 + 1*data.stick)</manipulate>
+        <_probability>
+          <_probability_min/>
+          <_probability_max/>
+          <_probability_avg/>
+        </_probability>
+        <call id="a1" endpoint="subprocess">
+          <parameters>
+            <label>Call The Cottonbot with Data Collection</label>
+            <method>:post</method>
+            <arguments>
+              <behavior>wait_running</behavior>
+              <url>https://cpee.org/hub/server/Theses.dir/Nicolas%20Arteaga.dir/Cottonbot%20-%20Run%20with%20Data%20Collection%20vAutonomous.xml</url>
+              <init>
+                <batch_number>!data.batch_number</batch_number>
+                <iteration_since_maintenance>!data.iteration_since_maintenance</iteration_since_maintenance>
+                <stick>!data.stick</stick>
+                <stick_weight>!data.stick_weight</stick_weight>
+                <wait_time>!data.wait_time</wait_time>
+                <cook_time>!data.cook_time</cook_time>
+                <start_temp>!data.start_temp</start_temp>
+                <cook_temp>!data.</cook_temp>
+                <cooled_temp>!data.</cooled_temp>
+                <cook_time>!data.</cook_time>
+              </init>
+              <endpoints/>
+              <attributes/>
+              <customization/>
+            </arguments>
+          </parameters>
+          <code>
+            <signal_receive>on</signal_receive>
+            <signal_change>on</signal_change>
+            <prepare/>
+            <finalize output="result"/>
+            <update output="result"/>
+            <rescue output="result"/>
+          </code>
+          <annotations>
+            <_generic/>
+            <_timing>
+              <_timing_weight/>
+              <_timing_avg/>
+              <explanations/>
+            </_timing>
+            <_shifting>
+              <_shifting_type>Duration</_shifting_type>
+            </_shifting>
+            <_context_data_analysis>
+              <probes/>
+              <ips/>
+            </_context_data_analysis>
+            <report>
+              <url/>
+            </report>
+            <_notes>
+              <_notes_general/>
+            </_notes>
+          </annotations>
+          <documentation>
+            <input/>
+            <output/>
+            <implementation>
+              <description/>
+            </implementation>
+            <code>
+              <description/>
+            </code>
+          </documentation>
+        </call>
+        <manipulate id="a2" label="Go to the next available Stick">data.stick += 1
+    data.iteration_since_maintenance += 1</manipulate>
+      </loop>
+    </description>
+  cpee:change_uuid: 35b724b1b8865fd6c42f15c1d8b92c6a5ea678a1
+  time:timestamp: '2025-08-22T06:41:37.385074+02:00'
+---
+event:
+  concept:instance: 64520
+  id:id: external
+  cpee:activity: external
+  cpee:instance: 8fa9b3a5-4d0d-4532-868d-09302001d1e2
+  lifecycle:transition: unknown
+  cpee:lifecycle:transition: description/change
+  cpee:description: |
+    <?xml version="1.0"?>
+    <description xmlns="http://cpee.org/ns/description/1.0">
+      <manipulate id="a3" label="Initialize the Start position of the first Stick (0 for the first hole)">data.stick = 0</manipulate>
+      <loop mode="pre_test" condition="data.stick &lt;= 10">
+        <manipulate id="a4" label="Initialize iteration">data.wait_time = data.stick == 0 ? 70 : (54 - 2*data.stick)
+    data.cook_time = data.stick == 0 ? 70 : (66 + 1*data.stick)</manipulate>
+        <_probability>
+          <_probability_min/>
+          <_probability_max/>
+          <_probability_avg/>
+        </_probability>
+        <call id="a1" endpoint="subprocess">
+          <parameters>
+            <label>Call The Cottonbot with Data Collection</label>
+            <method>:post</method>
+            <arguments>
+              <behavior>wait_running</behavior>
+              <url>https://cpee.org/hub/server/Theses.dir/Nicolas%20Arteaga.dir/Cottonbot%20-%20Run%20with%20Data%20Collection%20vAutonomous.xml</url>
+              <init>
+                <batch_number>!data.batch_number</batch_number>
+                <iteration_since_maintenance>!data.iteration_since_maintenance</iteration_since_maintenance>
+                <stick>!data.stick</stick>
+                <stick_weight>!data.stick_weight</stick_weight>
+                <wait_time>!data.wait_time</wait_time>
+                <cook_time>!data.cook_time</cook_time>
+                <start_temp>!data.start_temp</start_temp>
+                <cook_temp>!data.cook_temp</cook_temp>
+                <cooled_temp>!data.</cooled_temp>
+                <cook_time>!data.</cook_time>
+              </init>
+              <endpoints/>
+              <attributes/>
+              <customization/>
+            </arguments>
+          </parameters>
+          <code>
+            <signal_receive>on</signal_receive>
+            <signal_change>on</signal_change>
+            <prepare/>
+            <finalize output="result"/>
+            <update output="result"/>
+            <rescue output="result"/>
+          </code>
+          <annotations>
+            <_generic/>
+            <_timing>
+              <_timing_weight/>
+              <_timing_avg/>
+              <explanations/>
+            </_timing>
+            <_shifting>
+              <_shifting_type>Duration</_shifting_type>
+            </_shifting>
+            <_context_data_analysis>
+              <probes/>
+              <ips/>
+            </_context_data_analysis>
+            <report>
+              <url/>
+            </report>
+            <_notes>
+              <_notes_general/>
+            </_notes>
+          </annotations>
+          <documentation>
+            <input/>
+            <output/>
+            <implementation>
+              <description/>
+            </implementation>
+            <code>
+              <description/>
+            </code>
+          </documentation>
+        </call>
+        <manipulate id="a2" label="Go to the next available Stick">data.stick += 1
+    data.iteration_since_maintenance += 1</manipulate>
+      </loop>
+    </description>
+  cpee:change_uuid: e8c6513069c4bdc4f8ae91ff4448c7e811be3c57
+  time:timestamp: '2025-08-22T06:41:40.004792+02:00'
+---
+event:
+  concept:instance: 64520
+  id:id: external
+  cpee:activity: external
+  cpee:instance: 8fa9b3a5-4d0d-4532-868d-09302001d1e2
+  lifecycle:transition: unknown
+  cpee:lifecycle:transition: description/change
+  cpee:description: |
+    <?xml version="1.0"?>
+    <description xmlns="http://cpee.org/ns/description/1.0">
+      <manipulate id="a3" label="Initialize the Start position of the first Stick (0 for the first hole)">data.stick = 0</manipulate>
+      <loop mode="pre_test" condition="data.stick &lt;= 10">
+        <manipulate id="a4" label="Initialize iteration">data.wait_time = data.stick == 0 ? 70 : (54 - 2*data.stick)
+    data.cook_time = data.stick == 0 ? 70 : (66 + 1*data.stick)</manipulate>
+        <_probability>
+          <_probability_min/>
+          <_probability_max/>
+          <_probability_avg/>
+        </_probability>
+        <call id="a1" endpoint="subprocess">
+          <parameters>
+            <label>Call The Cottonbot with Data Collection</label>
+            <method>:post</method>
+            <arguments>
+              <behavior>wait_running</behavior>
+              <url>https://cpee.org/hub/server/Theses.dir/Nicolas%20Arteaga.dir/Cottonbot%20-%20Run%20with%20Data%20Collection%20vAutonomous.xml</url>
+              <init>
+                <batch_number>!data.batch_number</batch_number>
+                <iteration_since_maintenance>!data.iteration_since_maintenance</iteration_since_maintenance>
+                <stick>!data.stick</stick>
+                <stick_weight>!data.stick_weight</stick_weight>
+                <wait_time>!data.wait_time</wait_time>
+                <cook_time>!data.cook_time</cook_time>
+                <start_temp>!data.start_temp</start_temp>
+                <cook_temp>!data.cook_temp</cook_temp>
+                <cooled_temp>!data.cooled_temp</cooled_temp>
+                <cook_time>!data.</cook_time>
+              </init>
+              <endpoints/>
+              <attributes/>
+              <customization/>
+            </arguments>
+          </parameters>
+          <code>
+            <signal_receive>on</signal_receive>
+            <signal_change>on</signal_change>
+            <prepare/>
+            <finalize output="result"/>
+            <update output="result"/>
+            <rescue output="result"/>
+          </code>
+          <annotations>
+            <_generic/>
+            <_timing>
+              <_timing_weight/>
+              <_timing_avg/>
+              <explanations/>
+            </_timing>
+            <_shifting>
+              <_shifting_type>Duration</_shifting_type>
+            </_shifting>
+            <_context_data_analysis>
+              <probes/>
+              <ips/>
+            </_context_data_analysis>
+            <report>
+              <url/>
+            </report>
+            <_notes>
+              <_notes_general/>
+            </_notes>
+          </annotations>
+          <documentation>
+            <input/>
+            <output/>
+            <implementation>
+              <description/>
+            </implementation>
+            <code>
+              <description/>
+            </code>
+          </documentation>
+        </call>
+        <manipulate id="a2" label="Go to the next available Stick">data.stick += 1
+    data.iteration_since_maintenance += 1</manipulate>
+      </loop>
+    </description>
+  cpee:change_uuid: '09817e3679541e411a70a315c1707135c619f91b'
+  time:timestamp: '2025-08-22T06:41:42.621932+02:00'
+---
+event:
+  concept:instance: 64520
+  id:id: external
+  cpee:activity: external
+  cpee:instance: 8fa9b3a5-4d0d-4532-868d-09302001d1e2
+  lifecycle:transition: unknown
+  cpee:lifecycle:transition: description/change
+  cpee:description: |
+    <?xml version="1.0"?>
+    <description xmlns="http://cpee.org/ns/description/1.0">
+      <manipulate id="a3" label="Initialize the Start position of the first Stick (0 for the first hole)">data.stick = 0</manipulate>
+      <loop mode="pre_test" condition="data.stick &lt;= 10">
+        <manipulate id="a4" label="Initialize iteration">data.wait_time = data.stick == 0 ? 70 : (54 - 2*data.stick)
+    data.cook_time = data.stick == 0 ? 70 : (66 + 1*data.stick)</manipulate>
+        <_probability>
+          <_probability_min/>
+          <_probability_max/>
+          <_probability_avg/>
+        </_probability>
+        <call id="a1" endpoint="subprocess">
+          <parameters>
+            <label>Call The Cottonbot with Data Collection</label>
+            <method>:post</method>
+            <arguments>
+              <behavior>wait_running</behavior>
+              <url>https://cpee.org/hub/server/Theses.dir/Nicolas%20Arteaga.dir/Cottonbot%20-%20Run%20with%20Data%20Collection%20vAutonomous.xml</url>
+              <init>
+                <batch_number>!data.batch_number</batch_number>
+                <iteration_since_maintenance>!data.iteration_since_maintenance</iteration_since_maintenance>
+                <stick>!data.stick</stick>
+                <stick_weight>!data.stick_weight</stick_weight>
+                <wait_time>!data.wait_time</wait_time>
+                <cook_time>!data.cook_time</cook_time>
+                <start_temp>!data.start_temp</start_temp>
+                <cook_temp>!data.cook_temp</cook_temp>
+                <cooled_temp>!data.cooled_temp</cooled_temp>
+                <cook_time>!data.cook_time</cook_time>
+              </init>
+              <endpoints/>
+              <attributes/>
+              <customization/>
+            </arguments>
+          </parameters>
+          <code>
+            <signal_receive>on</signal_receive>
+            <signal_change>on</signal_change>
+            <prepare/>
+            <finalize output="result"/>
+            <update output="result"/>
+            <rescue output="result"/>
+          </code>
+          <annotations>
+            <_generic/>
+            <_timing>
+              <_timing_weight/>
+              <_timing_avg/>
+              <explanations/>
+            </_timing>
+            <_shifting>
+              <_shifting_type>Duration</_shifting_type>
+            </_shifting>
+            <_context_data_analysis>
+              <probes/>
+              <ips/>
+            </_context_data_analysis>
+            <report>
+              <url/>
+            </report>
+            <_notes>
+              <_notes_general/>
+            </_notes>
+          </annotations>
+          <documentation>
+            <input/>
+            <output/>
+            <implementation>
+              <description/>
+            </implementation>
+            <code>
+              <description/>
+            </code>
+          </documentation>
+        </call>
+        <manipulate id="a2" label="Go to the next available Stick">data.stick += 1
+    data.iteration_since_maintenance += 1</manipulate>
+      </loop>
+    </description>
+  cpee:change_uuid: f58ad1ff9260659988025383f6a0beee6ca50f27
+  time:timestamp: '2025-08-22T06:41:48.804747+02:00'
+---
+event:
+  concept:instance: 64520
+  id:id: external
+  cpee:activity: external
+  cpee:instance: 8fa9b3a5-4d0d-4532-868d-09302001d1e2
+  lifecycle:transition: unknown
+  cpee:lifecycle:transition: dataelements/change
+  data:
+  - name: batch_number
+    value: 14
+  - name: iteration_since_maintenance
+    value: 42
+  - name: stick
+    value: 0
+  - name: wait_time
+    value: 29
+  - name: cook_time
+    value: 64
+  - name: cooldown_time
+    value: 80
+  - name: stick_weight
+    value: 1.9
+  - name: start_temp
+    value: ''
+  time:timestamp: '2025-08-22T06:41:58.621620+02:00'
+---
+event:
+  concept:instance: 64520
+  id:id: external
+  cpee:activity: external
+  cpee:instance: 8fa9b3a5-4d0d-4532-868d-09302001d1e2
+  lifecycle:transition: unknown
+  cpee:lifecycle:transition: dataelements/change
+  data:
+  - name: batch_number
+    value: 14
+  - name: iteration_since_maintenance
+    value: 42
+  - name: stick
+    value: 0
+  - name: wait_time
+    value: 29
+  - name: cook_time
+    value: 64
+  - name: cooldown_time
+    value: 80
+  - name: stick_weight
+    value: 1.9
+  - name: start_temp
+    value: ''
+  - name: cook_temp
+    value: ''
+  time:timestamp: '2025-08-22T06:42:05.291611+02:00'
+---
+event:
+  concept:instance: 64520
+  id:id: external
+  cpee:activity: external
+  cpee:instance: 8fa9b3a5-4d0d-4532-868d-09302001d1e2
+  lifecycle:transition: unknown
+  cpee:lifecycle:transition: dataelements/change
+  data:
+  - name: batch_number
+    value: 14
+  - name: iteration_since_maintenance
+    value: 42
+  - name: stick
+    value: 0
+  - name: wait_time
+    value: 29
+  - name: cook_time
+    value: 64
+  - name: cooldown_time
+    value: 80
+  - name: stick_weight
+    value: 1.9
+  - name: start_temp
+    value: ''
+  - name: cook_temp
+    value: ''
+  time:timestamp: '2025-08-22T06:42:10.840847+02:00'
+---
+event:
+  concept:instance: 64520
+  id:id: external
+  cpee:activity: external
+  cpee:instance: 8fa9b3a5-4d0d-4532-868d-09302001d1e2
+  lifecycle:transition: unknown
+  cpee:lifecycle:transition: dataelements/change
+  data:
+  - name: batch_number
+    value: 14
+  - name: iteration_since_maintenance
+    value: 42
+  - name: stick
+    value: 0
+  - name: wait_time
+    value: 29
+  - name: cook_time
+    value: 64
+  - name: cooldown_time
+    value: 80
+  - name: stick_weight
+    value: 1.9
+  - name: start_temp
+    value: ''
+  - name: cook_temp
+    value: ''
+  - name: cooled_temp
+    value: ''
+  time:timestamp: '2025-08-22T06:42:19.138649+02:00'
+---
+event:
+  concept:instance: 64520
+  id:id: external
+  cpee:activity: external
+  cpee:instance: 8fa9b3a5-4d0d-4532-868d-09302001d1e2
+  lifecycle:transition: unknown
+  cpee:lifecycle:transition: dataelements/change
+  data:
+  - name: batch_number
+    value: 14
+  - name: iteration_since_maintenance
+    value: 42
+  - name: stick
+    value: 0
+  - name: wait_time
+    value: 29
+  - name: cook_time
+    value: 64
+  - name: cooldown_time
+    value: 80
+  - name: stick_weight
+    value: 1.9
+  - name: start_temp
+    value: ''
+  - name: cook_temp
+    value: ''
+  - name: cooled_temp
+    value: 56
+  time:timestamp: '2025-08-22T06:42:28.524304+02:00'
+---
+event:
+  concept:instance: 64520
+  id:id: external
+  cpee:activity: external
+  cpee:instance: 8fa9b3a5-4d0d-4532-868d-09302001d1e2
+  lifecycle:transition: unknown
+  cpee:lifecycle:transition: dataelements/change
+  data:
+  - name: batch_number
+    value: 14
+  - name: iteration_since_maintenance
+    value: 42
+  - name: stick
+    value: 0
+  - name: wait_time
+    value: 29
+  - name: cook_time
+    value: 64
+  - name: cooldown_time
+    value: 80
+  - name: stick_weight
+    value: 1.9
+  - name: start_temp
+    value: ''
+  - name: cook_temp
+    value: 68
+  - name: cooled_temp
+    value: 56
+  time:timestamp: '2025-08-22T06:42:34.262660+02:00'
+---
+event:
+  concept:instance: 64520
+  id:id: external
+  cpee:activity: external
+  cpee:instance: 8fa9b3a5-4d0d-4532-868d-09302001d1e2
+  lifecycle:transition: unknown
+  cpee:lifecycle:transition: dataelements/change
+  data:
+  - name: batch_number
+    value: 14
+  - name: iteration_since_maintenance
+    value: 42
+  - name: stick
+    value: 0
+  - name: wait_time
+    value: 29
+  - name: cook_time
+    value: 64
+  - name: cooldown_time
+    value: 80
+  - name: stick_weight
+    value: 1.9
+  - name: start_temp
+    value: 50
+  - name: cook_temp
+    value: 68
+  - name: cooled_temp
+    value: 56
+  time:timestamp: '2025-08-22T06:42:48.444073+02:00'
+---
+event:
+  concept:instance: 64520
+  id:id: external
+  cpee:activity: external
+  cpee:instance: 8fa9b3a5-4d0d-4532-868d-09302001d1e2
+  lifecycle:transition: unknown
+  cpee:lifecycle:transition: dataelements/change
+  data:
+  - name: batch_number
+    value: 14
+  - name: iteration_since_maintenance
+    value: 42
+  - name: stick
+    value: 0
+  - name: wait_time
+    value: 29
+  - name: cooldown_time
+    value: 80
+  - name: stick_weight
+    value: 1.9
+  - name: cook_time
+    value: 64
+  - name: start_temp
+    value: 50
+  - name: cook_temp
+    value: 68
+  - name: cooled_temp
+    value: 56
+  time:timestamp: '2025-08-22T06:42:55.310879+02:00'
+---
+event:
+  concept:instance: 64520
+  id:id: external
+  cpee:activity: external
+  cpee:instance: 8fa9b3a5-4d0d-4532-868d-09302001d1e2
+  lifecycle:transition: unknown
+  cpee:lifecycle:transition: dataelements/change
+  data:
+  - name: batch_number
+    value: 14
+  - name: iteration_since_maintenance
+    value: 42
+  - name: stick
+    value: 0
+  - name: wait_time
+    value: 29
+  - name: cooldown_time
+    value: 80
+  - name: stick_weight
+    value: 1.9
+  - name: cook_time
+    value: 48
+  - name: start_temp
+    value: 50
+  - name: cook_temp
+    value: 68
+  - name: cooled_temp
+    value: 56
+  time:timestamp: '2025-08-22T06:43:08.066349+02:00'
+---
+event:
+  concept:instance: 64520
+  id:id: external
+  cpee:activity: external
+  cpee:instance: 8fa9b3a5-4d0d-4532-868d-09302001d1e2
+  lifecycle:transition: unknown
+  cpee:lifecycle:transition: description/change
+  cpee:description: |
+    <?xml version="1.0"?>
+    <description xmlns="http://cpee.org/ns/description/1.0">
+      <manipulate id="a3" label="Initialize the Start position of the first Stick (0 for the first hole)">data.stick = 0</manipulate>
+      <loop mode="pre_test" condition="data.stick &lt;= 10">
+        <manipulate id="a4" label="Initialize iteration">data.wait_time = data.stick == 0 ? 70 : (54 - 2*data.stick)
+    data.cook_time = data.stick == 0 ? 70 : (66 + 1*data.stick)</manipulate>
+        <_probability>
+          <_probability_min/>
+          <_probability_max/>
+          <_probability_avg/>
+        </_probability>
+        <call id="a1" endpoint="subprocess">
+          <parameters>
+            <label>Call The Cottonbot with Data Collection</label>
+            <method>:post</method>
+            <arguments>
+              <behavior>wait_running</behavior>
+              <url>https://cpee.org/hub/server/Theses.dir/Nicolas%20Arteaga.dir/Cottonbot%20-%20Run%20with%20Data%20Collection%20vAutonomous.xml</url>
+              <init>
+                <batch_number>!data.batch_number</batch_number>
+                <iteration_since_maintenance>!data.iteration_since_maintenance</iteration_since_maintenance>
+                <stick>!data.stick</stick>
+                <stick_weight>!data.stick_weight</stick_weight>
+                <wait_time>!data.wait_time</wait_time>
+                <cook_time>!data.cook_time</cook_time>
+                <start_temp>!data.start_temp</start_temp>
+                <cook_temp>!data.cook_temp</cook_temp>
+                <cooled_temp>!data.cooled_temp</cooled_temp>
+              </init>
+              <endpoints/>
+              <attributes/>
+              <customization/>
+            </arguments>
+          </parameters>
+          <code>
+            <signal_receive>on</signal_receive>
+            <signal_change>on</signal_change>
+            <prepare/>
+            <finalize output="result"/>
+            <update output="result"/>
+            <rescue output="result"/>
+          </code>
+          <annotations>
+            <_generic/>
+            <_timing>
+              <_timing_weight/>
+              <_timing_avg/>
+              <explanations/>
+            </_timing>
+            <_shifting>
+              <_shifting_type>Duration</_shifting_type>
+            </_shifting>
+            <_context_data_analysis>
+              <probes/>
+              <ips/>
+            </_context_data_analysis>
+            <report>
+              <url/>
+            </report>
+            <_notes>
+              <_notes_general/>
+            </_notes>
+          </annotations>
+          <documentation>
+            <input/>
+            <output/>
+            <implementation>
+              <description/>
+            </implementation>
+            <code>
+              <description/>
+            </code>
+          </documentation>
+        </call>
+        <manipulate id="a2" label="Go to the next available Stick">data.stick += 1
+    data.iteration_since_maintenance += 1</manipulate>
+      </loop>
+    </description>
+  cpee:change_uuid: 4d7e930c7ae5937edf78c4836091bb2f69caf7c9
+  time:timestamp: '2025-08-22T06:43:17.230927+02:00'
+---
+event:
+  concept:instance: 64520
+  id:id: external
+  cpee:activity: external
+  cpee:instance: 8fa9b3a5-4d0d-4532-868d-09302001d1e2
+  lifecycle:transition: unknown
+  cpee:lifecycle:transition: dataelements/change
+  data:
+  - name: batch_number
+    value: 14
+  - name: iteration_since_maintenance
+    value: 42
+  - name: stick
+    value: 0
+  - name: wait_time
+    value: 29
+  - name: cooldown_time
+    value: 80
+  - name: stick_weight
+    value: 1.9
+  - name: cook_time
+    value: 48
+  - name: start_temp
+    value: 50
+  - name: cook_temp
+    value: 65
+  - name: cooled_temp
+    value: 56
+  time:timestamp: '2025-08-22T06:43:41.925386+02:00'
+---
+event:
+  concept:instance: 64520
+  id:id: external
+  cpee:activity: external
+  cpee:instance: 8fa9b3a5-4d0d-4532-868d-09302001d1e2
+  lifecycle:transition: unknown
+  cpee:lifecycle:transition: description/change
+  cpee:description: |
+    <?xml version="1.0"?>
+    <description xmlns="http://cpee.org/ns/description/1.0">
+      <manipulate id="a3" label="Initialize the Start position of the first Stick (0 for the first hole)">data.stick = 0</manipulate>
+      <loop mode="pre_test" condition="data.stick &lt;= 10">
+        <manipulate id="a4" label="Initialize iteration">data.wait_time = data.stick == 0 ? 70 : (54 - 2*data.stick)
+    data.cook_time = data.stick == 0 ? 48 : (48 + 1*data.stick)</manipulate>
+        <_probability>
+          <_probability_min/>
+          <_probability_max/>
+          <_probability_avg/>
+        </_probability>
+        <call id="a1" endpoint="subprocess">
+          <parameters>
+            <label>Call The Cottonbot with Data Collection</label>
+            <method>:post</method>
+            <arguments>
+              <behavior>wait_running</behavior>
+              <url>https://cpee.org/hub/server/Theses.dir/Nicolas%20Arteaga.dir/Cottonbot%20-%20Run%20with%20Data%20Collection%20vAutonomous.xml</url>
+              <init>
+                <batch_number>!data.batch_number</batch_number>
+                <iteration_since_maintenance>!data.iteration_since_maintenance</iteration_since_maintenance>
+                <stick>!data.stick</stick>
+                <stick_weight>!data.stick_weight</stick_weight>
+                <wait_time>!data.wait_time</wait_time>
+                <cook_time>!data.cook_time</cook_time>
+                <start_temp>!data.start_temp</start_temp>
+                <cook_temp>!data.cook_temp</cook_temp>
+                <cooled_temp>!data.cooled_temp</cooled_temp>
+              </init>
+              <endpoints/>
+              <attributes/>
+              <customization/>
+            </arguments>
+          </parameters>
+          <code>
+            <signal_receive>on</signal_receive>
+            <signal_change>on</signal_change>
+            <prepare/>
+            <finalize output="result"/>
+            <update output="result"/>
+            <rescue output="result"/>
+          </code>
+          <annotations>
+            <_generic/>
+            <_timing>
+              <_timing_weight/>
+              <_timing_avg/>
+              <explanations/>
+            </_timing>
+            <_shifting>
+              <_shifting_type>Duration</_shifting_type>
+            </_shifting>
+            <_context_data_analysis>
+              <probes/>
+              <ips/>
+            </_context_data_analysis>
+            <report>
+              <url/>
+            </report>
+            <_notes>
+              <_notes_general/>
+            </_notes>
+          </annotations>
+          <documentation>
+            <input/>
+            <output/>
+            <implementation>
+              <description/>
+            </implementation>
+            <code>
+              <description/>
+            </code>
+          </documentation>
+        </call>
+        <manipulate id="a2" label="Go to the next available Stick">data.stick += 1
+    data.iteration_since_maintenance += 1</manipulate>
+      </loop>
+    </description>
+  cpee:change_uuid: 0ac7bdc25e5583ee7fbda41dedc79a768dc920eb
+  time:timestamp: '2025-08-22T06:44:46.239444+02:00'
+---
+event:
+  concept:instance: 64520
+  id:id: external
+  cpee:activity: external
+  cpee:instance: 8fa9b3a5-4d0d-4532-868d-09302001d1e2
+  lifecycle:transition: unknown
+  cpee:lifecycle:transition: description/change
+  cpee:description: |
+    <?xml version="1.0"?>
+    <description xmlns="http://cpee.org/ns/description/1.0">
+      <manipulate id="a3" label="Initialize the Start position of the first Stick (0 for the first hole)">data.stick = 0</manipulate>
+      <loop mode="pre_test" condition="data.stick &lt;= 10">
+        <manipulate id="a4" label="Initialize iteration">data._time = data.stick == 0 ? 70 : (54 - 2*data.stick)
+    data.cook_time = data.stick == 0 ? 48 : (48 + 1*data.stick)</manipulate>
+        <_probability>
+          <_probability_min/>
+          <_probability_max/>
+          <_probability_avg/>
+        </_probability>
+        <call id="a1" endpoint="subprocess">
+          <parameters>
+            <label>Call The Cottonbot with Data Collection</label>
+            <method>:post</method>
+            <arguments>
+              <behavior>wait_running</behavior>
+              <url>https://cpee.org/hub/server/Theses.dir/Nicolas%20Arteaga.dir/Cottonbot%20-%20Run%20with%20Data%20Collection%20vAutonomous.xml</url>
+              <init>
+                <batch_number>!data.batch_number</batch_number>
+                <iteration_since_maintenance>!data.iteration_since_maintenance</iteration_since_maintenance>
+                <stick>!data.stick</stick>
+                <stick_weight>!data.stick_weight</stick_weight>
+                <wait_time>!data.wait_time</wait_time>
+                <cook_time>!data.cook_time</cook_time>
+                <start_temp>!data.start_temp</start_temp>
+                <cook_temp>!data.cook_temp</cook_temp>
+                <cooled_temp>!data.cooled_temp</cooled_temp>
+              </init>
+              <endpoints/>
+              <attributes/>
+              <customization/>
+            </arguments>
+          </parameters>
+          <code>
+            <signal_receive>on</signal_receive>
+            <signal_change>on</signal_change>
+            <prepare/>
+            <finalize output="result"/>
+            <update output="result"/>
+            <rescue output="result"/>
+          </code>
+          <annotations>
+            <_generic/>
+            <_timing>
+              <_timing_weight/>
+              <_timing_avg/>
+              <explanations/>
+            </_timing>
+            <_shifting>
+              <_shifting_type>Duration</_shifting_type>
+            </_shifting>
+            <_context_data_analysis>
+              <probes/>
+              <ips/>
+            </_context_data_analysis>
+            <report>
+              <url/>
+            </report>
+            <_notes>
+              <_notes_general/>
+            </_notes>
+          </annotations>
+          <documentation>
+            <input/>
+            <output/>
+            <implementation>
+              <description/>
+            </implementation>
+            <code>
+              <description/>
+            </code>
+          </documentation>
+        </call>
+        <manipulate id="a2" label="Go to the next available Stick">data.stick += 1
+    data.iteration_since_maintenance += 1</manipulate>
+      </loop>
+    </description>
+  cpee:change_uuid: c2347225867bcc168d2b02e1120aea5220fed476
+  time:timestamp: '2025-08-22T06:44:54.056441+02:00'
+---
+event:
+  concept:instance: 64520
+  id:id: external
+  cpee:activity: external
+  cpee:instance: 8fa9b3a5-4d0d-4532-868d-09302001d1e2
+  lifecycle:transition: unknown
+  cpee:lifecycle:transition: dataelements/change
+  data:
+  - name: batch_number
+    value: 14
+  - name: iteration_since_maintenance
+    value: 42
+  - name: stick
+    value: 0
+  - name: wait_time
+    value: 29
+  - name: cooldown_time
+    value: 80
+  - name: stick_weight
+    value: 1.9
+  - name: cook_time
+    value: 48
+  - name: start_temp
+    value: 50
+  - name: cook_temp
+    value: 68
+  - name: cooled_temp
+    value: 56
+  time:timestamp: '2025-08-22T06:45:09.832679+02:00'
+---
+event:
+  concept:instance: 64520
+  id:id: external
+  cpee:activity: external
+  cpee:instance: 8fa9b3a5-4d0d-4532-868d-09302001d1e2
+  lifecycle:transition: unknown
+  cpee:lifecycle:transition: description/change
+  cpee:description: |
+    <?xml version="1.0"?>
+    <description xmlns="http://cpee.org/ns/description/1.0">
+      <manipulate id="a3" label="Initialize the Start position of the first Stick (0 for the first hole)">data.stick = 0</manipulate>
+      <loop mode="pre_test" condition="data.stick &lt;= 10">
+        <manipulate id="a4" label="Initialize iteration">data._time = data.stick == 0 ? 70 : (54 - 2*data.stick)
+    data.cook_time = data.stick == 0 ? 48 : (48 + 3.75*data.stick)</manipulate>
+        <_probability>
+          <_probability_min/>
+          <_probability_max/>
+          <_probability_avg/>
+        </_probability>
+        <call id="a1" endpoint="subprocess">
+          <parameters>
+            <label>Call The Cottonbot with Data Collection</label>
+            <method>:post</method>
+            <arguments>
+              <behavior>wait_running</behavior>
+              <url>https://cpee.org/hub/server/Theses.dir/Nicolas%20Arteaga.dir/Cottonbot%20-%20Run%20with%20Data%20Collection%20vAutonomous.xml</url>
+              <init>
+                <batch_number>!data.batch_number</batch_number>
+                <iteration_since_maintenance>!data.iteration_since_maintenance</iteration_since_maintenance>
+                <stick>!data.stick</stick>
+                <stick_weight>!data.stick_weight</stick_weight>
+                <wait_time>!data.wait_time</wait_time>
+                <cook_time>!data.cook_time</cook_time>
+                <start_temp>!data.start_temp</start_temp>
+                <cook_temp>!data.cook_temp</cook_temp>
+                <cooled_temp>!data.cooled_temp</cooled_temp>
+              </init>
+              <endpoints/>
+              <attributes/>
+              <customization/>
+            </arguments>
+          </parameters>
+          <code>
+            <signal_receive>on</signal_receive>
+            <signal_change>on</signal_change>
+            <prepare/>
+            <finalize output="result"/>
+            <update output="result"/>
+            <rescue output="result"/>
+          </code>
+          <annotations>
+            <_generic/>
+            <_timing>
+              <_timing_weight/>
+              <_timing_avg/>
+              <explanations/>
+            </_timing>
+            <_shifting>
+              <_shifting_type>Duration</_shifting_type>
+            </_shifting>
+            <_context_data_analysis>
+              <probes/>
+              <ips/>
+            </_context_data_analysis>
+            <report>
+              <url/>
+            </report>
+            <_notes>
+              <_notes_general/>
+            </_notes>
+          </annotations>
+          <documentation>
+            <input/>
+            <output/>
+            <implementation>
+              <description/>
+            </implementation>
+            <code>
+              <description/>
+            </code>
+          </documentation>
+        </call>
+        <manipulate id="a2" label="Go to the next available Stick">data.stick += 1
+    data.iteration_since_maintenance += 1</manipulate>
+      </loop>
+    </description>
+  cpee:change_uuid: b4114a5756eaa638c531fb620290d2666abdb0be
+  time:timestamp: '2025-08-22T06:45:27.188965+02:00'
+---
+event:
+  concept:instance: 64520
+  id:id: external
+  cpee:activity: external
+  cpee:instance: 8fa9b3a5-4d0d-4532-868d-09302001d1e2
+  lifecycle:transition: unknown
+  cpee:lifecycle:transition: description/change
+  cpee:description: |
+    <?xml version="1.0"?>
+    <description xmlns="http://cpee.org/ns/description/1.0">
+      <manipulate id="a3" label="Initialize the Start position of the first Stick (0 for the first hole)">data.stick = 0</manipulate>
+      <loop mode="pre_test" condition="data.stick &lt;= 10">
+        <manipulate id="a4" label="Initialize iteration">data._time = data.stick == 0 ? 70 : (54 - 2*data.stick)
+    data.cook_tmp = data.stick == 0 ? 48 : (48 + 3.75*data.stick)</manipulate>
+        <_probability>
+          <_probability_min/>
+          <_probability_max/>
+          <_probability_avg/>
+        </_probability>
+        <call id="a1" endpoint="subprocess">
+          <parameters>
+            <label>Call The Cottonbot with Data Collection</label>
+            <method>:post</method>
+            <arguments>
+              <behavior>wait_running</behavior>
+              <url>https://cpee.org/hub/server/Theses.dir/Nicolas%20Arteaga.dir/Cottonbot%20-%20Run%20with%20Data%20Collection%20vAutonomous.xml</url>
+              <init>
+                <batch_number>!data.batch_number</batch_number>
+                <iteration_since_maintenance>!data.iteration_since_maintenance</iteration_since_maintenance>
+                <stick>!data.stick</stick>
+                <stick_weight>!data.stick_weight</stick_weight>
+                <wait_time>!data.wait_time</wait_time>
+                <cook_time>!data.cook_time</cook_time>
+                <start_temp>!data.start_temp</start_temp>
+                <cook_temp>!data.cook_temp</cook_temp>
+                <cooled_temp>!data.cooled_temp</cooled_temp>
+              </init>
+              <endpoints/>
+              <attributes/>
+              <customization/>
+            </arguments>
+          </parameters>
+          <code>
+            <signal_receive>on</signal_receive>
+            <signal_change>on</signal_change>
+            <prepare/>
+            <finalize output="result"/>
+            <update output="result"/>
+            <rescue output="result"/>
+          </code>
+          <annotations>
+            <_generic/>
+            <_timing>
+              <_timing_weight/>
+              <_timing_avg/>
+              <explanations/>
+            </_timing>
+            <_shifting>
+              <_shifting_type>Duration</_shifting_type>
+            </_shifting>
+            <_context_data_analysis>
+              <probes/>
+              <ips/>
+            </_context_data_analysis>
+            <report>
+              <url/>
+            </report>
+            <_notes>
+              <_notes_general/>
+            </_notes>
+          </annotations>
+          <documentation>
+            <input/>
+            <output/>
+            <implementation>
+              <description/>
+            </implementation>
+            <code>
+              <description/>
+            </code>
+          </documentation>
+        </call>
+        <manipulate id="a2" label="Go to the next available Stick">data.stick += 1
+    data.iteration_since_maintenance += 1</manipulate>
+      </loop>
+    </description>
+  cpee:change_uuid: d5968586291378e1b280ae56473cff0506d260ec
+  time:timestamp: '2025-08-22T06:45:43.684543+02:00'
+---
+event:
+  concept:instance: 64520
+  id:id: external
+  cpee:activity: external
+  cpee:instance: 8fa9b3a5-4d0d-4532-868d-09302001d1e2
+  lifecycle:transition: unknown
+  cpee:lifecycle:transition: description/change
+  cpee:description: |
+    <?xml version="1.0"?>
+    <description xmlns="http://cpee.org/ns/description/1.0">
+      <manipulate id="a3" label="Initialize the Start position of the first Stick (0 for the first hole)">data.stick = 0</manipulate>
+      <loop mode="pre_test" condition="data.stick &lt;= 10">
+        <manipulate id="a4" label="Initialize iteration">data._time = data.stick == 0 ? 70 : (54 - 2*data.stick)
+    data.cook_temp = data.stick == 0 ? 68 : (48 + 3.75*data.stick)</manipulate>
+        <_probability>
+          <_probability_min/>
+          <_probability_max/>
+          <_probability_avg/>
+        </_probability>
+        <call id="a1" endpoint="subprocess">
+          <parameters>
+            <label>Call The Cottonbot with Data Collection</label>
+            <method>:post</method>
+            <arguments>
+              <behavior>wait_running</behavior>
+              <url>https://cpee.org/hub/server/Theses.dir/Nicolas%20Arteaga.dir/Cottonbot%20-%20Run%20with%20Data%20Collection%20vAutonomous.xml</url>
+              <init>
+                <batch_number>!data.batch_number</batch_number>
+                <iteration_since_maintenance>!data.iteration_since_maintenance</iteration_since_maintenance>
+                <stick>!data.stick</stick>
+                <stick_weight>!data.stick_weight</stick_weight>
+                <wait_time>!data.wait_time</wait_time>
+                <cook_time>!data.cook_time</cook_time>
+                <start_temp>!data.start_temp</start_temp>
+                <cook_temp>!data.cook_temp</cook_temp>
+                <cooled_temp>!data.cooled_temp</cooled_temp>
+              </init>
+              <endpoints/>
+              <attributes/>
+              <customization/>
+            </arguments>
+          </parameters>
+          <code>
+            <signal_receive>on</signal_receive>
+            <signal_change>on</signal_change>
+            <prepare/>
+            <finalize output="result"/>
+            <update output="result"/>
+            <rescue output="result"/>
+          </code>
+          <annotations>
+            <_generic/>
+            <_timing>
+              <_timing_weight/>
+              <_timing_avg/>
+              <explanations/>
+            </_timing>
+            <_shifting>
+              <_shifting_type>Duration</_shifting_type>
+            </_shifting>
+            <_context_data_analysis>
+              <probes/>
+              <ips/>
+            </_context_data_analysis>
+            <report>
+              <url/>
+            </report>
+            <_notes>
+              <_notes_general/>
+            </_notes>
+          </annotations>
+          <documentation>
+            <input/>
+            <output/>
+            <implementation>
+              <description/>
+            </implementation>
+            <code>
+              <description/>
+            </code>
+          </documentation>
+        </call>
+        <manipulate id="a2" label="Go to the next available Stick">data.stick += 1
+    data.iteration_since_maintenance += 1</manipulate>
+      </loop>
+    </description>
+  cpee:change_uuid: 5e0a1958e2c3c8a1bd142351d867467e82ca5dcf
+  time:timestamp: '2025-08-22T06:45:57.550264+02:00'
+---
+event:
+  concept:instance: 64520
+  id:id: external
+  cpee:activity: external
+  cpee:instance: 8fa9b3a5-4d0d-4532-868d-09302001d1e2
+  lifecycle:transition: unknown
+  cpee:lifecycle:transition: description/change
+  cpee:description: |
+    <?xml version="1.0"?>
+    <description xmlns="http://cpee.org/ns/description/1.0">
+      <manipulate id="a3" label="Initialize the Start position of the first Stick (0 for the first hole)">data.stick = 0</manipulate>
+      <loop mode="pre_test" condition="data.stick &lt;= 10">
+        <manipulate id="a4" label="Initialize iteration">data._time = data.stick == 0 ? 70 : (54 - 2*data.stick)
+    data.cook_temp = data.stick == 0 ? 68 : (68 + 1*data.stick)</manipulate>
+        <_probability>
+          <_probability_min/>
+          <_probability_max/>
+          <_probability_avg/>
+        </_probability>
+        <call id="a1" endpoint="subprocess">
+          <parameters>
+            <label>Call The Cottonbot with Data Collection</label>
+            <method>:post</method>
+            <arguments>
+              <behavior>wait_running</behavior>
+              <url>https://cpee.org/hub/server/Theses.dir/Nicolas%20Arteaga.dir/Cottonbot%20-%20Run%20with%20Data%20Collection%20vAutonomous.xml</url>
+              <init>
+                <batch_number>!data.batch_number</batch_number>
+                <iteration_since_maintenance>!data.iteration_since_maintenance</iteration_since_maintenance>
+                <stick>!data.stick</stick>
+                <stick_weight>!data.stick_weight</stick_weight>
+                <wait_time>!data.wait_time</wait_time>
+                <cook_time>!data.cook_time</cook_time>
+                <start_temp>!data.start_temp</start_temp>
+                <cook_temp>!data.cook_temp</cook_temp>
+                <cooled_temp>!data.cooled_temp</cooled_temp>
+              </init>
+              <endpoints/>
+              <attributes/>
+              <customization/>
+            </arguments>
+          </parameters>
+          <code>
+            <signal_receive>on</signal_receive>
+            <signal_change>on</signal_change>
+            <prepare/>
+            <finalize output="result"/>
+            <update output="result"/>
+            <rescue output="result"/>
+          </code>
+          <annotations>
+            <_generic/>
+            <_timing>
+              <_timing_weight/>
+              <_timing_avg/>
+              <explanations/>
+            </_timing>
+            <_shifting>
+              <_shifting_type>Duration</_shifting_type>
+            </_shifting>
+            <_context_data_analysis>
+              <probes/>
+              <ips/>
+            </_context_data_analysis>
+            <report>
+              <url/>
+            </report>
+            <_notes>
+              <_notes_general/>
+            </_notes>
+          </annotations>
+          <documentation>
+            <input/>
+            <output/>
+            <implementation>
+              <description/>
+            </implementation>
+            <code>
+              <description/>
+            </code>
+          </documentation>
+        </call>
+        <manipulate id="a2" label="Go to the next available Stick">data.stick += 1
+    data.iteration_since_maintenance += 1</manipulate>
+      </loop>
+    </description>
+  cpee:change_uuid: ee53b7704f769b4cd094a106f344fb022b450008
+  time:timestamp: '2025-08-22T06:46:14.959212+02:00'
+---
+event:
+  concept:instance: 64520
+  id:id: external
+  cpee:activity: external
+  cpee:instance: 8fa9b3a5-4d0d-4532-868d-09302001d1e2
+  lifecycle:transition: unknown
+  cpee:lifecycle:transition: description/change
+  cpee:description: |
+    <?xml version="1.0"?>
+    <description xmlns="http://cpee.org/ns/description/1.0">
+      <manipulate id="a3" label="Initialize the Start position of the first Stick (0 for the first hole)">data.stick = 0</manipulate>
+      <loop mode="pre_test" condition="data.stick &lt;= 10">
+        <manipulate id="a4" label="Initialize iteration">data.start_temp = data.stick == 0 ? 70 : (54 - 2*data.stick)
+    data.cook_temp = data.stick == 0 ? 68 : (68 + 1*data.stick)</manipulate>
+        <_probability>
+          <_probability_min/>
+          <_probability_max/>
+          <_probability_avg/>
+        </_probability>
+        <call id="a1" endpoint="subprocess">
+          <parameters>
+            <label>Call The Cottonbot with Data Collection</label>
+            <method>:post</method>
+            <arguments>
+              <behavior>wait_running</behavior>
+              <url>https://cpee.org/hub/server/Theses.dir/Nicolas%20Arteaga.dir/Cottonbot%20-%20Run%20with%20Data%20Collection%20vAutonomous.xml</url>
+              <init>
+                <batch_number>!data.batch_number</batch_number>
+                <iteration_since_maintenance>!data.iteration_since_maintenance</iteration_since_maintenance>
+                <stick>!data.stick</stick>
+                <stick_weight>!data.stick_weight</stick_weight>
+                <wait_time>!data.wait_time</wait_time>
+                <cook_time>!data.cook_time</cook_time>
+                <start_temp>!data.start_temp</start_temp>
+                <cook_temp>!data.cook_temp</cook_temp>
+                <cooled_temp>!data.cooled_temp</cooled_temp>
+              </init>
+              <endpoints/>
+              <attributes/>
+              <customization/>
+            </arguments>
+          </parameters>
+          <code>
+            <signal_receive>on</signal_receive>
+            <signal_change>on</signal_change>
+            <prepare/>
+            <finalize output="result"/>
+            <update output="result"/>
+            <rescue output="result"/>
+          </code>
+          <annotations>
+            <_generic/>
+            <_timing>
+              <_timing_weight/>
+              <_timing_avg/>
+              <explanations/>
+            </_timing>
+            <_shifting>
+              <_shifting_type>Duration</_shifting_type>
+            </_shifting>
+            <_context_data_analysis>
+              <probes/>
+              <ips/>
+            </_context_data_analysis>
+            <report>
+              <url/>
+            </report>
+            <_notes>
+              <_notes_general/>
+            </_notes>
+          </annotations>
+          <documentation>
+            <input/>
+            <output/>
+            <implementation>
+              <description/>
+            </implementation>
+            <code>
+              <description/>
+            </code>
+          </documentation>
+        </call>
+        <manipulate id="a2" label="Go to the next available Stick">data.stick += 1
+    data.iteration_since_maintenance += 1</manipulate>
+      </loop>
+    </description>
+  cpee:change_uuid: c94d30070066439fcd07ac37d15e9506d24bc597
+  time:timestamp: '2025-08-22T06:46:41.408545+02:00'
+---
+event:
+  concept:instance: 64520
+  id:id: external
+  cpee:activity: external
+  cpee:instance: 8fa9b3a5-4d0d-4532-868d-09302001d1e2
+  lifecycle:transition: unknown
+  cpee:lifecycle:transition: description/change
+  cpee:description: |
+    <?xml version="1.0"?>
+    <description xmlns="http://cpee.org/ns/description/1.0">
+      <manipulate id="a3" label="Initialize the Start position of the first Stick (0 for the first hole)">data.stick = 0</manipulate>
+      <loop mode="pre_test" condition="data.stick &lt;= 10">
+        <manipulate id="a4" label="Initialize iteration">data.start_temp = data.stick == 0 ? 50 : (54 - 2*data.stick)
+    data.cook_temp = data.stick == 0 ? 68 : (68 + 1*data.stick)</manipulate>
+        <_probability>
+          <_probability_min/>
+          <_probability_max/>
+          <_probability_avg/>
+        </_probability>
+        <call id="a1" endpoint="subprocess">
+          <parameters>
+            <label>Call The Cottonbot with Data Collection</label>
+            <method>:post</method>
+            <arguments>
+              <behavior>wait_running</behavior>
+              <url>https://cpee.org/hub/server/Theses.dir/Nicolas%20Arteaga.dir/Cottonbot%20-%20Run%20with%20Data%20Collection%20vAutonomous.xml</url>
+              <init>
+                <batch_number>!data.batch_number</batch_number>
+                <iteration_since_maintenance>!data.iteration_since_maintenance</iteration_since_maintenance>
+                <stick>!data.stick</stick>
+                <stick_weight>!data.stick_weight</stick_weight>
+                <wait_time>!data.wait_time</wait_time>
+                <cook_time>!data.cook_time</cook_time>
+                <start_temp>!data.start_temp</start_temp>
+                <cook_temp>!data.cook_temp</cook_temp>
+                <cooled_temp>!data.cooled_temp</cooled_temp>
+              </init>
+              <endpoints/>
+              <attributes/>
+              <customization/>
+            </arguments>
+          </parameters>
+          <code>
+            <signal_receive>on</signal_receive>
+            <signal_change>on</signal_change>
+            <prepare/>
+            <finalize output="result"/>
+            <update output="result"/>
+            <rescue output="result"/>
+          </code>
+          <annotations>
+            <_generic/>
+            <_timing>
+              <_timing_weight/>
+              <_timing_avg/>
+              <explanations/>
+            </_timing>
+            <_shifting>
+              <_shifting_type>Duration</_shifting_type>
+            </_shifting>
+            <_context_data_analysis>
+              <probes/>
+              <ips/>
+            </_context_data_analysis>
+            <report>
+              <url/>
+            </report>
+            <_notes>
+              <_notes_general/>
+            </_notes>
+          </annotations>
+          <documentation>
+            <input/>
+            <output/>
+            <implementation>
+              <description/>
+            </implementation>
+            <code>
+              <description/>
+            </code>
+          </documentation>
+        </call>
+        <manipulate id="a2" label="Go to the next available Stick">data.stick += 1
+    data.iteration_since_maintenance += 1</manipulate>
+      </loop>
+    </description>
+  cpee:change_uuid: 80de0893ba9e9640802a7096f32c66cd21cd7802
+  time:timestamp: '2025-08-22T06:46:49.650423+02:00'
+---
+event:
+  concept:instance: 64520
+  id:id: external
+  cpee:activity: external
+  cpee:instance: 8fa9b3a5-4d0d-4532-868d-09302001d1e2
+  lifecycle:transition: unknown
+  cpee:lifecycle:transition: description/change
+  cpee:description: |
+    <?xml version="1.0"?>
+    <description xmlns="http://cpee.org/ns/description/1.0">
+      <manipulate id="a3" label="Initialize the Start position of the first Stick (0 for the first hole)">data.stick = 0</manipulate>
+      <loop mode="pre_test" condition="data.stick &lt;= 10">
+        <manipulate id="a4" label="Initialize iteration">data.start_temp = data.stick == 0 ? 50 : (50 + 2*data.stick)
+    data.cook_temp = data.stick == 0 ? 68 : (68 + 1*data.stick)</manipulate>
+        <_probability>
+          <_probability_min/>
+          <_probability_max/>
+          <_probability_avg/>
+        </_probability>
+        <call id="a1" endpoint="subprocess">
+          <parameters>
+            <label>Call The Cottonbot with Data Collection</label>
+            <method>:post</method>
+            <arguments>
+              <behavior>wait_running</behavior>
+              <url>https://cpee.org/hub/server/Theses.dir/Nicolas%20Arteaga.dir/Cottonbot%20-%20Run%20with%20Data%20Collection%20vAutonomous.xml</url>
+              <init>
+                <batch_number>!data.batch_number</batch_number>
+                <iteration_since_maintenance>!data.iteration_since_maintenance</iteration_since_maintenance>
+                <stick>!data.stick</stick>
+                <stick_weight>!data.stick_weight</stick_weight>
+                <wait_time>!data.wait_time</wait_time>
+                <cook_time>!data.cook_time</cook_time>
+                <start_temp>!data.start_temp</start_temp>
+                <cook_temp>!data.cook_temp</cook_temp>
+                <cooled_temp>!data.cooled_temp</cooled_temp>
+              </init>
+              <endpoints/>
+              <attributes/>
+              <customization/>
+            </arguments>
+          </parameters>
+          <code>
+            <signal_receive>on</signal_receive>
+            <signal_change>on</signal_change>
+            <prepare/>
+            <finalize output="result"/>
+            <update output="result"/>
+            <rescue output="result"/>
+          </code>
+          <annotations>
+            <_generic/>
+            <_timing>
+              <_timing_weight/>
+              <_timing_avg/>
+              <explanations/>
+            </_timing>
+            <_shifting>
+              <_shifting_type>Duration</_shifting_type>
+            </_shifting>
+            <_context_data_analysis>
+              <probes/>
+              <ips/>
+            </_context_data_analysis>
+            <report>
+              <url/>
+            </report>
+            <_notes>
+              <_notes_general/>
+            </_notes>
+          </annotations>
+          <documentation>
+            <input/>
+            <output/>
+            <implementation>
+              <description/>
+            </implementation>
+            <code>
+              <description/>
+            </code>
+          </documentation>
+        </call>
+        <manipulate id="a2" label="Go to the next available Stick">data.stick += 1
+    data.iteration_since_maintenance += 1</manipulate>
+      </loop>
+    </description>
+  cpee:change_uuid: a029eeac864f80aea89dc8c05eddd37a5376c7be
+  time:timestamp: '2025-08-22T06:47:10.947055+02:00'
+---
+event:
+  concept:instance: 64520
+  id:id: external
+  cpee:activity: external
+  cpee:instance: 8fa9b3a5-4d0d-4532-868d-09302001d1e2
+  lifecycle:transition: unknown
+  cpee:lifecycle:transition: description/change
+  cpee:description: |
+    <?xml version="1.0"?>
+    <description xmlns="http://cpee.org/ns/description/1.0">
+      <manipulate id="a3" label="Initialize the Start position of the first Stick (0 for the first hole)">data.stick = 0</manipulate>
+      <loop mode="pre_test" condition="data.stick &lt;= 10">
+        <manipulate id="a4" label="Initialize iteration">data.start_temp = data.stick == 0 ? 50 : (50 + 2*data.stick)
+    data.cook_temp = data.stick == 0 ? 68 : (68 - 1*data.stick)</manipulate>
+        <_probability>
+          <_probability_min/>
+          <_probability_max/>
+          <_probability_avg/>
+        </_probability>
+        <call id="a1" endpoint="subprocess">
+          <parameters>
+            <label>Call The Cottonbot with Data Collection</label>
+            <method>:post</method>
+            <arguments>
+              <behavior>wait_running</behavior>
+              <url>https://cpee.org/hub/server/Theses.dir/Nicolas%20Arteaga.dir/Cottonbot%20-%20Run%20with%20Data%20Collection%20vAutonomous.xml</url>
+              <init>
+                <batch_number>!data.batch_number</batch_number>
+                <iteration_since_maintenance>!data.iteration_since_maintenance</iteration_since_maintenance>
+                <stick>!data.stick</stick>
+                <stick_weight>!data.stick_weight</stick_weight>
+                <wait_time>!data.wait_time</wait_time>
+                <cook_time>!data.cook_time</cook_time>
+                <start_temp>!data.start_temp</start_temp>
+                <cook_temp>!data.cook_temp</cook_temp>
+                <cooled_temp>!data.cooled_temp</cooled_temp>
+              </init>
+              <endpoints/>
+              <attributes/>
+              <customization/>
+            </arguments>
+          </parameters>
+          <code>
+            <signal_receive>on</signal_receive>
+            <signal_change>on</signal_change>
+            <prepare/>
+            <finalize output="result"/>
+            <update output="result"/>
+            <rescue output="result"/>
+          </code>
+          <annotations>
+            <_generic/>
+            <_timing>
+              <_timing_weight/>
+              <_timing_avg/>
+              <explanations/>
+            </_timing>
+            <_shifting>
+              <_shifting_type>Duration</_shifting_type>
+            </_shifting>
+            <_context_data_analysis>
+              <probes/>
+              <ips/>
+            </_context_data_analysis>
+            <report>
+              <url/>
+            </report>
+            <_notes>
+              <_notes_general/>
+            </_notes>
+          </annotations>
+          <documentation>
+            <input/>
+            <output/>
+            <implementation>
+              <description/>
+            </implementation>
+            <code>
+              <description/>
+            </code>
+          </documentation>
+        </call>
+        <manipulate id="a2" label="Go to the next available Stick">data.stick += 1
+    data.iteration_since_maintenance += 1</manipulate>
+      </loop>
+    </description>
+  cpee:change_uuid: 3242dcb06f0ff0f8029c0244547da865fd318d02
+  time:timestamp: '2025-08-22T06:47:18.108320+02:00'
+---
+event:
+  concept:instance: 64520
+  id:id: external
+  cpee:activity: external
+  cpee:instance: 8fa9b3a5-4d0d-4532-868d-09302001d1e2
+  lifecycle:transition: unknown
+  cpee:lifecycle:transition: dataelements/change
+  data:
+  - name: batch_number
+    value: 15
+  - name: iteration_since_maintenance
+    value: 42
+  - name: stick
+    value: 0
+  - name: wait_time
+    value: 29
+  - name: cooldown_time
+    value: 80
+  - name: stick_weight
+    value: 1.9
+  - name: cook_time
+    value: 48
+  - name: start_temp
+    value: 50
+  - name: cook_temp
+    value: 68
+  - name: cooled_temp
+    value: 56
+  time:timestamp: '2025-08-22T06:47:39.112847+02:00'
+---
+event:
+  concept:instance: 64520
+  id:id: external
+  cpee:activity: external
+  cpee:instance: 8fa9b3a5-4d0d-4532-868d-09302001d1e2
+  lifecycle:transition: unknown
+  cpee:lifecycle:transition: dataelements/change
+  data:
+  - name: batch_number
+    value: 15
+  - name: iteration_since_maintenance
+    value: 55
+  - name: stick
+    value: 0
+  - name: wait_time
+    value: 29
+  - name: cooldown_time
+    value: 80
+  - name: stick_weight
+    value: 1.9
+  - name: cook_time
+    value: 48
+  - name: start_temp
+    value: 50
+  - name: cook_temp
+    value: 68
+  - name: cooled_temp
+    value: 56
+  time:timestamp: '2025-08-22T06:47:43.874282+02:00'
+---
+event:
+  concept:instance: 64520
+  id:id: external
+  cpee:activity: external
+  cpee:instance: 8fa9b3a5-4d0d-4532-868d-09302001d1e2
+  lifecycle:transition: unknown
+  cpee:lifecycle:transition: dataelements/change
+  data:
+  - name: batch_number
+    value: 15
+  - name: iteration_since_maintenance
+    value: 55
+  - name: stick
+    value: 0
+  - name: wait_time
+    value: 0
+  - name: cooldown_time
+    value: 80
+  - name: stick_weight
+    value: 1.9
+  - name: cook_time
+    value: 48
+  - name: start_temp
+    value: 50
+  - name: cook_temp
+    value: 68
+  - name: cooled_temp
+    value: 56
+  time:timestamp: '2025-08-22T06:47:49.430944+02:00'
+---
+event:
+  concept:instance: 64520
+  id:id: external
+  cpee:activity: external
+  cpee:instance: 8fa9b3a5-4d0d-4532-868d-09302001d1e2
+  lifecycle:transition: unknown
+  cpee:lifecycle:transition: dataelements/change
+  data:
+  - name: batch_number
+    value: 15
+  - name: iteration_since_maintenance
+    value: 55
+  - name: stick
+    value: 0
+  - name: wait_time
+    value: 0
+  - name: cooldown_time
+    value: 0
+  - name: stick_weight
+    value: 1.9
+  - name: cook_time
+    value: 48
+  - name: start_temp
+    value: 50
+  - name: cook_temp
+    value: 68
+  - name: cooled_temp
+    value: 56
+  time:timestamp: '2025-08-22T06:47:54.605842+02:00'
+---
+event:
+  concept:instance: 64520
+  id:id: external
+  cpee:activity: external
+  cpee:instance: 8fa9b3a5-4d0d-4532-868d-09302001d1e2
+  lifecycle:transition: unknown
+  cpee:lifecycle:transition: state/change
+  cpee:state: running
+  time:timestamp: '2025-08-22T06:48:05.650697+02:00'
+---
+event:
+  concept:instance: 64520
+  concept:name: Initialize the Start position of the first Stick (0 for the first
+    hole)
+  id:id: a3
+  cpee:activity: a3
+  cpee:activity_uuid: 6efe23d400d920e37da7c91552a3e914
+  cpee:instance: 8fa9b3a5-4d0d-4532-868d-09302001d1e2
+  lifecycle:transition: complete
+  cpee:lifecycle:transition: activity/done
+  time:timestamp: '2025-08-22T06:48:05.666462+02:00'
+---
+event:
+  concept:instance: 64520
+  concept:name: Initialize the Start position of the first Stick (0 for the first
+    hole)
+  id:id: a3
+  cpee:activity: a3
+  cpee:activity_uuid: 6efe23d400d920e37da7c91552a3e914
+  cpee:instance: 8fa9b3a5-4d0d-4532-868d-09302001d1e2
+  lifecycle:transition: unknown
+  cpee:lifecycle:transition: dataelements/change
+  data:
+  - name: stick
+    value: 0
+  time:timestamp: '2025-08-22T06:48:05.666297+02:00'
+---
+event:
+  concept:instance: 64520
+  id:id: external
+  cpee:activity: external
+  cpee:instance: 8fa9b3a5-4d0d-4532-868d-09302001d1e2
+  lifecycle:transition: unknown
+  cpee:lifecycle:transition: gateway/decide
+  time:timestamp: '2025-08-22T06:48:05.693002+02:00'
+---
+event:
+  concept:instance: 64520
+  concept:name: Initialize iteration
+  id:id: a4
+  cpee:activity: a4
+  cpee:activity_uuid: a026de4d5fc95554407a19b3f28157b1
+  cpee:instance: 8fa9b3a5-4d0d-4532-868d-09302001d1e2
+  lifecycle:transition: complete
+  cpee:lifecycle:transition: activity/done
+  time:timestamp: '2025-08-22T06:48:05.701531+02:00'
+---
+event:
+  concept:instance: 64520
+  concept:name: Initialize iteration
+  id:id: a4
+  cpee:activity: a4
+  cpee:activity_uuid: a026de4d5fc95554407a19b3f28157b1
+  cpee:instance: 8fa9b3a5-4d0d-4532-868d-09302001d1e2
+  lifecycle:transition: unknown
+  cpee:lifecycle:transition: dataelements/change
+  data:
+  - name: start_temp
+    value: 50
+  - name: cook_temp
+    value: 68
+  time:timestamp: '2025-08-22T06:48:05.701326+02:00'
+---
+event:
+  concept:instance: 64520
+  concept:name: Call The Cottonbot with Data Collection
+  concept:endpoint: https://cpee.org/flow/start/url/
+  id:id: a1
+  cpee:activity: a1
+  cpee:activity_uuid: 04e4df1c04c6ec93d9b8e26c66b30e24
+  cpee:instance: 8fa9b3a5-4d0d-4532-868d-09302001d1e2
+  lifecycle:transition: start
+  cpee:lifecycle:transition: activity/calling
+  data:
+  - name: behavior
+    value: wait_running
+  - name: url
+    value: https://cpee.org/hub/server/Theses.dir/Nicolas%20Arteaga.dir/Cottonbot%20-%20Run%20with%20Data%20Collection%20vAutonomous.xml
+  - name: init
+    value:
+      batch_number: 15
+      iteration_since_maintenance: 55
+      stick: 0
+      stick_weight: 1.9
+      wait_time: 0
+      cook_time: 48
+      start_temp: 50
+      cook_temp: 68
+      cooled_temp: 56
+  - name: endpoints
+    value:
+  - name: attributes
+    value:
+  - name: customization
+    value:
+  time:timestamp: '2025-08-22T06:48:05.786982+02:00'
+---
+event:
+  concept:instance: 64520
+  concept:name: Call The Cottonbot with Data Collection
+  concept:endpoint: https://cpee.org/flow/start/url/
+  id:id: a1
+  cpee:activity: a1
+  cpee:activity_uuid: 04e4df1c04c6ec93d9b8e26c66b30e24
+  cpee:instance: 8fa9b3a5-4d0d-4532-868d-09302001d1e2
+  lifecycle:transition: unknown
+  cpee:lifecycle:transition: activity/receiving
+  data:
+  - name: instance
+    mimetype: application/json
+    data: '{"CPEE-INSTANCE":"64521","CPEE-INSTANCE-URL":"https://cpee.org/flow/engine/64521","CPEE-INSTANCE-UUID":"822c7f80-6297-4ece-9b87-e9b46fb1df61","CPEE-BEHAVIOR":"wait_running"}'
+  time:timestamp: '2025-08-22T06:48:06.881366+02:00'
+---
+event:
+  concept:instance: 64520
+  concept:name: Call The Cottonbot with Data Collection
+  concept:endpoint: https://cpee.org/flow/start/url/
+  id:id: a1
+  cpee:activity: a1
+  cpee:activity_uuid: 04e4df1c04c6ec93d9b8e26c66b30e24
+  cpee:instance: 8fa9b3a5-4d0d-4532-868d-09302001d1e2
+  lifecycle:transition: unknown
+  cpee:lifecycle:transition: task/instantiation
+  data:
+    CPEE-INSTANCE: '64521'
+    CPEE-INSTANCE-URL: https://cpee.org/flow/engine/64521
+    CPEE-INSTANCE-UUID: 822c7f80-6297-4ece-9b87-e9b46fb1df61
+    CPEE-BEHAVIOR: wait_running
+  time:timestamp: '2025-08-22T06:48:06.881640+02:00'
+---
+event:
+  concept:instance: 64520
+  concept:name: Call The Cottonbot with Data Collection
+  concept:endpoint: https://cpee.org/flow/start/url/
+  id:id: a1
+  cpee:activity: a1
+  cpee:activity_uuid: 04e4df1c04c6ec93d9b8e26c66b30e24
+  cpee:instance: 8fa9b3a5-4d0d-4532-868d-09302001d1e2
+  lifecycle:transition: unknown
+  cpee:lifecycle:transition: activity/receiving
+  data:
+  - name: dataelements
+    mimetype: application/json
+    data: '{"CPEE-INSTANCE":"64521","CPEE-INSTANCE-URL":"https://cpee.org/flow/engine/64521","CPEE-INSTANCE-UUID":"822c7f80-6297-4ece-9b87-e9b46fb1df61","CPEE-STATE":"running"}'
+  time:timestamp: '2025-08-22T06:48:07.040283+02:00'
+---
+event:
+  concept:instance: 64520
+  concept:name: Call The Cottonbot with Data Collection
+  concept:endpoint: https://cpee.org/flow/start/url/
+  id:id: a1
+  cpee:activity: a1
+  cpee:activity_uuid: 04e4df1c04c6ec93d9b8e26c66b30e24
+  cpee:instance: 8fa9b3a5-4d0d-4532-868d-09302001d1e2
+  lifecycle:transition: unknown
+  cpee:lifecycle:transition: activity/receiving
+  data:
+  - name: dataelements
+    mimetype: application/json
+    data: '{"CPEE-INSTANCE":"64521","CPEE-INSTANCE-URL":"https://cpee.org/flow/engine/64521","CPEE-INSTANCE-UUID":"822c7f80-6297-4ece-9b87-e9b46fb1df61","CPEE-STATE":"finished","batch_number":15,"cook_start_time":"06:50:19","cooldown_time":113,"env":{"timestamp":"2025-08-22
+      06:56:13.56","EnvH":"69.31","EnvT":"24.08","InH":"45.07","InT":"35.43","IrA":"28.51","IrO":"54.17"},"machine_on_time":1755838164,"max_pressures":{"pos3":0.0,"pos2":0.0,"pos1":0.0},"plug":{"timestamp":"2025-08-22
+      06:56:11.55","current":0.355,"power":16},"sizes":{"pos1":11,"pos2":6,"pos3":11},"start":1755838087,"weight":0.040000000000000036,"cook_stop_time":"06:51:13","f_pressures":{"pos3":[0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0],"pos2":[0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0],"pos1":[0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0]},"total_time":487,"handover_time":62,"show_start_time":"06:26:44","show_start_diff":-3,"show_end_time":"06:27:46","show_end_diff":8,"iteration_since_maintenance":55,"stick":0,"wait_time":0,"start_temp":50,"cook_temp":68,"cooled_temp":56,"cook_time":48,"stick_weight":1.9,"quality_score":"None","sugar_amount":1,"cold_start_wait":102,"radius":0.135,"height":0.05}'
+  time:timestamp: '2025-08-22T06:56:16.058214+02:00'
+---
+event:
+  concept:instance: 64520
+  concept:name: Call The Cottonbot with Data Collection
+  concept:endpoint: https://cpee.org/flow/start/url/
+  id:id: a1
+  cpee:activity: a1
+  cpee:activity_uuid: 04e4df1c04c6ec93d9b8e26c66b30e24
+  cpee:instance: 8fa9b3a5-4d0d-4532-868d-09302001d1e2
+  lifecycle:transition: complete
+  cpee:lifecycle:transition: activity/done
+  time:timestamp: '2025-08-22T06:56:16.058923+02:00'
+---
+event:
+  concept:instance: 64520
+  concept:name: Go to the next available Stick
+  id:id: a2
+  cpee:activity: a2
+  cpee:activity_uuid: 79779a4ebcac5f9f8da5ef498127d5a8
+  cpee:instance: 8fa9b3a5-4d0d-4532-868d-09302001d1e2
+  lifecycle:transition: unknown
+  cpee:lifecycle:transition: dataelements/change
+  data:
+  - name: stick
+    value: 1
+  - name: iteration_since_maintenance
+    value: 56
+  time:timestamp: '2025-08-22T06:56:16.091445+02:00'
+---
+event:
+  concept:instance: 64520
+  concept:name: Go to the next available Stick
+  id:id: a2
+  cpee:activity: a2
+  cpee:activity_uuid: 79779a4ebcac5f9f8da5ef498127d5a8
+  cpee:instance: 8fa9b3a5-4d0d-4532-868d-09302001d1e2
+  lifecycle:transition: complete
+  cpee:lifecycle:transition: activity/done
+  time:timestamp: '2025-08-22T06:56:16.091987+02:00'
+---
+event:
+  concept:instance: 64520
+  id:id: external
+  cpee:activity: external
+  cpee:instance: 8fa9b3a5-4d0d-4532-868d-09302001d1e2
+  lifecycle:transition: unknown
+  cpee:lifecycle:transition: gateway/decide
+  time:timestamp: '2025-08-22T06:56:16.116376+02:00'
+---
+event:
+  concept:instance: 64520
+  concept:name: Initialize iteration
+  id:id: a4
+  cpee:activity: a4
+  cpee:activity_uuid: 9d02b332ddf4d7f98ac2a31bf46d7e28
+  cpee:instance: 8fa9b3a5-4d0d-4532-868d-09302001d1e2
+  lifecycle:transition: unknown
+  cpee:lifecycle:transition: dataelements/change
+  data:
+  - name: start_temp
+    value: 52
+  - name: cook_temp
+    value: 67
+  time:timestamp: '2025-08-22T06:56:16.123570+02:00'
+---
+event:
+  concept:instance: 64520
+  concept:name: Initialize iteration
+  id:id: a4
+  cpee:activity: a4
+  cpee:activity_uuid: 9d02b332ddf4d7f98ac2a31bf46d7e28
+  cpee:instance: 8fa9b3a5-4d0d-4532-868d-09302001d1e2
+  lifecycle:transition: complete
+  cpee:lifecycle:transition: activity/done
+  time:timestamp: '2025-08-22T06:56:16.123752+02:00'
+---
+event:
+  concept:instance: 64520
+  concept:name: Call The Cottonbot with Data Collection
+  concept:endpoint: https://cpee.org/flow/start/url/
+  id:id: a1
+  cpee:activity: a1
+  cpee:activity_uuid: 063203bf041f1054d13398b25c586795
+  cpee:instance: 8fa9b3a5-4d0d-4532-868d-09302001d1e2
+  lifecycle:transition: start
+  cpee:lifecycle:transition: activity/calling
+  data:
+  - name: behavior
+    value: wait_running
+  - name: url
+    value: https://cpee.org/hub/server/Theses.dir/Nicolas%20Arteaga.dir/Cottonbot%20-%20Run%20with%20Data%20Collection%20vAutonomous.xml
+  - name: init
+    value:
+      batch_number: 15
+      iteration_since_maintenance: 56
+      stick: 1
+      stick_weight: 1.9
+      wait_time: 0
+      cook_time: 48
+      start_temp: 52
+      cook_temp: 67
+      cooled_temp: 56
+  - name: endpoints
+    value:
+  - name: attributes
+    value:
+  - name: customization
+    value:
+  time:timestamp: '2025-08-22T06:56:16.203024+02:00'
+---
+event:
+  concept:instance: 64520
+  concept:name: Call The Cottonbot with Data Collection
+  concept:endpoint: https://cpee.org/flow/start/url/
+  id:id: a1
+  cpee:activity: a1
+  cpee:activity_uuid: 063203bf041f1054d13398b25c586795
+  cpee:instance: 8fa9b3a5-4d0d-4532-868d-09302001d1e2
+  lifecycle:transition: unknown
+  cpee:lifecycle:transition: activity/receiving
+  data:
+  - name: dataelements
+    mimetype: application/json
+    data: '{"CPEE-INSTANCE":"64528","CPEE-INSTANCE-URL":"https://cpee.org/flow/engine/64528","CPEE-INSTANCE-UUID":"de7a4d90-c3b8-4546-980b-1ac7ed7fb65f","CPEE-STATE":"ready"}'
+  time:timestamp: '2025-08-22T06:56:17.336836+02:00'
+---
+event:
+  concept:instance: 64520
+  concept:name: Call The Cottonbot with Data Collection
+  concept:endpoint: https://cpee.org/flow/start/url/
+  id:id: a1
+  cpee:activity: a1
+  cpee:activity_uuid: 063203bf041f1054d13398b25c586795
+  cpee:instance: 8fa9b3a5-4d0d-4532-868d-09302001d1e2
+  lifecycle:transition: unknown
+  cpee:lifecycle:transition: activity/receiving
+  data:
+  - name: instance
+    mimetype: application/json
+    data: '{"CPEE-INSTANCE":"64528","CPEE-INSTANCE-URL":"https://cpee.org/flow/engine/64528","CPEE-INSTANCE-UUID":"de7a4d90-c3b8-4546-980b-1ac7ed7fb65f","CPEE-BEHAVIOR":"wait_running"}'
+  time:timestamp: '2025-08-22T06:56:17.338114+02:00'
+---
+event:
+  concept:instance: 64520
+  concept:name: Call The Cottonbot with Data Collection
+  concept:endpoint: https://cpee.org/flow/start/url/
+  id:id: a1
+  cpee:activity: a1
+  cpee:activity_uuid: 063203bf041f1054d13398b25c586795
+  cpee:instance: 8fa9b3a5-4d0d-4532-868d-09302001d1e2
+  lifecycle:transition: unknown
+  cpee:lifecycle:transition: task/instantiation
+  data:
+    CPEE-INSTANCE: '64528'
+    CPEE-INSTANCE-URL: https://cpee.org/flow/engine/64528
+    CPEE-INSTANCE-UUID: de7a4d90-c3b8-4546-980b-1ac7ed7fb65f
+    CPEE-BEHAVIOR: wait_running
+  time:timestamp: '2025-08-22T06:56:17.338290+02:00'
+---
+event:
+  concept:instance: 64520
+  concept:name: Call The Cottonbot with Data Collection
+  concept:endpoint: https://cpee.org/flow/start/url/
+  id:id: a1
+  cpee:activity: a1
+  cpee:activity_uuid: 063203bf041f1054d13398b25c586795
+  cpee:instance: 8fa9b3a5-4d0d-4532-868d-09302001d1e2
+  lifecycle:transition: unknown
+  cpee:lifecycle:transition: activity/receiving
+  data:
+  - name: dataelements
+    mimetype: application/json
+    data: '{"CPEE-INSTANCE":"64528","CPEE-INSTANCE-URL":"https://cpee.org/flow/engine/64528","CPEE-INSTANCE-UUID":"de7a4d90-c3b8-4546-980b-1ac7ed7fb65f","CPEE-STATE":"running"}'
+  time:timestamp: '2025-08-22T06:56:17.477505+02:00'
+---
+event:
+  concept:instance: 64520
+  concept:name: Call The Cottonbot with Data Collection
+  concept:endpoint: https://cpee.org/flow/start/url/
+  id:id: a1
+  cpee:activity: a1
+  cpee:activity_uuid: 063203bf041f1054d13398b25c586795
+  cpee:instance: 8fa9b3a5-4d0d-4532-868d-09302001d1e2
+  lifecycle:transition: unknown
+  cpee:lifecycle:transition: activity/receiving
+  data:
+  - name: dataelements
+    mimetype: application/json
+    data: '{"CPEE-INSTANCE":"64528","CPEE-INSTANCE-URL":"https://cpee.org/flow/engine/64528","CPEE-INSTANCE-UUID":"de7a4d90-c3b8-4546-980b-1ac7ed7fb65f","CPEE-STATE":"finished","batch_number":15,"cook_start_time":"06:58:16","cooldown_time":133,"env":{"timestamp":"2025-08-22
+      07:03:37.47","EnvH":"69.14","EnvT":"24.12","InH":"42.36","InT":"37.16","IrA":"28.93","IrO":"54.57"},"machine_on_time":1755838638,"max_pressures":{"pos3":37.41,"pos2":0.0,"pos1":27.83},"plug":{"timestamp":"2025-08-22
+      07:03:35.43","current":0.357,"power":20},"sizes":{"pos1":5,"pos2":2,"pos3":7},"start":1755838577,"weight":8.76,"cook_stop_time":"06:59:10","f_pressures":{"pos3":[0.96,0.96,0.96,0.96,0.96,0.96,0.96,0.96,1.44,3.84,10.67,21.46,32.23,37.41,29.0,5.34],"pos2":[],"pos1":[0.2,3.19,12.65,24.06,27.83,27.83,0.0,0.0,0.0,0.0,0.0,0.0]},"total_time":441,"handover_time":62,"show_start_time":"06:26:44","show_start_diff":-3,"show_end_time":"06:27:46","show_end_diff":8,"iteration_since_maintenance":56,"stick":1,"wait_time":0,"start_temp":52,"cook_temp":67,"cooled_temp":56,"cook_time":48,"stick_weight":1.9,"quality_score":"None","sugar_amount":1,"cold_start_wait":102,"radius":0.135,"height":0.05}'
+  time:timestamp: '2025-08-22T07:03:38.815009+02:00'
+---
+event:
+  concept:instance: 64520
+  concept:name: Call The Cottonbot with Data Collection
+  concept:endpoint: https://cpee.org/flow/start/url/
+  id:id: a1
+  cpee:activity: a1
+  cpee:activity_uuid: 063203bf041f1054d13398b25c586795
+  cpee:instance: 8fa9b3a5-4d0d-4532-868d-09302001d1e2
+  lifecycle:transition: complete
+  cpee:lifecycle:transition: activity/done
+  time:timestamp: '2025-08-22T07:03:38.816457+02:00'
+---
+event:
+  concept:instance: 64520
+  concept:name: Go to the next available Stick
+  id:id: a2
+  cpee:activity: a2
+  cpee:activity_uuid: 201e315dd8f82cc8afd3585adbd641c0
+  cpee:instance: 8fa9b3a5-4d0d-4532-868d-09302001d1e2
+  lifecycle:transition: unknown
+  cpee:lifecycle:transition: dataelements/change
+  data:
+  - name: stick
+    value: 2
+  - name: iteration_since_maintenance
+    value: 57
+  time:timestamp: '2025-08-22T07:03:38.845836+02:00'
+---
+event:
+  concept:instance: 64520
+  concept:name: Go to the next available Stick
+  id:id: a2
+  cpee:activity: a2
+  cpee:activity_uuid: 201e315dd8f82cc8afd3585adbd641c0
+  cpee:instance: 8fa9b3a5-4d0d-4532-868d-09302001d1e2
+  lifecycle:transition: complete
+  cpee:lifecycle:transition: activity/done
+  time:timestamp: '2025-08-22T07:03:38.845978+02:00'
+---
+event:
+  concept:instance: 64520
+  id:id: external
+  cpee:activity: external
+  cpee:instance: 8fa9b3a5-4d0d-4532-868d-09302001d1e2
+  lifecycle:transition: unknown
+  cpee:lifecycle:transition: gateway/decide
+  time:timestamp: '2025-08-22T07:03:38.866291+02:00'
+---
+event:
+  concept:instance: 64520
+  concept:name: Initialize iteration
+  id:id: a4
+  cpee:activity: a4
+  cpee:activity_uuid: b73b444c0d226a29bad27db71f7172e0
+  cpee:instance: 8fa9b3a5-4d0d-4532-868d-09302001d1e2
+  lifecycle:transition: unknown
+  cpee:lifecycle:transition: dataelements/change
+  data:
+  - name: start_temp
+    value: 54
+  - name: cook_temp
+    value: 66
+  time:timestamp: '2025-08-22T07:03:38.874147+02:00'
+---
+event:
+  concept:instance: 64520
+  concept:name: Initialize iteration
+  id:id: a4
+  cpee:activity: a4
+  cpee:activity_uuid: b73b444c0d226a29bad27db71f7172e0
+  cpee:instance: 8fa9b3a5-4d0d-4532-868d-09302001d1e2
+  lifecycle:transition: complete
+  cpee:lifecycle:transition: activity/done
+  time:timestamp: '2025-08-22T07:03:38.874782+02:00'
+---
+event:
+  concept:instance: 64520
+  concept:name: Call The Cottonbot with Data Collection
+  concept:endpoint: https://cpee.org/flow/start/url/
+  id:id: a1
+  cpee:activity: a1
+  cpee:activity_uuid: 45ed19d2f0dde3b1a95231737065f801
+  cpee:instance: 8fa9b3a5-4d0d-4532-868d-09302001d1e2
+  lifecycle:transition: start
+  cpee:lifecycle:transition: activity/calling
+  data:
+  - name: behavior
+    value: wait_running
+  - name: url
+    value: https://cpee.org/hub/server/Theses.dir/Nicolas%20Arteaga.dir/Cottonbot%20-%20Run%20with%20Data%20Collection%20vAutonomous.xml
+  - name: init
+    value:
+      batch_number: 15
+      iteration_since_maintenance: 57
+      stick: 2
+      stick_weight: 1.9
+      wait_time: 0
+      cook_time: 48
+      start_temp: 54
+      cook_temp: 66
+      cooled_temp: 56
+  - name: endpoints
+    value:
+  - name: attributes
+    value:
+  - name: customization
+    value:
+  time:timestamp: '2025-08-22T07:03:38.955758+02:00'
+---
+event:
+  concept:instance: 64520
+  concept:name: Call The Cottonbot with Data Collection
+  concept:endpoint: https://cpee.org/flow/start/url/
+  id:id: a1
+  cpee:activity: a1
+  cpee:activity_uuid: 45ed19d2f0dde3b1a95231737065f801
+  cpee:instance: 8fa9b3a5-4d0d-4532-868d-09302001d1e2
+  lifecycle:transition: unknown
+  cpee:lifecycle:transition: activity/receiving
+  data:
+  - name: dataelements
+    mimetype: application/json
+    data: '{"CPEE-INSTANCE":"64535","CPEE-INSTANCE-URL":"https://cpee.org/flow/engine/64535","CPEE-INSTANCE-UUID":"feaebdad-05ba-4883-aed3-98aace49b15f","CPEE-STATE":"ready"}'
+  time:timestamp: '2025-08-22T07:03:40.069650+02:00'
+---
+event:
+  concept:instance: 64520
+  concept:name: Call The Cottonbot with Data Collection
+  concept:endpoint: https://cpee.org/flow/start/url/
+  id:id: a1
+  cpee:activity: a1
+  cpee:activity_uuid: 45ed19d2f0dde3b1a95231737065f801
+  cpee:instance: 8fa9b3a5-4d0d-4532-868d-09302001d1e2
+  lifecycle:transition: unknown
+  cpee:lifecycle:transition: activity/receiving
+  data:
+  - name: instance
+    mimetype: application/json
+    data: '{"CPEE-INSTANCE":"64535","CPEE-INSTANCE-URL":"https://cpee.org/flow/engine/64535","CPEE-INSTANCE-UUID":"feaebdad-05ba-4883-aed3-98aace49b15f","CPEE-BEHAVIOR":"wait_running"}'
+  time:timestamp: '2025-08-22T07:03:40.073128+02:00'
+---
+event:
+  concept:instance: 64520
+  concept:name: Call The Cottonbot with Data Collection
+  concept:endpoint: https://cpee.org/flow/start/url/
+  id:id: a1
+  cpee:activity: a1
+  cpee:activity_uuid: 45ed19d2f0dde3b1a95231737065f801
+  cpee:instance: 8fa9b3a5-4d0d-4532-868d-09302001d1e2
+  lifecycle:transition: unknown
+  cpee:lifecycle:transition: task/instantiation
+  data:
+    CPEE-INSTANCE: '64535'
+    CPEE-INSTANCE-URL: https://cpee.org/flow/engine/64535
+    CPEE-INSTANCE-UUID: feaebdad-05ba-4883-aed3-98aace49b15f
+    CPEE-BEHAVIOR: wait_running
+  time:timestamp: '2025-08-22T07:03:40.073685+02:00'
+---
+event:
+  concept:instance: 64520
+  concept:name: Call The Cottonbot with Data Collection
+  concept:endpoint: https://cpee.org/flow/start/url/
+  id:id: a1
+  cpee:activity: a1
+  cpee:activity_uuid: 45ed19d2f0dde3b1a95231737065f801
+  cpee:instance: 8fa9b3a5-4d0d-4532-868d-09302001d1e2
+  lifecycle:transition: unknown
+  cpee:lifecycle:transition: activity/receiving
+  data:
+  - name: dataelements
+    mimetype: application/json
+    data: '{"CPEE-INSTANCE":"64535","CPEE-INSTANCE-URL":"https://cpee.org/flow/engine/64535","CPEE-INSTANCE-UUID":"feaebdad-05ba-4883-aed3-98aace49b15f","CPEE-STATE":"running"}'
+  time:timestamp: '2025-08-22T07:03:40.224479+02:00'
+---
+event:
+  concept:instance: 64520
+  concept:name: Call The Cottonbot with Data Collection
+  concept:endpoint: https://cpee.org/flow/start/url/
+  id:id: a1
+  cpee:activity: a1
+  cpee:activity_uuid: 45ed19d2f0dde3b1a95231737065f801
+  cpee:instance: 8fa9b3a5-4d0d-4532-868d-09302001d1e2
+  lifecycle:transition: unknown
+  cpee:lifecycle:transition: activity/receiving
+  data:
+  - name: dataelements
+    mimetype: application/json
+    data: '{"CPEE-INSTANCE":"64535","CPEE-INSTANCE-URL":"https://cpee.org/flow/engine/64535","CPEE-INSTANCE-UUID":"feaebdad-05ba-4883-aed3-98aace49b15f","CPEE-STATE":"finished","batch_number":15,"cook_start_time":"07:05:31","cooldown_time":136,"env":{"timestamp":"2025-08-22
+      07:11:15.26","EnvH":"69.11","EnvT":"24.16","InH":"41.23","InT":"37.94","IrA":"28.53","IrO":"53.99"},"machine_on_time":1755839082,"max_pressures":{"pos3":20.67,"pos2":0.0,"pos1":18.09},"plug":{"timestamp":"2025-08-22
+      07:11:13.12","current":0.354,"power":75},"sizes":{"pos1":4,"pos2":6,"pos3":9},"start":1755839020,"weight":11.469999999999999,"cook_stop_time":"07:06:25","f_pressures":{"pos3":[0.31,0.31,0.3,0.3,0.3,0.3,0.3,0.3,0.54,1.55,5.06,11.94,19.59,19.59,20.67],"pos2":[0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0],"pos1":[0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.33,2.97,9.91,17.4,18.09,4.47,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0]},"total_time":456,"handover_time":62,"show_start_time":"06:26:44","show_start_diff":-3,"show_end_time":"06:27:46","show_end_diff":8,"iteration_since_maintenance":57,"stick":2,"wait_time":0,"start_temp":54,"cook_temp":66,"cooled_temp":56,"cook_time":48,"stick_weight":1.9,"quality_score":"None","sugar_amount":1,"cold_start_wait":102,"radius":0.135,"height":0.05}'
+  time:timestamp: '2025-08-22T07:11:16.634096+02:00'
+---
+event:
+  concept:instance: 64520
+  concept:name: Call The Cottonbot with Data Collection
+  concept:endpoint: https://cpee.org/flow/start/url/
+  id:id: a1
+  cpee:activity: a1
+  cpee:activity_uuid: 45ed19d2f0dde3b1a95231737065f801
+  cpee:instance: 8fa9b3a5-4d0d-4532-868d-09302001d1e2
+  lifecycle:transition: complete
+  cpee:lifecycle:transition: activity/done
+  time:timestamp: '2025-08-22T07:11:16.634794+02:00'
+---
+event:
+  concept:instance: 64520
+  concept:name: Go to the next available Stick
+  id:id: a2
+  cpee:activity: a2
+  cpee:activity_uuid: ff243bbd0dd9d0b7b6adb9391a9d5362
+  cpee:instance: 8fa9b3a5-4d0d-4532-868d-09302001d1e2
+  lifecycle:transition: complete
+  cpee:lifecycle:transition: activity/done
+  time:timestamp: '2025-08-22T07:11:16.664918+02:00'
+---
+event:
+  concept:instance: 64520
+  concept:name: Go to the next available Stick
+  id:id: a2
+  cpee:activity: a2
+  cpee:activity_uuid: ff243bbd0dd9d0b7b6adb9391a9d5362
+  cpee:instance: 8fa9b3a5-4d0d-4532-868d-09302001d1e2
+  lifecycle:transition: unknown
+  cpee:lifecycle:transition: dataelements/change
+  data:
+  - name: stick
+    value: 3
+  - name: iteration_since_maintenance
+    value: 58
+  time:timestamp: '2025-08-22T07:11:16.664763+02:00'
+---
+event:
+  concept:instance: 64520
+  id:id: external
+  cpee:activity: external
+  cpee:instance: 8fa9b3a5-4d0d-4532-868d-09302001d1e2
+  lifecycle:transition: unknown
+  cpee:lifecycle:transition: gateway/decide
+  time:timestamp: '2025-08-22T07:11:16.687842+02:00'
+---
+event:
+  concept:instance: 64520
+  concept:name: Initialize iteration
+  id:id: a4
+  cpee:activity: a4
+  cpee:activity_uuid: 3f250fdb72567de949dbfab9e7758d95
+  cpee:instance: 8fa9b3a5-4d0d-4532-868d-09302001d1e2
+  lifecycle:transition: complete
+  cpee:lifecycle:transition: activity/done
+  time:timestamp: '2025-08-22T07:11:16.697244+02:00'
+---
+event:
+  concept:instance: 64520
+  concept:name: Initialize iteration
+  id:id: a4
+  cpee:activity: a4
+  cpee:activity_uuid: 3f250fdb72567de949dbfab9e7758d95
+  cpee:instance: 8fa9b3a5-4d0d-4532-868d-09302001d1e2
+  lifecycle:transition: unknown
+  cpee:lifecycle:transition: dataelements/change
+  data:
+  - name: start_temp
+    value: 56
+  - name: cook_temp
+    value: 65
+  time:timestamp: '2025-08-22T07:11:16.697061+02:00'
+---
+event:
+  concept:instance: 64520
+  concept:name: Call The Cottonbot with Data Collection
+  concept:endpoint: https://cpee.org/flow/start/url/
+  id:id: a1
+  cpee:activity: a1
+  cpee:activity_uuid: 77a8d76df4c6db4700dea70c5d10203d
+  cpee:instance: 8fa9b3a5-4d0d-4532-868d-09302001d1e2
+  lifecycle:transition: start
+  cpee:lifecycle:transition: activity/calling
+  data:
+  - name: behavior
+    value: wait_running
+  - name: url
+    value: https://cpee.org/hub/server/Theses.dir/Nicolas%20Arteaga.dir/Cottonbot%20-%20Run%20with%20Data%20Collection%20vAutonomous.xml
+  - name: init
+    value:
+      batch_number: 15
+      iteration_since_maintenance: 58
+      stick: 3
+      stick_weight: 1.9
+      wait_time: 0
+      cook_time: 48
+      start_temp: 56
+      cook_temp: 65
+      cooled_temp: 56
+  - name: endpoints
+    value:
+  - name: attributes
+    value:
+  - name: customization
+    value:
+  time:timestamp: '2025-08-22T07:11:16.782208+02:00'
+---
+event:
+  concept:instance: 64520
+  concept:name: Call The Cottonbot with Data Collection
+  concept:endpoint: https://cpee.org/flow/start/url/
+  id:id: a1
+  cpee:activity: a1
+  cpee:activity_uuid: 77a8d76df4c6db4700dea70c5d10203d
+  cpee:instance: 8fa9b3a5-4d0d-4532-868d-09302001d1e2
+  lifecycle:transition: unknown
+  cpee:lifecycle:transition: activity/receiving
+  data:
+  - name: instance
+    mimetype: application/json
+    data: '{"CPEE-INSTANCE":"64542","CPEE-INSTANCE-URL":"https://cpee.org/flow/engine/64542","CPEE-INSTANCE-UUID":"1544130f-09ea-4f65-b233-3ee4ba67a999","CPEE-BEHAVIOR":"wait_running"}'
+  time:timestamp: '2025-08-22T07:11:17.883356+02:00'
+---
+event:
+  concept:instance: 64520
+  concept:name: Call The Cottonbot with Data Collection
+  concept:endpoint: https://cpee.org/flow/start/url/
+  id:id: a1
+  cpee:activity: a1
+  cpee:activity_uuid: 77a8d76df4c6db4700dea70c5d10203d
+  cpee:instance: 8fa9b3a5-4d0d-4532-868d-09302001d1e2
+  lifecycle:transition: unknown
+  cpee:lifecycle:transition: task/instantiation
+  data:
+    CPEE-INSTANCE: '64542'
+    CPEE-INSTANCE-URL: https://cpee.org/flow/engine/64542
+    CPEE-INSTANCE-UUID: 1544130f-09ea-4f65-b233-3ee4ba67a999
+    CPEE-BEHAVIOR: wait_running
+  time:timestamp: '2025-08-22T07:11:17.883619+02:00'
+---
+event:
+  concept:instance: 64520
+  concept:name: Call The Cottonbot with Data Collection
+  concept:endpoint: https://cpee.org/flow/start/url/
+  id:id: a1
+  cpee:activity: a1
+  cpee:activity_uuid: 77a8d76df4c6db4700dea70c5d10203d
+  cpee:instance: 8fa9b3a5-4d0d-4532-868d-09302001d1e2
+  lifecycle:transition: unknown
+  cpee:lifecycle:transition: activity/receiving
+  data:
+  - name: dataelements
+    mimetype: application/json
+    data: '{"CPEE-INSTANCE":"64542","CPEE-INSTANCE-URL":"https://cpee.org/flow/engine/64542","CPEE-INSTANCE-UUID":"1544130f-09ea-4f65-b233-3ee4ba67a999","CPEE-STATE":"ready"}'
+  time:timestamp: '2025-08-22T07:11:17.914877+02:00'
+---
+event:
+  concept:instance: 64520
+  concept:name: Call The Cottonbot with Data Collection
+  concept:endpoint: https://cpee.org/flow/start/url/
+  id:id: a1
+  cpee:activity: a1
+  cpee:activity_uuid: 77a8d76df4c6db4700dea70c5d10203d
+  cpee:instance: 8fa9b3a5-4d0d-4532-868d-09302001d1e2
+  lifecycle:transition: unknown
+  cpee:lifecycle:transition: activity/receiving
+  data:
+  - name: dataelements
+    mimetype: application/json
+    data: '{"CPEE-INSTANCE":"64542","CPEE-INSTANCE-URL":"https://cpee.org/flow/engine/64542","CPEE-INSTANCE-UUID":"1544130f-09ea-4f65-b233-3ee4ba67a999","CPEE-STATE":"running"}'
+  time:timestamp: '2025-08-22T07:11:18.052623+02:00'
+---
+event:
+  concept:instance: 64520
+  concept:name: Call The Cottonbot with Data Collection
+  concept:endpoint: https://cpee.org/flow/start/url/
+  id:id: a1
+  cpee:activity: a1
+  cpee:activity_uuid: 77a8d76df4c6db4700dea70c5d10203d
+  cpee:instance: 8fa9b3a5-4d0d-4532-868d-09302001d1e2
+  lifecycle:transition: unknown
+  cpee:lifecycle:transition: activity/receiving
+  data:
+  - name: dataelements
+    mimetype: application/json
+    data: '{"CPEE-INSTANCE":"64542","CPEE-INSTANCE-URL":"https://cpee.org/flow/engine/64542","CPEE-INSTANCE-UUID":"1544130f-09ea-4f65-b233-3ee4ba67a999","CPEE-STATE":"finished","batch_number":15,"cook_start_time":"07:13:36","cooldown_time":127,"env":{"timestamp":"2025-08-22
+      07:19:31.34","EnvH":"69.15","EnvT":"24.12","InH":"39.80","InT":"38.96","IrA":"28.79","IrO":"54.31"},"machine_on_time":1755839578,"max_pressures":{"pos3":46.27,"pos2":0.0,"pos1":0.0},"plug":{"timestamp":"2025-08-22
+      07:19:29.18","current":0.352,"power":19},"sizes":{"pos1":10,"pos2":4,"pos3":11},"start":1755839478,"weight":7.1,"cook_stop_time":"07:14:30","f_pressures":{"pos3":[0.06,0.06,0.06,0.06,0.06,0.06,0.06,0.06,0.34,2.77,11.5,26.9,26.9,42.68,46.27,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0],"pos2":[0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0],"pos1":[0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0]},"total_time":494,"handover_time":62,"show_start_time":"06:26:44","show_start_diff":-3,"show_end_time":"06:27:46","show_end_diff":8,"iteration_since_maintenance":58,"stick":3,"wait_time":0,"start_temp":56,"cook_temp":65,"cooled_temp":56,"cook_time":48,"stick_weight":1.9,"quality_score":"None","sugar_amount":1,"cold_start_wait":102,"radius":0.135,"height":0.05}'
+  time:timestamp: '2025-08-22T07:19:33.794993+02:00'
+---
+event:
+  concept:instance: 64520
+  concept:name: Call The Cottonbot with Data Collection
+  concept:endpoint: https://cpee.org/flow/start/url/
+  id:id: a1
+  cpee:activity: a1
+  cpee:activity_uuid: 77a8d76df4c6db4700dea70c5d10203d
+  cpee:instance: 8fa9b3a5-4d0d-4532-868d-09302001d1e2
+  lifecycle:transition: complete
+  cpee:lifecycle:transition: activity/done
+  time:timestamp: '2025-08-22T07:19:33.796031+02:00'
+---
+event:
+  concept:instance: 64520
+  concept:name: Go to the next available Stick
+  id:id: a2
+  cpee:activity: a2
+  cpee:activity_uuid: ec1a4b736d5b514daeee3e527b285b59
+  cpee:instance: 8fa9b3a5-4d0d-4532-868d-09302001d1e2
+  lifecycle:transition: complete
+  cpee:lifecycle:transition: activity/done
+  time:timestamp: '2025-08-22T07:19:33.827512+02:00'
+---
+event:
+  concept:instance: 64520
+  concept:name: Go to the next available Stick
+  id:id: a2
+  cpee:activity: a2
+  cpee:activity_uuid: ec1a4b736d5b514daeee3e527b285b59
+  cpee:instance: 8fa9b3a5-4d0d-4532-868d-09302001d1e2
+  lifecycle:transition: unknown
+  cpee:lifecycle:transition: dataelements/change
+  data:
+  - name: stick
+    value: 4
+  - name: iteration_since_maintenance
+    value: 59
+  time:timestamp: '2025-08-22T07:19:33.827259+02:00'
+---
+event:
+  concept:instance: 64520
+  id:id: external
+  cpee:activity: external
+  cpee:instance: 8fa9b3a5-4d0d-4532-868d-09302001d1e2
+  lifecycle:transition: unknown
+  cpee:lifecycle:transition: gateway/decide
+  time:timestamp: '2025-08-22T07:19:33.848291+02:00'
+---
+event:
+  concept:instance: 64520
+  concept:name: Initialize iteration
+  id:id: a4
+  cpee:activity: a4
+  cpee:activity_uuid: c34e45db3217a11191755549c5de389e
+  cpee:instance: 8fa9b3a5-4d0d-4532-868d-09302001d1e2
+  lifecycle:transition: unknown
+  cpee:lifecycle:transition: dataelements/change
+  data:
+  - name: start_temp
+    value: 58
+  - name: cook_temp
+    value: 64
+  time:timestamp: '2025-08-22T07:19:33.857413+02:00'
+---
+event:
+  concept:instance: 64520
+  concept:name: Initialize iteration
+  id:id: a4
+  cpee:activity: a4
+  cpee:activity_uuid: c34e45db3217a11191755549c5de389e
+  cpee:instance: 8fa9b3a5-4d0d-4532-868d-09302001d1e2
+  lifecycle:transition: complete
+  cpee:lifecycle:transition: activity/done
+  time:timestamp: '2025-08-22T07:19:33.857552+02:00'
+---
+event:
+  concept:instance: 64520
+  concept:name: Call The Cottonbot with Data Collection
+  concept:endpoint: https://cpee.org/flow/start/url/
+  id:id: a1
+  cpee:activity: a1
+  cpee:activity_uuid: 2b4e9d7dcff3e73146d1095b38cf80cf
+  cpee:instance: 8fa9b3a5-4d0d-4532-868d-09302001d1e2
+  lifecycle:transition: start
+  cpee:lifecycle:transition: activity/calling
+  data:
+  - name: behavior
+    value: wait_running
+  - name: url
+    value: https://cpee.org/hub/server/Theses.dir/Nicolas%20Arteaga.dir/Cottonbot%20-%20Run%20with%20Data%20Collection%20vAutonomous.xml
+  - name: init
+    value:
+      batch_number: 15
+      iteration_since_maintenance: 59
+      stick: 4
+      stick_weight: 1.9
+      wait_time: 0
+      cook_time: 48
+      start_temp: 58
+      cook_temp: 64
+      cooled_temp: 56
+  - name: endpoints
+    value:
+  - name: attributes
+    value:
+  - name: customization
+    value:
+  time:timestamp: '2025-08-22T07:19:33.954018+02:00'
+---
+event:
+  concept:instance: 64520
+  concept:name: Call The Cottonbot with Data Collection
+  concept:endpoint: https://cpee.org/flow/start/url/
+  id:id: a1
+  cpee:activity: a1
+  cpee:activity_uuid: 2b4e9d7dcff3e73146d1095b38cf80cf
+  cpee:instance: 8fa9b3a5-4d0d-4532-868d-09302001d1e2
+  lifecycle:transition: unknown
+  cpee:lifecycle:transition: activity/receiving
+  data:
+  - name: instance
+    mimetype: application/json
+    data: '{"CPEE-INSTANCE":"64549","CPEE-INSTANCE-URL":"https://cpee.org/flow/engine/64549","CPEE-INSTANCE-UUID":"322c7b33-257f-43da-ae8c-b04e587e2160","CPEE-BEHAVIOR":"wait_running"}'
+  time:timestamp: '2025-08-22T07:19:35.048331+02:00'
+---
+event:
+  concept:instance: 64520
+  concept:name: Call The Cottonbot with Data Collection
+  concept:endpoint: https://cpee.org/flow/start/url/
+  id:id: a1
+  cpee:activity: a1
+  cpee:activity_uuid: 2b4e9d7dcff3e73146d1095b38cf80cf
+  cpee:instance: 8fa9b3a5-4d0d-4532-868d-09302001d1e2
+  lifecycle:transition: unknown
+  cpee:lifecycle:transition: task/instantiation
+  data:
+    CPEE-INSTANCE: '64549'
+    CPEE-INSTANCE-URL: https://cpee.org/flow/engine/64549
+    CPEE-INSTANCE-UUID: 322c7b33-257f-43da-ae8c-b04e587e2160
+    CPEE-BEHAVIOR: wait_running
+  time:timestamp: '2025-08-22T07:19:35.058032+02:00'
+---
+event:
+  concept:instance: 64520
+  concept:name: Call The Cottonbot with Data Collection
+  concept:endpoint: https://cpee.org/flow/start/url/
+  id:id: a1
+  cpee:activity: a1
+  cpee:activity_uuid: 2b4e9d7dcff3e73146d1095b38cf80cf
+  cpee:instance: 8fa9b3a5-4d0d-4532-868d-09302001d1e2
+  lifecycle:transition: unknown
+  cpee:lifecycle:transition: activity/receiving
+  data:
+  - name: dataelements
+    mimetype: application/json
+    data: '{"CPEE-INSTANCE":"64549","CPEE-INSTANCE-URL":"https://cpee.org/flow/engine/64549","CPEE-INSTANCE-UUID":"322c7b33-257f-43da-ae8c-b04e587e2160","CPEE-STATE":"ready"}'
+  time:timestamp: '2025-08-22T07:19:35.086616+02:00'
+---
+event:
+  concept:instance: 64520
+  concept:name: Call The Cottonbot with Data Collection
+  concept:endpoint: https://cpee.org/flow/start/url/
+  id:id: a1
+  cpee:activity: a1
+  cpee:activity_uuid: 2b4e9d7dcff3e73146d1095b38cf80cf
+  cpee:instance: 8fa9b3a5-4d0d-4532-868d-09302001d1e2
+  lifecycle:transition: unknown
+  cpee:lifecycle:transition: activity/receiving
+  data:
+  - name: dataelements
+    mimetype: application/json
+    data: '{"CPEE-INSTANCE":"64549","CPEE-INSTANCE-URL":"https://cpee.org/flow/engine/64549","CPEE-INSTANCE-UUID":"322c7b33-257f-43da-ae8c-b04e587e2160","CPEE-STATE":"running"}'
+  time:timestamp: '2025-08-22T07:19:35.226229+02:00'
+---
+event:
+  concept:instance: 64520
+  concept:name: Call The Cottonbot with Data Collection
+  concept:endpoint: https://cpee.org/flow/start/url/
+  id:id: a1
+  cpee:activity: a1
+  cpee:activity_uuid: 2b4e9d7dcff3e73146d1095b38cf80cf
+  cpee:instance: 8fa9b3a5-4d0d-4532-868d-09302001d1e2
+  lifecycle:transition: unknown
+  cpee:lifecycle:transition: activity/receiving
+  data:
+  - name: dataelements
+    mimetype: application/json
+    data: '{"CPEE-INSTANCE":"64549","CPEE-INSTANCE-URL":"https://cpee.org/flow/engine/64549","CPEE-INSTANCE-UUID":"322c7b33-257f-43da-ae8c-b04e587e2160","CPEE-STATE":"finished","batch_number":15,"cook_start_time":"07:21:51","cooldown_time":110,"env":{"timestamp":"2025-08-22
+      07:26:46.13","EnvH":"61.99","EnvT":"21.24","InH":"37.91","InT":"34.43","IrA":"25.31","IrO":"54.17"},"machine_on_time":1755840086,"max_pressures":{"pos3":12.01,"pos2":0.0,"pos1":10.74},"plug":{"timestamp":"2025-08-22
+      07:26:43.89","current":0.352,"power":76},"sizes":{"pos1":7,"pos2":5,"pos3":1},"start":1755839975,"weight":5.25,"cook_stop_time":"07:22:45","f_pressures":{"pos3":[0.43,0.43,0.43,0.42,0.42,0.42,0.41,0.41,0.42,0.78,1.95,5.11,9.46,12.01,9.55,0.44],"pos2":[0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0],"pos1":[0.53,0.36,0.03,1.03,4.68,9.66,10.74,4.17,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0]},"total_time":432,"handover_time":62,"show_start_time":"06:26:44","show_start_diff":-3,"show_end_time":"06:27:46","show_end_diff":8,"iteration_since_maintenance":59,"stick":4,"wait_time":0,"start_temp":58,"cook_temp":64,"cooled_temp":56,"cook_time":48,"stick_weight":1.9,"quality_score":"None","sugar_amount":1,"cold_start_wait":102,"radius":0.135,"height":0.05}'
+  time:timestamp: '2025-08-22T07:26:48.618629+02:00'
+---
+event:
+  concept:instance: 64520
+  concept:name: Call The Cottonbot with Data Collection
+  concept:endpoint: https://cpee.org/flow/start/url/
+  id:id: a1
+  cpee:activity: a1
+  cpee:activity_uuid: 2b4e9d7dcff3e73146d1095b38cf80cf
+  cpee:instance: 8fa9b3a5-4d0d-4532-868d-09302001d1e2
+  lifecycle:transition: complete
+  cpee:lifecycle:transition: activity/done
+  time:timestamp: '2025-08-22T07:26:48.619859+02:00'
+---
+event:
+  concept:instance: 64520
+  concept:name: Go to the next available Stick
+  id:id: a2
+  cpee:activity: a2
+  cpee:activity_uuid: 05c80844db5e7aac3f42f1824b64e116
+  cpee:instance: 8fa9b3a5-4d0d-4532-868d-09302001d1e2
+  lifecycle:transition: unknown
+  cpee:lifecycle:transition: dataelements/change
+  data:
+  - name: stick
+    value: 5
+  - name: iteration_since_maintenance
+    value: 60
+  time:timestamp: '2025-08-22T07:26:48.650161+02:00'
+---
+event:
+  concept:instance: 64520
+  concept:name: Go to the next available Stick
+  id:id: a2
+  cpee:activity: a2
+  cpee:activity_uuid: 05c80844db5e7aac3f42f1824b64e116
+  cpee:instance: 8fa9b3a5-4d0d-4532-868d-09302001d1e2
+  lifecycle:transition: complete
+  cpee:lifecycle:transition: activity/done
+  time:timestamp: '2025-08-22T07:26:48.650296+02:00'
+---
+event:
+  concept:instance: 64520
+  id:id: external
+  cpee:activity: external
+  cpee:instance: 8fa9b3a5-4d0d-4532-868d-09302001d1e2
+  lifecycle:transition: unknown
+  cpee:lifecycle:transition: gateway/decide
+  time:timestamp: '2025-08-22T07:26:48.669631+02:00'
+---
+event:
+  concept:instance: 64520
+  concept:name: Initialize iteration
+  id:id: a4
+  cpee:activity: a4
+  cpee:activity_uuid: 2d4d959aa9d52717a4dfad37ec320f9d
+  cpee:instance: 8fa9b3a5-4d0d-4532-868d-09302001d1e2
+  lifecycle:transition: complete
+  cpee:lifecycle:transition: activity/done
+  time:timestamp: '2025-08-22T07:26:48.677080+02:00'
+---
+event:
+  concept:instance: 64520
+  concept:name: Initialize iteration
+  id:id: a4
+  cpee:activity: a4
+  cpee:activity_uuid: 2d4d959aa9d52717a4dfad37ec320f9d
+  cpee:instance: 8fa9b3a5-4d0d-4532-868d-09302001d1e2
+  lifecycle:transition: unknown
+  cpee:lifecycle:transition: dataelements/change
+  data:
+  - name: start_temp
+    value: 60
+  - name: cook_temp
+    value: 63
+  time:timestamp: '2025-08-22T07:26:48.676893+02:00'
+---
+event:
+  concept:instance: 64520
+  concept:name: Call The Cottonbot with Data Collection
+  concept:endpoint: https://cpee.org/flow/start/url/
+  id:id: a1
+  cpee:activity: a1
+  cpee:activity_uuid: d201e8e7391d5b26c207c1078f458346
+  cpee:instance: 8fa9b3a5-4d0d-4532-868d-09302001d1e2
+  lifecycle:transition: start
+  cpee:lifecycle:transition: activity/calling
+  data:
+  - name: behavior
+    value: wait_running
+  - name: url
+    value: https://cpee.org/hub/server/Theses.dir/Nicolas%20Arteaga.dir/Cottonbot%20-%20Run%20with%20Data%20Collection%20vAutonomous.xml
+  - name: init
+    value:
+      batch_number: 15
+      iteration_since_maintenance: 60
+      stick: 5
+      stick_weight: 1.9
+      wait_time: 0
+      cook_time: 48
+      start_temp: 60
+      cook_temp: 63
+      cooled_temp: 56
+  - name: endpoints
+    value:
+  - name: attributes
+    value:
+  - name: customization
+    value:
+  time:timestamp: '2025-08-22T07:26:48.770828+02:00'
+---
+event:
+  concept:instance: 64520
+  concept:name: Call The Cottonbot with Data Collection
+  concept:endpoint: https://cpee.org/flow/start/url/
+  id:id: a1
+  cpee:activity: a1
+  cpee:activity_uuid: d201e8e7391d5b26c207c1078f458346
+  cpee:instance: 8fa9b3a5-4d0d-4532-868d-09302001d1e2
+  lifecycle:transition: unknown
+  cpee:lifecycle:transition: activity/receiving
+  data:
+  - name: dataelements
+    mimetype: application/json
+    data: '{"CPEE-INSTANCE":"64556","CPEE-INSTANCE-URL":"https://cpee.org/flow/engine/64556","CPEE-INSTANCE-UUID":"48168931-6045-4486-a786-fb7dd1bc6519","CPEE-STATE":"ready"}'
+  time:timestamp: '2025-08-22T07:26:49.908744+02:00'
+---
+event:
+  concept:instance: 64520
+  concept:name: Call The Cottonbot with Data Collection
+  concept:endpoint: https://cpee.org/flow/start/url/
+  id:id: a1
+  cpee:activity: a1
+  cpee:activity_uuid: d201e8e7391d5b26c207c1078f458346
+  cpee:instance: 8fa9b3a5-4d0d-4532-868d-09302001d1e2
+  lifecycle:transition: unknown
+  cpee:lifecycle:transition: activity/receiving
+  data:
+  - name: instance
+    mimetype: application/json
+    data: '{"CPEE-INSTANCE":"64556","CPEE-INSTANCE-URL":"https://cpee.org/flow/engine/64556","CPEE-INSTANCE-UUID":"48168931-6045-4486-a786-fb7dd1bc6519","CPEE-BEHAVIOR":"wait_running"}'
+  time:timestamp: '2025-08-22T07:26:49.909886+02:00'
+---
+event:
+  concept:instance: 64520
+  concept:name: Call The Cottonbot with Data Collection
+  concept:endpoint: https://cpee.org/flow/start/url/
+  id:id: a1
+  cpee:activity: a1
+  cpee:activity_uuid: d201e8e7391d5b26c207c1078f458346
+  cpee:instance: 8fa9b3a5-4d0d-4532-868d-09302001d1e2
+  lifecycle:transition: unknown
+  cpee:lifecycle:transition: task/instantiation
+  data:
+    CPEE-INSTANCE: '64556'
+    CPEE-INSTANCE-URL: https://cpee.org/flow/engine/64556
+    CPEE-INSTANCE-UUID: 48168931-6045-4486-a786-fb7dd1bc6519
+    CPEE-BEHAVIOR: wait_running
+  time:timestamp: '2025-08-22T07:26:49.910039+02:00'
+---
+event:
+  concept:instance: 64520
+  concept:name: Call The Cottonbot with Data Collection
+  concept:endpoint: https://cpee.org/flow/start/url/
+  id:id: a1
+  cpee:activity: a1
+  cpee:activity_uuid: d201e8e7391d5b26c207c1078f458346
+  cpee:instance: 8fa9b3a5-4d0d-4532-868d-09302001d1e2
+  lifecycle:transition: unknown
+  cpee:lifecycle:transition: activity/receiving
+  data:
+  - name: dataelements
+    mimetype: application/json
+    data: '{"CPEE-INSTANCE":"64556","CPEE-INSTANCE-URL":"https://cpee.org/flow/engine/64556","CPEE-INSTANCE-UUID":"48168931-6045-4486-a786-fb7dd1bc6519","CPEE-STATE":"running"}'
+  time:timestamp: '2025-08-22T07:26:50.068287+02:00'
+---
+event:
+  concept:instance: 64520
+  concept:name: Call The Cottonbot with Data Collection
+  concept:endpoint: https://cpee.org/flow/start/url/
+  id:id: a1
+  cpee:activity: a1
+  cpee:activity_uuid: d201e8e7391d5b26c207c1078f458346
+  cpee:instance: 8fa9b3a5-4d0d-4532-868d-09302001d1e2
+  lifecycle:transition: unknown
+  cpee:lifecycle:transition: activity/receiving
+  data:
+  - name: dataelements
+    mimetype: application/json
+    data: '{"CPEE-INSTANCE":"64556","CPEE-INSTANCE-URL":"https://cpee.org/flow/engine/64556","CPEE-INSTANCE-UUID":"48168931-6045-4486-a786-fb7dd1bc6519","CPEE-STATE":"finished","batch_number":15,"cook_start_time":"07:29:06","cooldown_time":116,"env":{"timestamp":"2025-08-22
+      07:35:00.26","EnvH":"59.91","EnvT":"21.11","InH":"37.07","InT":"34.43","IrA":"25.31","IrO":"54.49"},"machine_on_time":1755840524,"max_pressures":{"pos3":0.0,"pos2":0.0,"pos1":0.0},"plug":{"timestamp":"2025-08-22
+      07:34:58.22","current":0.35,"power":20},"sizes":{"pos1":11,"pos2":6,"pos3":11},"start":1755840410,"weight":0.9199999999999999,"cook_stop_time":"07:30:00","f_pressures":{"pos3":[0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0],"pos2":[0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0],"pos1":[0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0]},"total_time":491,"handover_time":62,"show_start_time":"06:26:44","show_start_diff":-3,"show_end_time":"06:27:46","show_end_diff":8,"iteration_since_maintenance":60,"stick":5,"wait_time":0,"start_temp":60,"cook_temp":63,"cooled_temp":56,"cook_time":48,"stick_weight":1.9,"quality_score":"None","sugar_amount":1,"cold_start_wait":102,"radius":0.135,"height":0.05}'
+  time:timestamp: '2025-08-22T07:35:02.726528+02:00'
+---
+event:
+  concept:instance: 64520
+  concept:name: Call The Cottonbot with Data Collection
+  concept:endpoint: https://cpee.org/flow/start/url/
+  id:id: a1
+  cpee:activity: a1
+  cpee:activity_uuid: d201e8e7391d5b26c207c1078f458346
+  cpee:instance: 8fa9b3a5-4d0d-4532-868d-09302001d1e2
+  lifecycle:transition: complete
+  cpee:lifecycle:transition: activity/done
+  time:timestamp: '2025-08-22T07:35:02.727483+02:00'
+---
+event:
+  concept:instance: 64520
+  concept:name: Go to the next available Stick
+  id:id: a2
+  cpee:activity: a2
+  cpee:activity_uuid: 1e1773e5bd00c18163f816dd391151e0
+  cpee:instance: 8fa9b3a5-4d0d-4532-868d-09302001d1e2
+  lifecycle:transition: complete
+  cpee:lifecycle:transition: activity/done
+  time:timestamp: '2025-08-22T07:35:02.757407+02:00'
+---
+event:
+  concept:instance: 64520
+  concept:name: Go to the next available Stick
+  id:id: a2
+  cpee:activity: a2
+  cpee:activity_uuid: 1e1773e5bd00c18163f816dd391151e0
+  cpee:instance: 8fa9b3a5-4d0d-4532-868d-09302001d1e2
+  lifecycle:transition: unknown
+  cpee:lifecycle:transition: dataelements/change
+  data:
+  - name: stick
+    value: 6
+  - name: iteration_since_maintenance
+    value: 61
+  time:timestamp: '2025-08-22T07:35:02.757271+02:00'
+---
+event:
+  concept:instance: 64520
+  id:id: external
+  cpee:activity: external
+  cpee:instance: 8fa9b3a5-4d0d-4532-868d-09302001d1e2
+  lifecycle:transition: unknown
+  cpee:lifecycle:transition: gateway/decide
+  time:timestamp: '2025-08-22T07:35:02.779051+02:00'
+---
+event:
+  concept:instance: 64520
+  concept:name: Initialize iteration
+  id:id: a4
+  cpee:activity: a4
+  cpee:activity_uuid: f81a9f837dcd920a702724716c2bb012
+  cpee:instance: 8fa9b3a5-4d0d-4532-868d-09302001d1e2
+  lifecycle:transition: unknown
+  cpee:lifecycle:transition: dataelements/change
+  data:
+  - name: start_temp
+    value: 62
+  - name: cook_temp
+    value: 62
+  time:timestamp: '2025-08-22T07:35:02.787054+02:00'
+---
+event:
+  concept:instance: 64520
+  concept:name: Initialize iteration
+  id:id: a4
+  cpee:activity: a4
+  cpee:activity_uuid: f81a9f837dcd920a702724716c2bb012
+  cpee:instance: 8fa9b3a5-4d0d-4532-868d-09302001d1e2
+  lifecycle:transition: complete
+  cpee:lifecycle:transition: activity/done
+  time:timestamp: '2025-08-22T07:35:02.787239+02:00'
+---
+event:
+  concept:instance: 64520
+  concept:name: Call The Cottonbot with Data Collection
+  concept:endpoint: https://cpee.org/flow/start/url/
+  id:id: a1
+  cpee:activity: a1
+  cpee:activity_uuid: 5f745f3d0ee5c0dd1161a27ae1de54ae
+  cpee:instance: 8fa9b3a5-4d0d-4532-868d-09302001d1e2
+  lifecycle:transition: start
+  cpee:lifecycle:transition: activity/calling
+  data:
+  - name: behavior
+    value: wait_running
+  - name: url
+    value: https://cpee.org/hub/server/Theses.dir/Nicolas%20Arteaga.dir/Cottonbot%20-%20Run%20with%20Data%20Collection%20vAutonomous.xml
+  - name: init
+    value:
+      batch_number: 15
+      iteration_since_maintenance: 61
+      stick: 6
+      stick_weight: 1.9
+      wait_time: 0
+      cook_time: 48
+      start_temp: 62
+      cook_temp: 62
+      cooled_temp: 56
+  - name: endpoints
+    value:
+  - name: attributes
+    value:
+  - name: customization
+    value:
+  time:timestamp: '2025-08-22T07:35:02.876480+02:00'
+---
+event:
+  concept:instance: 64520
+  concept:name: Call The Cottonbot with Data Collection
+  concept:endpoint: https://cpee.org/flow/start/url/
+  id:id: a1
+  cpee:activity: a1
+  cpee:activity_uuid: 5f745f3d0ee5c0dd1161a27ae1de54ae
+  cpee:instance: 8fa9b3a5-4d0d-4532-868d-09302001d1e2
+  lifecycle:transition: unknown
+  cpee:lifecycle:transition: activity/receiving
+  data:
+  - name: instance
+    mimetype: application/json
+    data: '{"CPEE-INSTANCE":"64563","CPEE-INSTANCE-URL":"https://cpee.org/flow/engine/64563","CPEE-INSTANCE-UUID":"e07f764a-add4-484f-b5a8-f33f5521ec0a","CPEE-BEHAVIOR":"wait_running"}'
+  time:timestamp: '2025-08-22T07:35:04.006688+02:00'
+---
+event:
+  concept:instance: 64520
+  concept:name: Call The Cottonbot with Data Collection
+  concept:endpoint: https://cpee.org/flow/start/url/
+  id:id: a1
+  cpee:activity: a1
+  cpee:activity_uuid: 5f745f3d0ee5c0dd1161a27ae1de54ae
+  cpee:instance: 8fa9b3a5-4d0d-4532-868d-09302001d1e2
+  lifecycle:transition: unknown
+  cpee:lifecycle:transition: task/instantiation
+  data:
+    CPEE-INSTANCE: '64563'
+    CPEE-INSTANCE-URL: https://cpee.org/flow/engine/64563
+    CPEE-INSTANCE-UUID: e07f764a-add4-484f-b5a8-f33f5521ec0a
+    CPEE-BEHAVIOR: wait_running
+  time:timestamp: '2025-08-22T07:35:04.006853+02:00'
+---
+event:
+  concept:instance: 64520
+  concept:name: Call The Cottonbot with Data Collection
+  concept:endpoint: https://cpee.org/flow/start/url/
+  id:id: a1
+  cpee:activity: a1
+  cpee:activity_uuid: 5f745f3d0ee5c0dd1161a27ae1de54ae
+  cpee:instance: 8fa9b3a5-4d0d-4532-868d-09302001d1e2
+  lifecycle:transition: unknown
+  cpee:lifecycle:transition: activity/receiving
+  data:
+  - name: dataelements
+    mimetype: application/json
+    data: '{"CPEE-INSTANCE":"64563","CPEE-INSTANCE-URL":"https://cpee.org/flow/engine/64563","CPEE-INSTANCE-UUID":"e07f764a-add4-484f-b5a8-f33f5521ec0a","CPEE-STATE":"ready"}'
+  time:timestamp: '2025-08-22T07:35:04.043694+02:00'
+---
+event:
+  concept:instance: 64520
+  concept:name: Call The Cottonbot with Data Collection
+  concept:endpoint: https://cpee.org/flow/start/url/
+  id:id: a1
+  cpee:activity: a1
+  cpee:activity_uuid: 5f745f3d0ee5c0dd1161a27ae1de54ae
+  cpee:instance: 8fa9b3a5-4d0d-4532-868d-09302001d1e2
+  lifecycle:transition: unknown
+  cpee:lifecycle:transition: activity/receiving
+  data:
+  - name: dataelements
+    mimetype: application/json
+    data: '{"CPEE-INSTANCE":"64563","CPEE-INSTANCE-URL":"https://cpee.org/flow/engine/64563","CPEE-INSTANCE-UUID":"e07f764a-add4-484f-b5a8-f33f5521ec0a","CPEE-STATE":"running"}'
+  time:timestamp: '2025-08-22T07:35:04.219280+02:00'
+---
+event:
+  concept:instance: 64520
+  concept:name: Call The Cottonbot with Data Collection
+  concept:endpoint: https://cpee.org/flow/start/url/
+  id:id: a1
+  cpee:activity: a1
+  cpee:activity_uuid: 5f745f3d0ee5c0dd1161a27ae1de54ae
+  cpee:instance: 8fa9b3a5-4d0d-4532-868d-09302001d1e2
+  lifecycle:transition: unknown
+  cpee:lifecycle:transition: activity/receiving
+  data:
+  - name: dataelements
+    mimetype: application/json
+    data: '{"CPEE-INSTANCE":"64563","CPEE-INSTANCE-URL":"https://cpee.org/flow/engine/64563","CPEE-INSTANCE-UUID":"e07f764a-add4-484f-b5a8-f33f5521ec0a","CPEE-STATE":"finished","batch_number":15,"cook_start_time":"07:37:26","cooldown_time":104,"env":{"timestamp":"2025-08-22
+      07:41:39.53","EnvH":"60.08","EnvT":"20.81","InH":"37.38","InT":"33.95","IrA":"25.29","IrO":"54.17"},"machine_on_time":1755841024,"max_pressures":{"pos3":23.0,"pos2":1.22,"pos1":1.21},"plug":{"timestamp":"2025-08-22
+      07:41:37.40","current":0.353,"power":78},"sizes":{"pos1":1,"pos2":1,"pos3":1},"start":1755840904,"weight":-0.6599999999999999,"cook_stop_time":"07:38:20","f_pressures":{"pos3":[23.0,1.23,1.24,1.24,1.24,1.24,1.24,1.24,1.24,1.24,1.24,1.24,1.24,1.24,1.24,1.24,1.24,1.24,1.24,1.24,1.24,1.24,1.24,1.24,1.24,1.23,1.23,1.23,1.23,1.23,1.23],"pos2":[1.22,1.22,1.22,1.22,1.22,1.22,1.22,1.22,1.22,1.22,1.22,1.22,1.22,1.22,1.22,1.22,1.22,1.22,1.22,1.22,1.22,1.22,1.21,1.21,1.21,1.21,1.21,1.21,1.21,1.21,1.21],"pos1":[1.2,1.2,1.2,1.2,1.2,1.2,1.2,1.2,1.2,1.2,1.2,1.2,1.2,1.2,1.2,1.2,1.2,1.2,1.2,1.2,1.2,1.2,1.2,1.2,1.2,1.2,1.2,1.21,1.21,1.21,1.21]},"total_time":396,"handover_time":62,"show_start_time":"06:26:44","show_start_diff":-3,"show_end_time":"06:27:46","show_end_diff":8,"iteration_since_maintenance":61,"stick":6,"wait_time":0,"start_temp":62,"cook_temp":62,"cooled_temp":56,"cook_time":48,"stick_weight":1.9,"quality_score":"None","sugar_amount":1,"cold_start_wait":102,"radius":0.135,"height":0.05}'
+  time:timestamp: '2025-08-22T07:41:42.006658+02:00'
+---
+event:
+  concept:instance: 64520
+  concept:name: Call The Cottonbot with Data Collection
+  concept:endpoint: https://cpee.org/flow/start/url/
+  id:id: a1
+  cpee:activity: a1
+  cpee:activity_uuid: 5f745f3d0ee5c0dd1161a27ae1de54ae
+  cpee:instance: 8fa9b3a5-4d0d-4532-868d-09302001d1e2
+  lifecycle:transition: complete
+  cpee:lifecycle:transition: activity/done
+  time:timestamp: '2025-08-22T07:41:42.007358+02:00'
+---
+event:
+  concept:instance: 64520
+  concept:name: Go to the next available Stick
+  id:id: a2
+  cpee:activity: a2
+  cpee:activity_uuid: a8fa1a2be99d005c61ff49ca048a7eee
+  cpee:instance: 8fa9b3a5-4d0d-4532-868d-09302001d1e2
+  lifecycle:transition: complete
+  cpee:lifecycle:transition: activity/done
+  time:timestamp: '2025-08-22T07:41:42.036820+02:00'
+---
+event:
+  concept:instance: 64520
+  concept:name: Go to the next available Stick
+  id:id: a2
+  cpee:activity: a2
+  cpee:activity_uuid: a8fa1a2be99d005c61ff49ca048a7eee
+  cpee:instance: 8fa9b3a5-4d0d-4532-868d-09302001d1e2
+  lifecycle:transition: unknown
+  cpee:lifecycle:transition: dataelements/change
+  data:
+  - name: stick
+    value: 7
+  - name: iteration_since_maintenance
+    value: 62
+  time:timestamp: '2025-08-22T07:41:42.036677+02:00'
+---
+event:
+  concept:instance: 64520
+  id:id: external
+  cpee:activity: external
+  cpee:instance: 8fa9b3a5-4d0d-4532-868d-09302001d1e2
+  lifecycle:transition: unknown
+  cpee:lifecycle:transition: gateway/decide
+  time:timestamp: '2025-08-22T07:41:42.058320+02:00'
+---
+event:
+  concept:instance: 64520
+  concept:name: Initialize iteration
+  id:id: a4
+  cpee:activity: a4
+  cpee:activity_uuid: 4e2b7f5881e9fba2d7245672777de3fa
+  cpee:instance: 8fa9b3a5-4d0d-4532-868d-09302001d1e2
+  lifecycle:transition: unknown
+  cpee:lifecycle:transition: dataelements/change
+  data:
+  - name: start_temp
+    value: 64
+  - name: cook_temp
+    value: 61
+  time:timestamp: '2025-08-22T07:41:42.069438+02:00'
+---
+event:
+  concept:instance: 64520
+  concept:name: Initialize iteration
+  id:id: a4
+  cpee:activity: a4
+  cpee:activity_uuid: 4e2b7f5881e9fba2d7245672777de3fa
+  cpee:instance: 8fa9b3a5-4d0d-4532-868d-09302001d1e2
+  lifecycle:transition: complete
+  cpee:lifecycle:transition: activity/done
+  time:timestamp: '2025-08-22T07:41:42.069580+02:00'
+---
+event:
+  concept:instance: 64520
+  concept:name: Call The Cottonbot with Data Collection
+  concept:endpoint: https://cpee.org/flow/start/url/
+  id:id: a1
+  cpee:activity: a1
+  cpee:activity_uuid: 1b8fd5a1dd6e269637e8786efdd1bfb7
+  cpee:instance: 8fa9b3a5-4d0d-4532-868d-09302001d1e2
+  lifecycle:transition: start
+  cpee:lifecycle:transition: activity/calling
+  data:
+  - name: behavior
+    value: wait_running
+  - name: url
+    value: https://cpee.org/hub/server/Theses.dir/Nicolas%20Arteaga.dir/Cottonbot%20-%20Run%20with%20Data%20Collection%20vAutonomous.xml
+  - name: init
+    value:
+      batch_number: 15
+      iteration_since_maintenance: 62
+      stick: 7
+      stick_weight: 1.9
+      wait_time: 0
+      cook_time: 48
+      start_temp: 64
+      cook_temp: 61
+      cooled_temp: 56
+  - name: endpoints
+    value:
+  - name: attributes
+    value:
+  - name: customization
+    value:
+  time:timestamp: '2025-08-22T07:41:42.166546+02:00'
+---
+event:
+  concept:instance: 64520
+  concept:name: Call The Cottonbot with Data Collection
+  concept:endpoint: https://cpee.org/flow/start/url/
+  id:id: a1
+  cpee:activity: a1
+  cpee:activity_uuid: 1b8fd5a1dd6e269637e8786efdd1bfb7
+  cpee:instance: 8fa9b3a5-4d0d-4532-868d-09302001d1e2
+  lifecycle:transition: unknown
+  cpee:lifecycle:transition: activity/receiving
+  data:
+  - name: instance
+    mimetype: application/json
+    data: '{"CPEE-INSTANCE":"64570","CPEE-INSTANCE-URL":"https://cpee.org/flow/engine/64570","CPEE-INSTANCE-UUID":"c00664a2-cefe-4465-8e7f-924f7bedbe0a","CPEE-BEHAVIOR":"wait_running"}'
+  time:timestamp: '2025-08-22T07:41:43.316139+02:00'
+---
+event:
+  concept:instance: 64520
+  concept:name: Call The Cottonbot with Data Collection
+  concept:endpoint: https://cpee.org/flow/start/url/
+  id:id: a1
+  cpee:activity: a1
+  cpee:activity_uuid: 1b8fd5a1dd6e269637e8786efdd1bfb7
+  cpee:instance: 8fa9b3a5-4d0d-4532-868d-09302001d1e2
+  lifecycle:transition: unknown
+  cpee:lifecycle:transition: task/instantiation
+  data:
+    CPEE-INSTANCE: '64570'
+    CPEE-INSTANCE-URL: https://cpee.org/flow/engine/64570
+    CPEE-INSTANCE-UUID: c00664a2-cefe-4465-8e7f-924f7bedbe0a
+    CPEE-BEHAVIOR: wait_running
+  time:timestamp: '2025-08-22T07:41:43.318337+02:00'
+---
+event:
+  concept:instance: 64520
+  concept:name: Call The Cottonbot with Data Collection
+  concept:endpoint: https://cpee.org/flow/start/url/
+  id:id: a1
+  cpee:activity: a1
+  cpee:activity_uuid: 1b8fd5a1dd6e269637e8786efdd1bfb7
+  cpee:instance: 8fa9b3a5-4d0d-4532-868d-09302001d1e2
+  lifecycle:transition: unknown
+  cpee:lifecycle:transition: activity/receiving
+  data:
+  - name: dataelements
+    mimetype: application/json
+    data: '{"CPEE-INSTANCE":"64570","CPEE-INSTANCE-URL":"https://cpee.org/flow/engine/64570","CPEE-INSTANCE-UUID":"c00664a2-cefe-4465-8e7f-924f7bedbe0a","CPEE-STATE":"ready"}'
+  time:timestamp: '2025-08-22T07:41:43.341655+02:00'
+---
+event:
+  concept:instance: 64520
+  concept:name: Call The Cottonbot with Data Collection
+  concept:endpoint: https://cpee.org/flow/start/url/
+  id:id: a1
+  cpee:activity: a1
+  cpee:activity_uuid: 1b8fd5a1dd6e269637e8786efdd1bfb7
+  cpee:instance: 8fa9b3a5-4d0d-4532-868d-09302001d1e2
+  lifecycle:transition: unknown
+  cpee:lifecycle:transition: activity/receiving
+  data:
+  - name: dataelements
+    mimetype: application/json
+    data: '{"CPEE-INSTANCE":"64570","CPEE-INSTANCE-URL":"https://cpee.org/flow/engine/64570","CPEE-INSTANCE-UUID":"c00664a2-cefe-4465-8e7f-924f7bedbe0a","CPEE-STATE":"running"}'
+  time:timestamp: '2025-08-22T07:41:43.510407+02:00'
+---
+event:
+  concept:instance: 64520
+  concept:name: Call The Cottonbot with Data Collection
+  concept:endpoint: https://cpee.org/flow/start/url/
+  id:id: a1
+  cpee:activity: a1
+  cpee:activity_uuid: 1b8fd5a1dd6e269637e8786efdd1bfb7
+  cpee:instance: 8fa9b3a5-4d0d-4532-868d-09302001d1e2
+  lifecycle:transition: unknown
+  cpee:lifecycle:transition: activity/receiving
+  data:
+  - name: dataelements
+    mimetype: application/json
+    data: '{"CPEE-INSTANCE":"64570","CPEE-INSTANCE-URL":"https://cpee.org/flow/engine/64570","CPEE-INSTANCE-UUID":"c00664a2-cefe-4465-8e7f-924f7bedbe0a","CPEE-STATE":"finished","batch_number":15,"cook_start_time":"07:44:18","cooldown_time":95,"env":{"timestamp":"2025-08-22
+      07:48:21.04","EnvH":"62.08","EnvT":"20.30","InH":"41.15","InT":"31.24","IrA":"24.81","IrO":"53.85"},"machine_on_time":1755841436,"max_pressures":{"pos3":13.93,"pos2":46.23,"pos1":35.98},"plug":{"timestamp":"2025-08-22
+      07:48:18.98","current":0.354,"power":21},"sizes":{"pos1":1,"pos2":1,"pos3":1},"start":1755841303,"weight":17.42,"cook_stop_time":"07:45:12","f_pressures":{"pos3":[2.45,2.45,2.45,2.45,2.45,2.45,2.44,2.44,2.44,2.68,3.44,5.62,9.38,13.18,13.93,10.2,5.09,1.52,0.4,0.86,1.21,1.3,1.3,1.32,1.33,1.33,1.33,1.33,1.34,1.34],"pos2":[3.04,3.03,3.01,3.0,2.98,2.96,2.95,2.93,3.17,4.71,9.59,20.35,34.44,45.26,45.26,46.23,33.82,16.83,5.52,0.65,0.0,0.77,1.22,1.39,1.47,1.49,1.52,1.53,1.54,1.54,1.56],"pos1":[0.81,1.11,1.48,1.69,1.8,1.8,1.86,1.95,2.38,4.64,10.77,20.54,30.22,35.98,34.53,24.74,11.19,0.98,0.03,0.12,0.19,0.2,0.21,0.22]},"total_time":399,"handover_time":62,"show_start_time":"06:26:44","show_start_diff":-3,"show_end_time":"06:27:46","show_end_diff":8,"iteration_since_maintenance":62,"stick":7,"wait_time":0,"start_temp":64,"cook_temp":61,"cooled_temp":56,"cook_time":48,"stick_weight":1.9,"quality_score":"None","sugar_amount":1,"cold_start_wait":102,"radius":0.135,"height":0.05}'
+  time:timestamp: '2025-08-22T07:48:23.489730+02:00'
+---
+event:
+  concept:instance: 64520
+  concept:name: Call The Cottonbot with Data Collection
+  concept:endpoint: https://cpee.org/flow/start/url/
+  id:id: a1
+  cpee:activity: a1
+  cpee:activity_uuid: 1b8fd5a1dd6e269637e8786efdd1bfb7
+  cpee:instance: 8fa9b3a5-4d0d-4532-868d-09302001d1e2
+  lifecycle:transition: complete
+  cpee:lifecycle:transition: activity/done
+  time:timestamp: '2025-08-22T07:48:23.490375+02:00'
+---
+event:
+  concept:instance: 64520
+  concept:name: Go to the next available Stick
+  id:id: a2
+  cpee:activity: a2
+  cpee:activity_uuid: 11991935c16d1e3bed6c08e7d9a7ee6e
+  cpee:instance: 8fa9b3a5-4d0d-4532-868d-09302001d1e2
+  lifecycle:transition: complete
+  cpee:lifecycle:transition: activity/done
+  time:timestamp: '2025-08-22T07:48:23.522677+02:00'
+---
+event:
+  concept:instance: 64520
+  concept:name: Go to the next available Stick
+  id:id: a2
+  cpee:activity: a2
+  cpee:activity_uuid: 11991935c16d1e3bed6c08e7d9a7ee6e
+  cpee:instance: 8fa9b3a5-4d0d-4532-868d-09302001d1e2
+  lifecycle:transition: unknown
+  cpee:lifecycle:transition: dataelements/change
+  data:
+  - name: stick
+    value: 8
+  - name: iteration_since_maintenance
+    value: 63
+  time:timestamp: '2025-08-22T07:48:23.522532+02:00'
+---
+event:
+  concept:instance: 64520
+  id:id: external
+  cpee:activity: external
+  cpee:instance: 8fa9b3a5-4d0d-4532-868d-09302001d1e2
+  lifecycle:transition: unknown
+  cpee:lifecycle:transition: gateway/decide
+  time:timestamp: '2025-08-22T07:48:23.545668+02:00'
+---
+event:
+  concept:instance: 64520
+  concept:name: Initialize iteration
+  id:id: a4
+  cpee:activity: a4
+  cpee:activity_uuid: 0f24b3ff9b83b43f078eb4bc51f57e02
+  cpee:instance: 8fa9b3a5-4d0d-4532-868d-09302001d1e2
+  lifecycle:transition: unknown
+  cpee:lifecycle:transition: dataelements/change
+  data:
+  - name: start_temp
+    value: 66
+  - name: cook_temp
+    value: 60
+  time:timestamp: '2025-08-22T07:48:23.555152+02:00'
+---
+event:
+  concept:instance: 64520
+  concept:name: Initialize iteration
+  id:id: a4
+  cpee:activity: a4
+  cpee:activity_uuid: 0f24b3ff9b83b43f078eb4bc51f57e02
+  cpee:instance: 8fa9b3a5-4d0d-4532-868d-09302001d1e2
+  lifecycle:transition: complete
+  cpee:lifecycle:transition: activity/done
+  time:timestamp: '2025-08-22T07:48:23.555305+02:00'
+---
+event:
+  concept:instance: 64520
+  concept:name: Call The Cottonbot with Data Collection
+  concept:endpoint: https://cpee.org/flow/start/url/
+  id:id: a1
+  cpee:activity: a1
+  cpee:activity_uuid: 5a1a5323636a517f90cee5954475c91b
+  cpee:instance: 8fa9b3a5-4d0d-4532-868d-09302001d1e2
+  lifecycle:transition: start
+  cpee:lifecycle:transition: activity/calling
+  data:
+  - name: behavior
+    value: wait_running
+  - name: url
+    value: https://cpee.org/hub/server/Theses.dir/Nicolas%20Arteaga.dir/Cottonbot%20-%20Run%20with%20Data%20Collection%20vAutonomous.xml
+  - name: init
+    value:
+      batch_number: 15
+      iteration_since_maintenance: 63
+      stick: 8
+      stick_weight: 1.9
+      wait_time: 0
+      cook_time: 48
+      start_temp: 66
+      cook_temp: 60
+      cooled_temp: 56
+  - name: endpoints
+    value:
+  - name: attributes
+    value:
+  - name: customization
+    value:
+  time:timestamp: '2025-08-22T07:48:23.649987+02:00'
+---
+event:
+  concept:instance: 64520
+  concept:name: Call The Cottonbot with Data Collection
+  concept:endpoint: https://cpee.org/flow/start/url/
+  id:id: a1
+  cpee:activity: a1
+  cpee:activity_uuid: 5a1a5323636a517f90cee5954475c91b
+  cpee:instance: 8fa9b3a5-4d0d-4532-868d-09302001d1e2
+  lifecycle:transition: unknown
+  cpee:lifecycle:transition: activity/receiving
+  data:
+  - name: instance
+    mimetype: application/json
+    data: '{"CPEE-INSTANCE":"64577","CPEE-INSTANCE-URL":"https://cpee.org/flow/engine/64577","CPEE-INSTANCE-UUID":"96a909c1-cf90-4eca-8329-3bc4161bc567","CPEE-BEHAVIOR":"wait_running"}'
+  time:timestamp: '2025-08-22T07:48:24.779485+02:00'
+---
+event:
+  concept:instance: 64520
+  concept:name: Call The Cottonbot with Data Collection
+  concept:endpoint: https://cpee.org/flow/start/url/
+  id:id: a1
+  cpee:activity: a1
+  cpee:activity_uuid: 5a1a5323636a517f90cee5954475c91b
+  cpee:instance: 8fa9b3a5-4d0d-4532-868d-09302001d1e2
+  lifecycle:transition: unknown
+  cpee:lifecycle:transition: task/instantiation
+  data:
+    CPEE-INSTANCE: '64577'
+    CPEE-INSTANCE-URL: https://cpee.org/flow/engine/64577
+    CPEE-INSTANCE-UUID: 96a909c1-cf90-4eca-8329-3bc4161bc567
+    CPEE-BEHAVIOR: wait_running
+  time:timestamp: '2025-08-22T07:48:24.779724+02:00'
+---
+event:
+  concept:instance: 64520
+  concept:name: Call The Cottonbot with Data Collection
+  concept:endpoint: https://cpee.org/flow/start/url/
+  id:id: a1
+  cpee:activity: a1
+  cpee:activity_uuid: 5a1a5323636a517f90cee5954475c91b
+  cpee:instance: 8fa9b3a5-4d0d-4532-868d-09302001d1e2
+  lifecycle:transition: unknown
+  cpee:lifecycle:transition: activity/receiving
+  data:
+  - name: dataelements
+    mimetype: application/json
+    data: '{"CPEE-INSTANCE":"64577","CPEE-INSTANCE-URL":"https://cpee.org/flow/engine/64577","CPEE-INSTANCE-UUID":"96a909c1-cf90-4eca-8329-3bc4161bc567","CPEE-STATE":"ready"}'
+  time:timestamp: '2025-08-22T07:48:24.797978+02:00'
+---
+event:
+  concept:instance: 64520
+  concept:name: Call The Cottonbot with Data Collection
+  concept:endpoint: https://cpee.org/flow/start/url/
+  id:id: a1
+  cpee:activity: a1
+  cpee:activity_uuid: 5a1a5323636a517f90cee5954475c91b
+  cpee:instance: 8fa9b3a5-4d0d-4532-868d-09302001d1e2
+  lifecycle:transition: unknown
+  cpee:lifecycle:transition: activity/receiving
+  data:
+  - name: dataelements
+    mimetype: application/json
+    data: '{"CPEE-INSTANCE":"64577","CPEE-INSTANCE-URL":"https://cpee.org/flow/engine/64577","CPEE-INSTANCE-UUID":"96a909c1-cf90-4eca-8329-3bc4161bc567","CPEE-STATE":"running"}'
+  time:timestamp: '2025-08-22T07:48:24.934390+02:00'
+---
+event:
+  concept:instance: 64520
+  concept:name: Call The Cottonbot with Data Collection
+  concept:endpoint: https://cpee.org/flow/start/url/
+  id:id: a1
+  cpee:activity: a1
+  cpee:activity_uuid: 5a1a5323636a517f90cee5954475c91b
+  cpee:instance: 8fa9b3a5-4d0d-4532-868d-09302001d1e2
+  lifecycle:transition: unknown
+  cpee:lifecycle:transition: activity/receiving
+  data:
+  - name: dataelements
+    mimetype: application/json
+    data: '{"CPEE-INSTANCE":"64577","CPEE-INSTANCE-URL":"https://cpee.org/flow/engine/64577","CPEE-INSTANCE-UUID":"96a909c1-cf90-4eca-8329-3bc4161bc567","CPEE-STATE":"finished","batch_number":15,"cook_start_time":"07:50:37","cooldown_time":254,"env":{"timestamp":"2025-08-22
+      07:55:52.63","EnvH":"63.16","EnvT":"19.65","InH":"45.53","InT":"27.50","IrA":"28.95","IrO":"55.57"},"machine_on_time":1755841831,"max_pressures":{"pos3":1.09,"pos2":1.08,"pos1":1.09},"plug":{"timestamp":"2025-08-22
+      07:55:51.60","current":0.0,"power":0},"sizes":{"pos1":1,"pos2":1,"pos3":1},"start":1755841704,"weight":-0.8099999999999998,"cook_stop_time":"07:50:40","f_pressures":{"pos3":[1.09,1.09,1.09,1.09,1.09,1.09,1.09,1.09,1.09,1.09,1.09,1.09,1.09,1.09,1.09,1.09,1.09,1.09,1.09,1.09,1.09,1.09,1.09,1.09,1.09,1.09,1.09,1.09,1.09,1.09,1.09],"pos2":[1.08,1.08,1.08,1.08,1.08,1.08,1.08,1.08,1.08,1.08,1.08,1.08,1.08,1.08,1.08,1.08,1.08,1.08,1.08,1.08,1.08,1.08,1.08,1.08,1.08,1.08,1.08,1.08,1.08,1.08,1.08],"pos1":[1.09,1.09,1.09,1.09,1.09,1.09,1.09,1.09,1.09,1.09,1.09,1.09,1.09,1.09,1.09,1.09,1.09,1.09,1.09,1.09,1.09,1.09,1.09,1.09,1.09,1.09,1.09,1.09,1.09,1.09,1.09]},"total_time":450,"handover_time":62,"show_start_time":"06:26:44","show_start_diff":-3,"show_end_time":"06:27:46","show_end_diff":8,"iteration_since_maintenance":63,"stick":8,"wait_time":0,"start_temp":66,"cook_temp":60,"cooled_temp":56,"cook_time":48,"stick_weight":1.9,"quality_score":"None","sugar_amount":1,"cold_start_wait":102,"radius":0.135,"height":0.05}'
+  time:timestamp: '2025-08-22T07:55:56.090908+02:00'
+---
+event:
+  concept:instance: 64520
+  concept:name: Call The Cottonbot with Data Collection
+  concept:endpoint: https://cpee.org/flow/start/url/
+  id:id: a1
+  cpee:activity: a1
+  cpee:activity_uuid: 5a1a5323636a517f90cee5954475c91b
+  cpee:instance: 8fa9b3a5-4d0d-4532-868d-09302001d1e2
+  lifecycle:transition: complete
+  cpee:lifecycle:transition: activity/done
+  time:timestamp: '2025-08-22T07:55:56.092038+02:00'
+---
+event:
+  concept:instance: 64520
+  concept:name: Go to the next available Stick
+  id:id: a2
+  cpee:activity: a2
+  cpee:activity_uuid: 84a12d4a050a873f58b7cfa34891071e
+  cpee:instance: 8fa9b3a5-4d0d-4532-868d-09302001d1e2
+  lifecycle:transition: complete
+  cpee:lifecycle:transition: activity/done
+  time:timestamp: '2025-08-22T07:55:56.121882+02:00'
+---
+event:
+  concept:instance: 64520
+  concept:name: Go to the next available Stick
+  id:id: a2
+  cpee:activity: a2
+  cpee:activity_uuid: 84a12d4a050a873f58b7cfa34891071e
+  cpee:instance: 8fa9b3a5-4d0d-4532-868d-09302001d1e2
+  lifecycle:transition: unknown
+  cpee:lifecycle:transition: dataelements/change
+  data:
+  - name: stick
+    value: 9
+  - name: iteration_since_maintenance
+    value: 64
+  time:timestamp: '2025-08-22T07:55:56.121468+02:00'
+---
+event:
+  concept:instance: 64520
+  id:id: external
+  cpee:activity: external
+  cpee:instance: 8fa9b3a5-4d0d-4532-868d-09302001d1e2
+  lifecycle:transition: unknown
+  cpee:lifecycle:transition: gateway/decide
+  time:timestamp: '2025-08-22T07:55:56.143411+02:00'
+---
+event:
+  concept:instance: 64520
+  concept:name: Initialize iteration
+  id:id: a4
+  cpee:activity: a4
+  cpee:activity_uuid: 9eda2c3f6c620228769c98153624afc6
+  cpee:instance: 8fa9b3a5-4d0d-4532-868d-09302001d1e2
+  lifecycle:transition: unknown
+  cpee:lifecycle:transition: dataelements/change
+  data:
+  - name: start_temp
+    value: 68
+  - name: cook_temp
+    value: 59
+  time:timestamp: '2025-08-22T07:55:56.152069+02:00'
+---
+event:
+  concept:instance: 64520
+  concept:name: Initialize iteration
+  id:id: a4
+  cpee:activity: a4
+  cpee:activity_uuid: 9eda2c3f6c620228769c98153624afc6
+  cpee:instance: 8fa9b3a5-4d0d-4532-868d-09302001d1e2
+  lifecycle:transition: complete
+  cpee:lifecycle:transition: activity/done
+  time:timestamp: '2025-08-22T07:55:56.152471+02:00'
+---
+event:
+  concept:instance: 64520
+  concept:name: Call The Cottonbot with Data Collection
+  concept:endpoint: https://cpee.org/flow/start/url/
+  id:id: a1
+  cpee:activity: a1
+  cpee:activity_uuid: e052391e7f7f43ffd706cd51f4348869
+  cpee:instance: 8fa9b3a5-4d0d-4532-868d-09302001d1e2
+  lifecycle:transition: start
+  cpee:lifecycle:transition: activity/calling
+  data:
+  - name: behavior
+    value: wait_running
+  - name: url
+    value: https://cpee.org/hub/server/Theses.dir/Nicolas%20Arteaga.dir/Cottonbot%20-%20Run%20with%20Data%20Collection%20vAutonomous.xml
+  - name: init
+    value:
+      batch_number: 15
+      iteration_since_maintenance: 64
+      stick: 9
+      stick_weight: 1.9
+      wait_time: 0
+      cook_time: 48
+      start_temp: 68
+      cook_temp: 59
+      cooled_temp: 56
+  - name: endpoints
+    value:
+  - name: attributes
+    value:
+  - name: customization
+    value:
+  time:timestamp: '2025-08-22T07:55:56.234334+02:00'
+---
+event:
+  concept:instance: 64520
+  concept:name: Call The Cottonbot with Data Collection
+  concept:endpoint: https://cpee.org/flow/start/url/
+  id:id: a1
+  cpee:activity: a1
+  cpee:activity_uuid: e052391e7f7f43ffd706cd51f4348869
+  cpee:instance: 8fa9b3a5-4d0d-4532-868d-09302001d1e2
+  lifecycle:transition: unknown
+  cpee:lifecycle:transition: activity/receiving
+  data:
+  - name: instance
+    mimetype: application/json
+    data: '{"CPEE-INSTANCE":"64584","CPEE-INSTANCE-URL":"https://cpee.org/flow/engine/64584","CPEE-INSTANCE-UUID":"f74bb57e-b84f-4750-a2f5-31d8593e1910","CPEE-BEHAVIOR":"wait_running"}'
+  time:timestamp: '2025-08-22T07:55:57.327836+02:00'
+---
+event:
+  concept:instance: 64520
+  concept:name: Call The Cottonbot with Data Collection
+  concept:endpoint: https://cpee.org/flow/start/url/
+  id:id: a1
+  cpee:activity: a1
+  cpee:activity_uuid: e052391e7f7f43ffd706cd51f4348869
+  cpee:instance: 8fa9b3a5-4d0d-4532-868d-09302001d1e2
+  lifecycle:transition: unknown
+  cpee:lifecycle:transition: activity/receiving
+  data:
+  - name: dataelements
+    mimetype: application/json
+    data: '{"CPEE-INSTANCE":"64584","CPEE-INSTANCE-URL":"https://cpee.org/flow/engine/64584","CPEE-INSTANCE-UUID":"f74bb57e-b84f-4750-a2f5-31d8593e1910","CPEE-STATE":"ready"}'
+  time:timestamp: '2025-08-22T07:55:57.328870+02:00'
+---
+event:
+  concept:instance: 64520
+  concept:name: Call The Cottonbot with Data Collection
+  concept:endpoint: https://cpee.org/flow/start/url/
+  id:id: a1
+  cpee:activity: a1
+  cpee:activity_uuid: e052391e7f7f43ffd706cd51f4348869
+  cpee:instance: 8fa9b3a5-4d0d-4532-868d-09302001d1e2
+  lifecycle:transition: unknown
+  cpee:lifecycle:transition: task/instantiation
+  data:
+    CPEE-INSTANCE: '64584'
+    CPEE-INSTANCE-URL: https://cpee.org/flow/engine/64584
+    CPEE-INSTANCE-UUID: f74bb57e-b84f-4750-a2f5-31d8593e1910
+    CPEE-BEHAVIOR: wait_running
+  time:timestamp: '2025-08-22T07:55:57.328117+02:00'
+---
+event:
+  concept:instance: 64520
+  concept:name: Call The Cottonbot with Data Collection
+  concept:endpoint: https://cpee.org/flow/start/url/
+  id:id: a1
+  cpee:activity: a1
+  cpee:activity_uuid: e052391e7f7f43ffd706cd51f4348869
+  cpee:instance: 8fa9b3a5-4d0d-4532-868d-09302001d1e2
+  lifecycle:transition: unknown
+  cpee:lifecycle:transition: activity/receiving
+  data:
+  - name: dataelements
+    mimetype: application/json
+    data: '{"CPEE-INSTANCE":"64584","CPEE-INSTANCE-URL":"https://cpee.org/flow/engine/64584","CPEE-INSTANCE-UUID":"f74bb57e-b84f-4750-a2f5-31d8593e1910","CPEE-STATE":"running"}'
+  time:timestamp: '2025-08-22T07:55:57.506076+02:00'
+---
+event:
+  concept:instance: 64520
+  id:id: external
+  cpee:activity: external
+  cpee:instance: 8fa9b3a5-4d0d-4532-868d-09302001d1e2
+  lifecycle:transition: unknown
+  cpee:lifecycle:transition: state/change
+  cpee:state: stopping
+  time:timestamp: '2025-08-22T08:17:34.028623+02:00'
+---
+event:
+  concept:instance: 64520
+  id:id: external
+  cpee:activity: external
+  cpee:instance: 8fa9b3a5-4d0d-4532-868d-09302001d1e2
+  lifecycle:transition: unknown
+  cpee:lifecycle:transition: gateway/decide
+  time:timestamp: '2025-08-22T08:17:34.623346+02:00'
+---
+event:
+  concept:instance: 64520
+  id:id: external
+  cpee:activity: external
+  cpee:instance: 8fa9b3a5-4d0d-4532-868d-09302001d1e2
+  lifecycle:transition: unknown
+  cpee:lifecycle:transition: state/change
+  cpee:state: stopped
+  time:timestamp: '2025-08-22T08:17:34.624184+02:00'

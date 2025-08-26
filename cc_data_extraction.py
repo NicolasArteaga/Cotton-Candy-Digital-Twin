@@ -37,12 +37,14 @@ class CottonCandyPipeline:
             'wait_time',
             'cook_time', 
             'cooldown_time',
-            # Timing Metrics (5 total: 3 durations + 2 debugging times)
+            # Timing Metrics (7 total: 5 durations + 2 debugging times)
             'duration_till_handover',
             'duration_total',
             'show_start_time',  # For debugging - MM:SS format
             'show_end_time',    # For debugging - MM:SS format
             'duration_cc_flow',
+            'diff_flow',
+            'diff_flow_stop',
             # Environmental Baseline (2)
             'baseline_env_EnvH',
             'baseline_env_EnvT',
@@ -130,12 +132,14 @@ class CottonCandyPipeline:
             'wait_time': None,
             'cook_time': None,
             'cooldown_time': None,
-            # Timing Metrics (5 total: 3 durations + 2 debugging times) - will be calculated from events
+            # Timing Metrics (7 total: 5 durations + 2 debugging times) - will be calculated from events
             'duration_till_handover': None,
             'duration_total': None,
             'show_start_time': None,  # For debugging - MM:SS format
             'show_end_time': None,    # For debugging - MM:SS format
             'duration_cc_flow': None,
+            'diff_flow': None,
+            'diff_flow_stop': None,
             # Environmental Baseline (2)
             'baseline_env_EnvH': None,
             'baseline_env_EnvT': None,
@@ -180,6 +184,7 @@ class CottonCandyPipeline:
         # For tracking process phases for environmental sensor assignment
         show_start_done = False
         show_end_done = False
+        weigh_cc_done = False
         cooldown_time_set = False
         machine_cooled_off = False
         
@@ -243,6 +248,11 @@ class CottonCandyPipeline:
                               event.get('cpee:lifecycle:transition') == 'activity/done'):
                             show_end_done = True
                         
+                        # Track Weigh the whole Cotton Candy activity/done for phase detection
+                        elif (event.get('concept:name') == 'Weigh the whole Cotton Candy' and
+                              event.get('cpee:lifecycle:transition') == 'activity/done'):
+                            weigh_cc_done = True
+                        
                         # Track Set cooldown time activity/done for phase detection
                         elif (event.get('concept:name') == 'Set cooldown time' and
                               event.get('cpee:lifecycle:transition') == 'activity/done'):
@@ -280,8 +290,8 @@ class CottonCandyPipeline:
                                             full_key = f"after_cooldown_env_{sensor}"
                                             if full_key in parameters and parameters[full_key] is None:
                                                 parameters[full_key] = sensor_data[sensor]
-                                        elif cooldown_time_set:
-                                            # Before cooldown phase
+                                        elif weigh_cc_done:
+                                            # Before cooldown phase (first env data after weighing)
                                             full_key = f"before_cooldown_env_{sensor}"
                                             if full_key in parameters and parameters[full_key] is None:
                                                 parameters[full_key] = sensor_data[sensor]
@@ -339,7 +349,7 @@ class CottonCandyPipeline:
                                 parameters['cc_weight'] = weight_data
             
             # Calculate timing metrics from events
-            timing_metrics = self._calculate_timing_metrics(events)
+            timing_metrics = self._calculate_timing_metrics(events, parameters.get('wait_time'), parameters.get('cook_time'))
             parameters.update(timing_metrics)
             
             # Fallback: Use last recorded environmental data for missing after_cooldown values
@@ -543,7 +553,7 @@ class CottonCandyPipeline:
         # Default to before_turn_on for now
         return 'before_turn_on'
     
-    def _calculate_timing_metrics(self, events: List[Dict]) -> Dict:
+    def _calculate_timing_metrics(self, events: List[Dict], wait_time: Optional[float] = None, cook_time: Optional[float] = None) -> Dict:
         """Calculate timing metrics from event timeline"""
         from datetime import datetime
         
@@ -551,6 +561,8 @@ class CottonCandyPipeline:
             'duration_till_handover': None,
             'duration_total': None,
             'duration_cc_flow': None,
+            'diff_flow': None,
+            'diff_flow_stop': None,
             'show_start_time': None,
             'show_end_time': None,
         }
@@ -561,6 +573,7 @@ class CottonCandyPipeline:
         last_timestamp = None
         show_start_timestamp = None
         show_end_timestamp = None
+        turn_machine_on_timestamp = None
         
         try:
             for event in events:
@@ -601,6 +614,12 @@ class CottonCandyPipeline:
                     show_start_timestamp = timestamp
                     timing_metrics['show_start_time'] = f"{timestamp.minute:02d}:{timestamp.second:02d}"
                 
+                # Find Turn the Machine On done
+                if (event.get('concept:name') == 'Turn the Machine On' and
+                    event.get('cpee:lifecycle:transition') == 'activity/done' and
+                    event.get('lifecycle:transition') == 'complete'):
+                    turn_machine_on_timestamp = timestamp
+                
                 # Find Show End done
                 if (event.get('concept:name') == 'Show End' and
                     event.get('cpee:lifecycle:transition') == 'activity/done' and
@@ -620,7 +639,27 @@ class CottonCandyPipeline:
             if show_start_timestamp and show_end_timestamp:
                 duration_cc_flow = (show_end_timestamp - show_start_timestamp).total_seconds()
                 timing_metrics['duration_cc_flow'] = round(duration_cc_flow, 2)
+            
+            # Calculate diff_flow: Show Start timestamp - (Turn Machine On timestamp + wait_time)
+            if turn_machine_on_timestamp and show_start_timestamp and wait_time is not None:
+                # Add wait_time (in seconds) to the Turn Machine On timestamp
+                from datetime import timedelta
+                machine_on_plus_wait = turn_machine_on_timestamp + timedelta(seconds=wait_time)
                 
+                # Calculate the difference: actual show start time - target time
+                diff_flow_seconds = (show_start_timestamp - machine_on_plus_wait).total_seconds()
+                timing_metrics['diff_flow'] = round(diff_flow_seconds, 2)
+            
+            # Calculate diff_flow_stop: Show End timestamp - (Turn Machine On timestamp + wait_time + cook_time)
+            if turn_machine_on_timestamp and show_end_timestamp and wait_time is not None and cook_time is not None:
+                # Add wait_time + cook_time (in seconds) to the Turn Machine On timestamp
+                from datetime import timedelta
+                machine_on_plus_wait_cook = turn_machine_on_timestamp + timedelta(seconds=wait_time + cook_time)
+                
+                # Calculate the difference: actual show end time - target time
+                diff_flow_stop_seconds = (show_end_timestamp - machine_on_plus_wait_cook).total_seconds()
+                timing_metrics['diff_flow_stop'] = round(diff_flow_stop_seconds, 2)
+                                
         except Exception as e:
             print(f"    Warning: Error calculating timing metrics: {e}")
         
@@ -709,12 +748,14 @@ class CottonCandyPipeline:
                 'wait_time': process_params.get('wait_time'),
                 'cook_time': process_params.get('cook_time'),
                 'cooldown_time': process_params.get('cooldown_time'),
-                # Timing Metrics (5 total: 3 durations + 2 debugging times)
+                # Timing Metrics (7 total: 5 durations + 2 debugging times)
                 'duration_till_handover': process_params.get('duration_till_handover'),
                 'duration_total': process_params.get('duration_total'),
                 'show_start_time': process_params.get('show_start_time'),
                 'show_end_time': process_params.get('show_end_time'),
                 'duration_cc_flow': process_params.get('duration_cc_flow'),
+                'diff_flow': process_params.get('diff_flow'),
+                'diff_flow_stop': process_params.get('diff_flow_stop'),
                 # Environmental Baseline (2)
                 'baseline_env_EnvH': process_params.get('baseline_env_EnvH'),
                 'baseline_env_EnvT': process_params.get('baseline_env_EnvT'),

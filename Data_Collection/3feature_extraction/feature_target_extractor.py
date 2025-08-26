@@ -65,7 +65,7 @@ FEATURES_29 = [
 ]
 
 # Target variable
-TARGET_VARIABLE = 'calculated_score'
+TARGET_VARIABLE = 'quality_score'
 
 def load_dataset(file_path):
     """Load the cotton candy dataset from CSV file."""
@@ -176,10 +176,10 @@ def main():
     group.add_argument('--range', nargs=2, type=int, metavar=('START', 'END'),
                       help='Process specific iteration range (inclusive)')
     
-    parser.add_argument('--input', default='Data_Collection/my_cc_dataset.csv',
-                       help='Input dataset file path (default: Data_Collection/my_cc_dataset_backup_optimized.csv)')
-    parser.add_argument('--output-dir', default='Data_Collection',
-                       help='Output directory for generated files (default: Data_Collection)')
+    parser.add_argument('--input', default='my_cc_dataset.csv',
+                       help='Input dataset file path (default: my_cc_dataset.csv)')
+    parser.add_argument('--output-dir', default='xy-full',
+                       help='Output directory for generated files (default: xy-full)')
     
     args = parser.parse_args()
     
