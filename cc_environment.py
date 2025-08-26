@@ -1,4 +1,4 @@
-from bottle import Bottle, run
+from bottle import Bottle, run, response
 import board
 import busio
 import adafruit_hdc302x
@@ -65,7 +65,8 @@ app = Bottle()
 
 @app.route('/')
 def read():
-    return read_all_sensors()
+    response.content_type = 'application/json'
+    return json.dumps(read_all_sensors())
 
 if __name__ == '__main__':
     run(app, host='0.0.0.0', port=7201, debug=True)
