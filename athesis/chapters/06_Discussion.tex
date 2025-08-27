@@ -12,5 +12,45 @@ While the estimation of product volume provided useful insights into structural 
 
 Despite these limitations, the same procedure was applied consistently throughout the experiments, ensuring the validity of comparative trends. For future work, more precise volume estimation techniques such as 3D scanning or photogrammetric analysis could be explored to capture the complex geometry of the product more accurately.
 
-\section{What Would I Have Done Differently?}
-I would have begun by training a decision tree with a digital twin that excluded sensors, relying solely on cook time, wait time, and cooldown time. This would have enabled a quick baseline without the delay of setting up and testing sensors. The initial quality scores could have been manually classified into three categories—bad, okay, and good—sufficient to identify basic patterns. Although subjective, this early data might have reduced the number of batches required for fine-tuning once sensor data became available and before the quality scoring was automated. 
+\subsection*{Answering Research Question 4}
+Let us recall Research Question 4 (\ref{sec:intro:rq}): This question explores whether the bottom-up methodology developed in this thesis can be applied beyond the cotton candy case. While the empirical focus is on a single robotic system, the approach is designed at an abstraction level (inputs, controls, states, outputs, constraints) that allows for transferability to other thermo-transformative processes. We will provide a conceptual mapping to popcorn production as a demonstration case.
+
+\textbf{How transferable and generalizable are the methods and insights derived from the Cotton Candy Automata digital twin to other process environments?}
+
+\paragraph{Conceptual Mapping.}
+In line with the Digital Twins of Business Processes: A Research Manifesto \cite{FORNARI2025101477}, digital twins operate at the intersection of the \textit{Physical Space} and the \textit{Digital Space}. The physical space includes both the \textit{system} (machines, materials, actuators) and the \textit{environment} (contextual conditions such as temperature and humidity), which are captured by sensors and mirrored digitally. The manifesto emphasizes that meaningful twins must incorporate both aspects to provide actionable decision support. This distinction is reflected in the abstraction adopted in this thesis: \textbf{Inputs and Controls} correspond to the physical system, while \textbf{States} represent the environment and system conditions that cannot be directly manipulated but exert significant influence on outcomes.
+
+\begin{table}[h!]
+  \begin{center}
+    \caption{Conceptual mapping of the bottom-up digital twin approach from cotton candy to popcorn.}
+    \label{tab:transferability}
+    \begin{tabular}{p{3.5cm}|p{5cm}|p{5cm}}
+      \textbf{Abstraction Layer} & \textbf{Cotton Candy Automata} & \textbf{Popcorn Process} \\
+      \hline
+      Physical System (Inputs) & Sugar type and amount & Kernel type and amount, oil amount \\
+      Physical System (Controls) & Heater temperature, spinning duration, cooling temp & Heater temperature, oil preheating, shaking/venting pattern \\
+      Environment (States) & Inner pot temperature, ambient temperature and humidity & Pot/oil temperature, ambient temperature, steam release, acoustic pop rate \\
+      Outputs (KPIs) & Cotton candy mass, product quality (texture, stickiness), energy usage, total time & Popped mass, unpopped kernels, burnt kernels, energy usage, total time \\
+      Constraints & Safety temperature limits, motor stability & Oil smoke point, fire risk, safety temperature limits \\
+    \end{tabular}
+  \end{center}
+  \floatfoot{The table distinguishes between the \textit{physical system} (inputs and controls) 
+  and the \textit{environment} (states), following the perspective of the \cite[Digital Twins of Business Processes: A Research Manifesto]{FORNARI2025101477}}.
+\end{table}
+    
+\paragraph{Application to Popcorn.}
+To demonstrate transferability, the Cotton Candy Automata methodology was conceptually mapped to another thermo-transformative process: popcorn production. Both processes rely on heat-induced material transformation, where quality and efficiency depend on precise control of time, temperature, and environmental conditions. In cotton candy, the digital twin tracks sugar input, heating duration and temperature to optimize yield, energy use, and product texture. In popcorn, analogous parameters can be identified: kernel mass and oil quantity as inputs, heater duty cycle and venting pattern as controls, and acoustic pop rate and steam release as environmental states. Outputs such as unpopped kernels, burnt kernels, and energy per gram popped are directly comparable to the quality, energy, and throughput metrics in cotton candy.
+
+\paragraph{Answer to RQ4.}
+The comparison demonstrates that the bottom-up digital twin approach is not locked to a single system but generalizable to structurally similar processes. By abstracting system-specific details into layers of \textit{Inputs, Controls, States, Outputs, and Constraints}, the methodology provides a template that can be instantiated across domains. While the empirical implementation in this thesis focuses on cotton candy, the conceptual extension to popcorn shows that the same modeling and optimization principles can be applied with minimal methodological adjustments. This aligns with the manifesto’s claim that digital twins must integrate both physical and environmental factors to support prescriptive decision-making (Fornari et al., 2025). Therefore, the results of this thesis have broader relevance for other small-scale thermo-transformative processes (e.g., roasting, baking, drying), indicating that the developed approach has the potential to inform digital twin design beyond the specific case of cotton candy.
+
+\section{Reflections and Lessons Learned}
+\label{sec:discussion:lessons}
+
+\paragraph{A Digital Twin Model without Sensors:}
+I would have begun by training a digital twin model with data that excluded sensors, relying solely on cook time, wait time, and cooldown time. This would have enabled a quick baseline without the delay of setting up and testing sensors. The initial quality scores could have been manually classified into three categories—bad, okay, and good to identify basic patterns. Although subjective, this early data might have reduced the number of batches required for fine-tuning once sensor data became available and before the quality scoring was automated. 
+
+But there is really no way of knowing for sure if this would have given us a better model quicker. Since we found out that the process is so complex that we would need for sure the good sensors to get the temperatures, do many processes to evaluate and the process time would still be 10min.
+
+\paragraph{Reflections on CPEE Expressiveness:}
+Extracting features from the CPEE model logs was challenging, as they often contained more than 70,000 lines and thousands of events. Each model update required a new extraction script that had to be implemented and tested, making the process cumbersome. In retrospect, a more efficient solution—identified too late—would have been to add a single script event at the end of each process execution that stored all relevant data elements in the log (e.g., in the third-to-last event). This would have allowed the extraction code to access the required values directly, rather than iterating through the entire log. Likewise, storing derived values such as time differences within data elements would have eliminated the need for additional post-hoc calculations.
