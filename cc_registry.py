@@ -1,7 +1,7 @@
 #!/usr/bin/env python3
-# Cotton Candy Process Registry — POST to "/" with value=<uuid>
-# Also supports JSON: {"value":"<uuid>"} or {"uuid":"<uuid>"}
-# Serves a simple HTML table at GET "/"
+# Cotton Candy Process Registry — POST to "/" with value=<uuid> (and optional info=<string>)
+# GET "/" renders a list (no input form).
+# Also supports JSON: {"value":"<uuid>", "info":"..."} or {"uuid":"<uuid>", "info":"..."}.
 
 from bottle import Bottle, request, response, HTTPError
 import os, time, yaml, tempfile
@@ -14,7 +14,7 @@ PORT = 7206
 REG_PATH = "/home/nicolas/Cotton-Candy-Digital-Twin/registry.yaml"
 MAX_ENTRIES = 2000
 CORS_ALLOW = "*"
-CPEE_LOG_BASE = "https://cpee.org/logs"   # we derive log_url = <base>/<uuid>.xes.yaml
+CPEE_LOG_BASE = "https://cpee.org/logs"   # log_url = <base>/<uuid>.xes.yaml
 
 # --- Helpers ---
 def now_ts() -> int:
@@ -61,14 +61,17 @@ def _options(): return {}
 def root_post():
     """
     Accepts:
-      - form: value=<uuid>
-      - JSON: {"value": "<uuid>"} or {"uuid": "<uuid>"}
+      - form: value=<uuid> and optionally info=<string>
+      - JSON: {"value":"<uuid>","info":"..."} or {"uuid":"<uuid>","info":"..."}
     """
     body = request.json or {}
-    # precedence: form 'value' -> JSON 'uuid' -> JSON 'value'
     uuid = (request.forms.get("value") or body.get("uuid") or body.get("value") or "").strip()
     if not uuid:
         raise HTTPError(400, "uuid required as form field 'value' or JSON 'uuid'/'value'")
+
+    info = request.forms.get("info")
+    if info is None:
+        info = body.get("info")  # may be None — that's fine
 
     ts = now_ts()
     entry = {
@@ -78,6 +81,9 @@ def root_post():
         "log_url": f"{CPEE_LOG_BASE}/{uuid}.xes.yaml",
         "source": request.remote_addr,
     }
+    if isinstance(info, str) and info.strip() != "":
+        entry["info"] = info.strip()
+
     entries = load_registry()
     entries.append(entry)
     atomic_dump(entries)
@@ -104,35 +110,47 @@ def api_by(uuid):
 def health():
     return {"ok": True, "count": len(load_registry())}
 
-# --- HTML view at "/" (GET) with a tiny test form ---
+# --- HTML view at "/" (GET) — no input form, now includes an 'Info' column ---
 @app.get("/")
 def index():
     response.content_type = "text/html; charset=utf-8"
     entries = list(reversed(load_registry()))
+    def esc(s):
+        # very small escape to avoid breaking HTML when info has symbols
+        return (str(s)
+                .replace("&", "&amp;")
+                .replace("<", "&lt;")
+                .replace(">", "&gt;")
+                .replace('"', "&quot;")
+                .replace("'", "&#39;"))
     def row(e):
-        u=e.get("uuid",""); iso=e.get("iso",""); log=e.get("log_url",""); src=e.get("source","")
+        u   = esc(e.get("uuid",""))
+        iso = esc(e.get("iso",""))
+        log = e.get("log_url","")
+        src = esc(e.get("source",""))
+        inf = esc(e.get("info","")) if e.get("info") is not None else ""
         link = f'<a href="{log}" target="_blank">log</a>' if log else ""
-        return f"<tr><td><code>{u}</code></td><td>{iso}</td><td>{link}</td><td>{src}</td></tr>"
+        return f"<tr><td><code>{u}</code></td><td>{iso}</td><td>{inf}</td><td>{link}</td><td>{src}</td></tr>"
+
     html = f"""<!doctype html>
-<meta charset="utf-8"><title>Process Registry</title>
+<meta charset="utf-8"><title>Registered Processes</title>
 <style>
 body{{font:14px system-ui,Arial;margin:20px;color:#111}}
 table{{border-collapse:collapse;width:100%}}
-th,td{{border:1px solid #e5e5e5;padding:6px 8px}}
+th,td{{border:1px solid #e5e5e5;padding:6px 8px;vertical-align:top}}
 th{{background:#f7f7f7;text-align:left}}
 code{{font-family:ui-monospace,Menlo,Monaco,monospace}}
-input,button{{font:inherit;padding:.3rem .5rem}}
-form{{margin:10px 0}}
+a{{text-decoration:none}}
 </style>
 <h1>Registered Processes</h1>
-<form method="post" action="/">
-  <label>UUID:&nbsp;<input name="value" placeholder="paste uuid"/></label>
-  <button type="submit">POST</button>
-</form>
 <p>Total: {len(entries)}</p>
 <table>
-  <thead><tr><th>UUID</th><th>Timestamp</th><th>Log</th><th>Source</th></tr></thead>
-  <tbody>{''.join(row(e) for e in entries) if entries else '<tr><td colspan="4">No entries yet</td></tr>'}</tbody>
+  <thead>
+    <tr><th>UUID</th><th>Timestamp</th><th>Info</th><th>Log</th><th>Source</th></tr>
+  </thead>
+  <tbody>
+    {''.join(row(e) for e in entries) if entries else '<tr><td colspan="5">No entries yet</td></tr>'}
+  </tbody>
 </table>
 <p><a href="/api/list">JSON API</a></p>
 """
