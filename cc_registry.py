@@ -1,21 +1,24 @@
 #!/usr/bin/env python3
-# Minimal CPEE run registry (Bottle) on :7206
-# POST /register {"uuid": "...", "ts": <optional>, "log_url": <optional>, "meta": {...}}
-# GET  /        -> simple HTML table
-# GET  /api/list, /api/by/<uuid>, /health
+# Cotton Candy Process Registry — POST to "/" with value=<uuid>
+# Also supports JSON: {"value":"<uuid>"} or {"uuid":"<uuid>"}
+# Serves a simple HTML table at GET "/"
 
 from bottle import Bottle, request, response, HTTPError
 import os, time, yaml, tempfile
 
 app = Bottle()
 
+# --- Settings ---
+HOST = "0.0.0.0"
 PORT = 7206
-HOST = "0.0.0.0"  # keep local; the reverse tunnel exposes it remotely
 REG_PATH = "/home/nicolas/Cotton-Candy-Digital-Twin/registry.yaml"
 MAX_ENTRIES = 2000
-CORS_ALLOW = "*"  # adjust if you want to lock down
+CORS_ALLOW = "*"
+CPEE_LOG_BASE = "https://cpee.org/logs"   # we derive log_url = <base>/<uuid>.xes.yaml
 
-def now_ts(): return int(time.time())
+# --- Helpers ---
+def now_ts() -> int:
+    return int(time.time())
 
 def load_registry():
     if not os.path.exists(REG_PATH):
@@ -40,39 +43,52 @@ def atomic_dump(entries):
         except Exception: pass
         raise
 
-@app.hook('after_request')
-def set_headers():
+def _set_common_headers():
     if response.content_type is None:
         response.content_type = "application/json; charset=utf-8"
     response.set_header("Access-Control-Allow-Origin", CORS_ALLOW)
     response.set_header("Access-Control-Allow-Headers", "Content-Type, Authorization")
     response.set_header("Access-Control-Allow-Methods", "GET, POST, OPTIONS")
 
+@app.hook('after_request')
+def _after(): _set_common_headers()
+
 @app.route("/<:re:.*>", method=["OPTIONS"])
-def _options():
-    return {}
+def _options(): return {}
 
-@app.post("/register")
-def register():
-    # Try JSON first, then fallback to form field "value"
+# --- Core: POST to "/" ---
+@app.post("/")
+def root_post():
+    """
+    Accepts:
+      - form: value=<uuid>
+      - JSON: {"value": "<uuid>"} or {"uuid": "<uuid>"}
+    """
     body = request.json or {}
-    uuid = (body.get("uuid") or body.get("instance_id") or request.forms.get("value") or "").strip()
+    # precedence: form 'value' -> JSON 'uuid' -> JSON 'value'
+    uuid = (request.forms.get("value") or body.get("uuid") or body.get("value") or "").strip()
     if not uuid:
-        raise HTTPError(400, "uuid required")
+        raise HTTPError(400, "uuid required as form field 'value' or JSON 'uuid'/'value'")
 
-    ts = int(time.time())  # always stamp on the Pi
+    ts = now_ts()
     entry = {
         "uuid": uuid,
         "ts": ts,
         "iso": time.strftime("%Y-%m-%d %H:%M:%S", time.localtime(ts)),
-        "source": request.remote_addr
+        "log_url": f"{CPEE_LOG_BASE}/{uuid}.xes.yaml",
+        "source": request.remote_addr,
     }
-
     entries = load_registry()
     entries.append(entry)
     atomic_dump(entries)
     return {"ok": True, "count": len(entries[-MAX_ENTRIES:])}
 
+# keep /register for backward compatibility (same behavior as "/")
+@app.post("/register")
+def register_post():
+    return root_post()
+
+# --- API ---
 @app.get("/api/list")
 def api_list():
     return {"entries": load_registry()[-MAX_ENTRIES:]}
@@ -80,19 +96,21 @@ def api_list():
 @app.get("/api/by/<uuid>")
 def api_by(uuid):
     rows = [e for e in load_registry() if e.get("uuid") == uuid]
-    if not rows: raise HTTPError(404, "uuid not found")
+    if not rows:
+        raise HTTPError(404, "uuid not found")
     return {"entries": rows}
 
 @app.get("/health")
 def health():
     return {"ok": True, "count": len(load_registry())}
 
+# --- HTML view at "/" (GET) with a tiny test form ---
 @app.get("/")
 def index():
     response.content_type = "text/html; charset=utf-8"
     entries = list(reversed(load_registry()))
     def row(e):
-        u = e.get("uuid",""); iso=e.get("iso",""); log=e.get("log_url",""); src=e.get("source","")
+        u=e.get("uuid",""); iso=e.get("iso",""); log=e.get("log_url",""); src=e.get("source","")
         link = f'<a href="{log}" target="_blank">log</a>' if log else ""
         return f"<tr><td><code>{u}</code></td><td>{iso}</td><td>{link}</td><td>{src}</td></tr>"
     html = f"""<!doctype html>
@@ -103,18 +121,22 @@ table{{border-collapse:collapse;width:100%}}
 th,td{{border:1px solid #e5e5e5;padding:6px 8px}}
 th{{background:#f7f7f7;text-align:left}}
 code{{font-family:ui-monospace,Menlo,Monaco,monospace}}
-a{{text-decoration:none}}
+input,button{{font:inherit;padding:.3rem .5rem}}
+form{{margin:10px 0}}
 </style>
 <h1>Registered Processes</h1>
+<form method="post" action="/">
+  <label>UUID:&nbsp;<input name="value" placeholder="paste uuid"/></label>
+  <button type="submit">POST</button>
+</form>
 <p>Total: {len(entries)}</p>
 <table>
-<thead><tr><th>UUID</th><th>Timestamp</th><th>Log</th><th>Source</th></tr></thead>
-<tbody>{''.join(row(e) for e in entries) if entries else '<tr><td colspan="4">No entries yet</td></tr>'}</tbody>
+  <thead><tr><th>UUID</th><th>Timestamp</th><th>Log</th><th>Source</th></tr></thead>
+  <tbody>{''.join(row(e) for e in entries) if entries else '<tr><td colspan="4">No entries yet</td></tr>'}</tbody>
 </table>
 <p><a href="/api/list">JSON API</a></p>
 """
     return html
 
 if __name__ == "__main__":
-    # Use paste server (same as env service style)
     app.run(host=HOST, port=PORT, server="paste")
