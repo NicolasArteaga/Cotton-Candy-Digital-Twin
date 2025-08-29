@@ -94,11 +94,6 @@ def root_post():
 def register_post():
     return root_post()
 
-# --- API ---
-@app.get("/api/list")
-def api_list():
-    return {"entries": load_registry()[-MAX_ENTRIES:]}
-
 @app.get("/api/by/<uuid>")
 def api_by(uuid):
     rows = [e for e in load_registry() if e.get("uuid") == uuid]
@@ -152,7 +147,6 @@ a{{text-decoration:none}}
     {''.join(row(e) for e in entries) if entries else '<tr><td colspan="5">No entries yet</td></tr>'}
   </tbody>
 </table>
-<p><a href="/api/list">JSON API</a></p>
 """
     return html
 
