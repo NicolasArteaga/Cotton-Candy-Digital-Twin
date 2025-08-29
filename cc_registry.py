@@ -54,25 +54,19 @@ def _options():
 
 @app.post("/register")
 def register():
+    # Try JSON first, then fallback to form field "value"
     body = request.json or {}
-    uuid = (body.get("uuid") or body.get("instance_id") or "").strip()
+    uuid = (body.get("uuid") or body.get("instance_id") or request.forms.get("value") or "").strip()
     if not uuid:
         raise HTTPError(400, "uuid required")
 
-    # timestamp: from body or server time
-    try:
-        ts = int(body.get("ts")) if body.get("ts") is not None else now_ts()
-    except Exception:
-        ts = now_ts()
-
+    ts = int(time.time())  # always stamp on the Pi
     entry = {
         "uuid": uuid,
         "ts": ts,
         "iso": time.strftime("%Y-%m-%d %H:%M:%S", time.localtime(ts)),
+        "source": request.remote_addr
     }
-    if body.get("log_url"): entry["log_url"] = body["log_url"]
-    if isinstance(body.get("meta"), dict): entry["meta"] = body["meta"]
-    entry["source"] = request.get("REMOTE_ADDR") or request.environ.get("REMOTE_ADDR")
 
     entries = load_registry()
     entries.append(entry)
