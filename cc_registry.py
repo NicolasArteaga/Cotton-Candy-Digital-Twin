@@ -109,8 +109,8 @@ def index():
                 .replace("'", "&#39;"))
     def row(e):
         u   = esc(e.get("uuid",""))
-        iso = esc(e.get("iso",""))
         log = e.get("log_url","")
+        iso = esc(e.get("iso",""))
         src = esc(e.get("source",""))
         inf = esc(e.get("info","")) if e.get("info") is not None else ""
         link = f'<a href="{log}" target="_blank">log</a>' if log else ""
@@ -130,7 +130,7 @@ a{{text-decoration:none}}
 <p>Total: {len(entries)}</p>
 <table>
   <thead>
-    <tr><th>UUID</th><th>Timestamp</th><th>Info</th><th>Log</th><th>Source</th></tr>
+    <tr><th>UUID</th><th>Log</th><th>Timestamp</th><th>Info</th><th>Source</th></tr>
   </thead>
   <tbody>
     {''.join(row(e) for e in entries) if entries else '<tr><td colspan="5">No entries yet</td></tr>'}
