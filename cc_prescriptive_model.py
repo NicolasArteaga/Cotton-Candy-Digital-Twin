@@ -78,7 +78,11 @@ def calculate_cooking_parameters(env_data):
 def predict_parameters():
     """
     Accepts environmental sensor data and returns cooking parameters.
-    Expected JSON format:
+    Accepts:
+      - form: value=<env_json_string>
+      - JSON: {"value":<env_data_object>} or direct env data object
+    
+    Expected env data format:
     {
         "EnvH": 56.11,
         "EnvT": 21.83,
@@ -100,10 +104,31 @@ def predict_parameters():
     }
     """
     try:
-        # Get JSON data from request
-        env_data = request.json
+        # Handle both form and JSON data, similar to cc_registry
+        body = request.json or {}
+        
+        # Try to get env data from different sources
+        env_data = None
+        
+        # 1. From form field 'value' (JSON string)
+        form_value = request.forms.get("value")
+        if form_value:
+            try:
+                import json
+                env_data = json.loads(form_value)
+            except json.JSONDecodeError:
+                raise HTTPError(400, "Invalid JSON in form field 'value'")
+        
+        # 2. From JSON body 'value' field
+        elif body.get("value"):
+            env_data = body.get("value")
+        
+        # 3. Direct JSON body (backward compatibility)
+        elif body and 'EnvH' in body:
+            env_data = body
+        
         if not env_data:
-            raise HTTPError(400, "JSON data required")
+            raise HTTPError(400, "Environmental data required as form field 'value' or JSON 'value'")
         
         # Validate required fields
         required_fields = ['EnvH', 'EnvT', 'InH', 'InT', 'IrA', 'IrO']
