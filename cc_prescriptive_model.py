@@ -6,7 +6,6 @@
 
 from bottle import Bottle, request, response, HTTPError
 import json
-import random
 from datetime import datetime
 
 app = Bottle()
@@ -32,11 +31,17 @@ def _after():
 def _options(): 
     return {}
 
-# --- Mock prescriptive model logic ---
+# --- Optimized prescriptive model logic ---
 def calculate_cooking_parameters(env_data):
     """
-    Mock function to calculate cooking parameters based on environmental data.
-    TODO: Replace with actual machine learning model logic.
+    Optimized function to calculate cooking parameters based on environmental data.
+    Based on analysis of last 60 high-performing iterations from Complete_cc_dataset.csv
+    
+    Key findings:
+    - Lower humidity correlates with higher quality (but cannot be controlled)
+    - Cook temp should remain constant around 53°C for optimal results
+    - Longer cook times preferred for better quality
+    - Start temp varies based on IR temperature conditions
     
     Args:
         env_data (dict): Environmental sensor data
@@ -44,33 +49,48 @@ def calculate_cooking_parameters(env_data):
     Returns:
         dict: Cooking parameters (start_temp, cook_temp, cool_temp, cook_time)
     """
-    # For now, return mock values with some variation based on input
-    env_h = env_data.get('EnvH', 50.0)
-    env_t = env_data.get('EnvT', 20.0)
-    in_h = env_data.get('InH', 55.0)
-    in_t = env_data.get('InT', 21.0)
-    ir_a = env_data.get('IrA', 22.0)
-    ir_o = env_data.get('IrO', 21.0)
+    env_h = env_data.get('EnvH', 50.0)  # Environmental humidity
+    ir_o = env_data.get('IrO', 21.0)    # IR object temperature (before turn on)
     
-    # Mock calculation with some logic based on environmental conditions
-    # Higher humidity -> longer cook time
-    # Higher temperature -> adjust cooking temps
+    # Cook temp remains constant for optimal results (based on data analysis)
+    cook_temp = 53.0
+    cool_temp = 54.0  # Standard cooling temperature from high-performing iterations
     
+    # Determine start_temp based on IR temperature conditions
+    if ir_o >= 50.0:
+        # Higher IR temp -> slightly higher start temp
+        start_temp = 50.0
+    elif ir_o >= 40.0:  
+        # Medium IR temp -> moderate start temp
+        start_temp = 48.0
+    else:
+        # Lower IR temp -> lower start temp
+        start_temp = 45.0
+    
+    # Calculate cook_time based on environmental conditions
+    # Base time from analysis: 73-80 seconds for high-performing iterations
     base_cook_time = 75
-    humidity_factor = (env_h + in_h) / 100.0  # Average humidity as factor
-    cook_time = int(base_cook_time + (humidity_factor * 20))  # 75-95 seconds range
     
-    # Temperature adjustments
-    temp_avg = (env_t + in_t + ir_a + ir_o) / 4.0
-    start_temp = round(temp_avg, 2)
-    cook_temp = round(temp_avg + 60.0 + random.uniform(-5.0, 5.0), 2)  # ~80-90°C
-    cool_temp = round(temp_avg - 3.0 + random.uniform(-2.0, 2.0), 2)   # ~18-22°C
+    # Adjust based on humidity (longer times preferred, especially in higher humidity)
+    if env_h <= 45.0:
+        # Low humidity (optimal conditions) -> standard time
+        cook_time = base_cook_time
+    elif env_h <= 55.0:
+        # Normal humidity (50-60% is norm) -> slightly longer
+        cook_time = base_cook_time + 3
+    else:
+        # Higher humidity -> compensate with longer cook time
+        cook_time = base_cook_time + 5
+    
+    # Small adjustment based on IR temperature (warmer conditions need less time)
+    if ir_o >= 50.0:
+        cook_time += 2  # Slightly longer for consistency
     
     return {
-        "start_temp": start_temp,
-        "cook_temp": cook_temp,
-        "cool_temp": cool_temp,
-        "cook_time": cook_time
+        "start_temp": round(start_temp, 1),
+        "cook_temp": round(cook_temp, 1), 
+        "cool_temp": round(cool_temp, 1),
+        "cook_time": int(cook_time)
     }
 
 # --- Core: POST to "/" ---
@@ -162,9 +182,9 @@ def info():
     """
     info_data = {
         "service": "Cotton Candy Prescriptive Model",
-        "version": "1.0.0",
+        "version": "2.0.0",
         "status": "running",
-        "description": "Provides cooking parameters based on environmental sensor data",
+        "description": "Provides optimized cooking parameters based on environmental sensor data (based on analysis of 60 high-performing iterations)",
         "endpoint": {
             "url": "/",
             "method": "POST",
