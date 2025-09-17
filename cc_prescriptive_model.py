@@ -54,7 +54,7 @@ def calculate_cooking_parameters(env_data):
     
     # Cook temp remains constant for optimal results (based on data analysis)
     cook_temp = 53.0
-    cool_temp = 54.0  # Standard cooling temperature from high-performing iterations
+    cool_temp = 54.0  # Standard cooling temperature
     
     # Determine start_temp based on IR temperature conditions
     if ir_o >= 50.0:
